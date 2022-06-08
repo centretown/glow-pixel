@@ -1,9 +1,34 @@
-#include <Arduino.h>
+// Copyright (c) 2022 Dave Marsh. See LICENSE.
+#ifndef PIO_UNIT_TESTING
+#include <base.h>
+#include <BlinkActivity.h>
 
-void setup() {
-  // put your setup code here, to run once:
+BlinkSettings blinkSettings;
+BlinkActivity blink(blinkSettings);
+
+#ifdef ARDUINO
+void setup()
+{
+    blinkSettings.On(100);
+    blinkSettings.Off(2000);
+    blink.Setup();
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+uint64_t now;
+void loop()
+{
+    now = millis();
+    blink.Pulse(now);
 }
+#else
+int main(int argc, char **argv)
+{
+    blink.Setup();
+    for (auto i = 0; i < 1000; i++)
+    {
+        auto now = millis();
+        blink.Pulse(now);
+    }
+}
+#endif
+#endif
