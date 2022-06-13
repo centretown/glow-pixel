@@ -25,14 +25,9 @@ public:
         device.show();
     }
 
-    virtual uint32_t Color(uint8_t red, uint8_t green, uint8_t blue)
+    virtual void Put(uint16_t index, uint8_t red, uint8_t green, uint8_t blue)
     {
-        return Adafruit_NeoPixel::Color(red, green, blue);
-    }
-
-    virtual void Put(uint16_t index, uint32_t color)
-    {
-        device.setPixelColor(index, color);
+        device.setPixelColor(index, red, green, blue);
     }
 
     virtual void Update()

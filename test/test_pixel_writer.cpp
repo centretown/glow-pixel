@@ -5,47 +5,43 @@
 #include <unity.h>
 #include "base.h"
 #include "config.h"
+#include "PixelWriter.h"
 
-void wait(uint32_t ms = 1000)
+void wait(uint32_t ms = 500)
 {
 #ifdef ARDUINO
     delay(ms);
 #endif
 }
 
-void testColor(uint32_t color)
+void testColor(PixelWriter *writer, uint8_t red, uint8_t green, uint8_t blue)
 {
-    size_t count = writer.Length();
+    size_t count = writer->Length();
     for (size_t i = 0; i < count; i++)
     {
-        writer.Put(i, color);
+        writer->Put(i, red, green, blue);
     }
-    writer.Update();
+    writer->Update();
     wait();
 }
 
 void testPixelWriter()
 {
-    writer.Setup();
+    for (size_t i = 0; i < pixelWritersCount; i++)
+    {
+        pixelWriters[i]->Setup();
+    }
 
-    uint32_t color = writer.Color(0xff, 0, 0);
-    testColor(color);
-    wait();
-
-    color = writer.Color(0, 0xff, 0);
-    testColor(color);
-    wait();
-
-    color = writer.Color(0, 0, 0xff);
-    testColor(color);
-    wait();
-
-    color = writer.Color(0, 0x80, 0x80);
-    testColor(color);
-    wait();
-
-    color = writer.Color(0, 0, 0);
-    testColor(color);
+    PixelWriter *writer;
+    for (size_t i = 0; i < pixelWritersCount; i++)
+    {
+        writer = pixelWriters[i];
+        testColor(writer, 0xff, 0, 0);
+        testColor(writer, 0, 0xff, 0);
+        testColor(writer, 0, 0, 0xff);
+        testColor(writer, 0x80, 0x20, 0x80);
+        testColor(writer, 0, 0, 0);
+    }
 }
 
 void testPixelWriters()

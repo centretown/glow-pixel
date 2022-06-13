@@ -5,7 +5,9 @@
 #include "base.h"
 #include "StripActivities.h"
 
-void testPixelWriters();    
+void testPixelWriters();
+void testStripActivities();
+void testPixelGroups();
 
 StripSettings stripSettings;
 StripActivities strip(stripSettings);
@@ -14,6 +16,8 @@ void run()
 {
     UNITY_BEGIN();
     testPixelWriters();
+    testPixelGroups();
+    testStripActivities();
     UNITY_END();
 }
 
@@ -29,8 +33,8 @@ void setup()
 uint64_t now;
 void loop()
 {
-    now = millis();
-    strip.Pulse(now);
+    Activity::Cycle();
+    strip.Pulse();
 }
 
 #else

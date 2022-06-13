@@ -14,9 +14,9 @@ public:
         length = size;
     }
     ~NativePixelWriter() {}
-    virtual void Put(uint16_t index, uint32_t color)
+    virtual void Put(uint16_t index, uint8_t red, uint8_t green, uint8_t blue)
     {
-        printf("Color:%u-%x\n", index, color);
+        printf("Color:%u-%x:%x:%x\n", index, red, green, blue);
     }
     virtual void Update()
     {

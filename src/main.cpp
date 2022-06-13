@@ -17,8 +17,8 @@ void setup()
 uint64_t now;
 void loop()
 {
-    now = millis();
-    blink.Pulse(now);
+    Activity::Cycle();
+    blink.Pulse();
 }
 #else
 int main(int argc, char **argv)
@@ -26,8 +26,8 @@ int main(int argc, char **argv)
     blink.Setup();
     for (auto i = 0; i < 1000; i++)
     {
-        auto now = millis();
-        blink.Pulse(now);
+        Activity::Cycle();
+        blink.Pulse();
     }
 }
 #endif
