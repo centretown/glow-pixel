@@ -2,30 +2,36 @@
 
 #pragma once
 
-#include "base.h"
-#include "PixelGroup.h"
-#include "PixelColor.h"
+#include "PixelController.h"
 #include "PixelDimmer.h"
 
-class PixelSettings
+namespace glow
 {
-protected:
-    static PixelGroup *group;
+    class PixelSettings
+    {
+    protected:
+        static PixelController control;
 
-protected:
-    PixelColor color;
-    PixelDimmer dimmer;
+    protected:
+        PixelColor color;
+        PixelColor result;
+        PixelDimmer dimmer;
 
-public:
-    PixelSettings() {}
+    public:
+        PixelSettings() {}
 
-    inline uint8_t Red() { return dimmer.Dim(color.Red()); }
-    inline uint8_t Green() { return dimmer.Dim(color.Green()); }
-    inline uint8_t Blue() { return dimmer.Dim(color.Blue()); }
-    inline uint8_t White() { return dimmer.Dim(color.White()); }
-    inline PixelDimmer &Dimmer() { return dimmer; }
-    inline PixelColor &Color() { return color; }
+        inline PixelColor &Color() { return color; }
+        inline PixelDimmer &Dimmer() { return dimmer; }
 
-public:
-    static void Setup(PixelGroup *g);
-};
+        virtual uint16_t Count() { return control.Count(); }
+        virtual void Put(uint16_t index)
+        {
+            control.Put(index, dimmer.Filter(color, result));
+        }
+
+        virtual void Update()
+        {
+            control.Update(0, control.Count());
+        }
+    };
+}

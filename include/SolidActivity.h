@@ -2,18 +2,23 @@
 
 #pragma once
 
-#include "base.h"
-#include "SimpleActivity.h"
-#include "PixelSettings.h"
+// #include "base.h"
+// #include "SimpleActivity.h"
+// #include "PixelSettings.h"
 
-class SolidActivity : SimpleActivity<PixelSettings>
-{
-public:
-    SolidActivity(PixelSettings settings)
-        : SimpleActivity(settings) {}
-    // overrides
-    virtual bool Pulse();
-    virtual void Setup();
-    virtual void Reset();
-    virtual void Tick() {}
-};
+// namespace glow
+// {
+//     class SolidActivity : public SimpleActivity<PixelSettings>
+//     {
+//         PixelSettings &pixel;
+
+//     public:
+//         SolidActivity(PixelSettings settings)
+//             : SimpleActivity(settings), pixel(settings) {}
+//         // overrides
+//         virtual bool Pulse();
+//         virtual void Setup() {}
+//         virtual void Reset();
+//         virtual void Tick();
+//     };
+// }

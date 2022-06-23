@@ -5,8 +5,11 @@
 #include "base.h"
 #include "PixelWriter.h"
 
-extern PixelWriter *pixelWriters[];
-extern size_t pixelWritersCount;
+namespace glow
+{
+    extern PixelWriter *pixelWriters[];
+    extern size_t pixelWritersCount;
+}
 
 #ifdef ARDUINO
 #include "NeoPixelWriter.h"

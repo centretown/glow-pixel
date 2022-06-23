@@ -6,6 +6,7 @@
 #include "base.h"
 #include "config.h"
 #include "PixelWriter.h"
+using namespace glow;
 
 void wait(uint32_t ms = 500)
 {
@@ -14,12 +15,12 @@ void wait(uint32_t ms = 500)
 #endif
 }
 
-void testColor(PixelWriter *writer, uint8_t red, uint8_t green, uint8_t blue)
+void testColor(PixelWriter *writer, PixelColor &color)
 {
     size_t count = writer->Length();
     for (size_t i = 0; i < count; i++)
     {
-        writer->Put(i, red, green, blue);
+        writer->Put(i, color);
     }
     writer->Update();
     wait();
@@ -33,14 +34,18 @@ void testPixelWriter()
     }
 
     PixelWriter *writer;
+    PixelColor color;
     for (size_t i = 0; i < pixelWritersCount; i++)
     {
         writer = pixelWriters[i];
-        testColor(writer, 0xff, 0, 0);
-        testColor(writer, 0, 0xff, 0);
-        testColor(writer, 0, 0, 0xff);
-        testColor(writer, 0x80, 0x20, 0x80);
-        testColor(writer, 0, 0, 0);
+        color.RGB(0xff, 0, 0);
+        testColor(writer, color);
+        color.RGB(0, 0xff, 0);
+        testColor(writer, color);
+        color.RGB(0, 0, 0xff);
+        testColor(writer, color);
+        color.RGB();
+        testColor(writer, color);
     }
 }
 

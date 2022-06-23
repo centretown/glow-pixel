@@ -2,8 +2,7 @@
 
 #include "PixelSettings.h"
 
-PixelGroup *PixelSettings::group = NULL;
-void PixelSettings::Setup(PixelGroup *g)
+namespace glow
 {
-    group = g;
+    PixelController PixelSettings::control(pixelWriters, pixelWritersCount);
 }

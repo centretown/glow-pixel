@@ -1,21 +1,34 @@
 // Copyright (c) 2022 Dave Marsh. See LICENSE.
 
-#include "SolidActivity.h"
+// #include "SolidActivity.h"
+// namespace glow
+// {
+//     bool SolidActivity::Pulse()
+//     {
+//         if (Dead())
+//         {
+//             Reset();
+//         }
+//         return false;
+//     }
 
-bool SolidActivity::Pulse()
-{
-    if (Dead())
-    {
-        Reset();
-        return false;
-    }
-    return true;
-}
+//     void SolidActivity::Tick()
+//     {
+//         for (uint16_t i = 0; i < pixel.Count(); i++)
+//         {
+//             pixel.Put(i);
+//         }
 
-void SolidActivity::Setup()
-{
-}
+//         pixel.Update();
+//     }
 
-void SolidActivity::Reset()
-{
-}
+//     void SolidActivity::Reset()
+//     {
+//         settings.Color().RGBW(0, 0, 0, 0);
+//         for (uint16_t i = 0; i < settings.Count(); i++)
+//         {
+//             pixel.Put(i);
+//         }
+//         pixel.Update();
+//     }
+// }

@@ -6,33 +6,37 @@
 #include "PixelWriter.h"
 #include <Adafruit_NeoPixel.h>
 
-class NeoPixelWriter : public PixelWriter
+namespace glow
 {
-private:
-    Adafruit_NeoPixel &device;
-
-public:
-    NeoPixelWriter(Adafruit_NeoPixel &device) : device(device)
+    class NeoPixelWriter : public PixelWriter
     {
-        length = device.numPixels();
-    }
-    ~NeoPixelWriter() {}
+    private:
+        Adafruit_NeoPixel &device;
 
-    virtual void Setup()
-    {
-        device.begin();
-        device.clear();
-        device.show();
-    }
+    public:
+        NeoPixelWriter(Adafruit_NeoPixel &device) : device(device)
+        {
+            length = device.numPixels();
+        }
+        ~NeoPixelWriter() {}
 
-    virtual void Put(uint16_t index, uint8_t red, uint8_t green, uint8_t blue)
-    {
-        device.setPixelColor(index, red, green, blue);
-    }
+        virtual void Setup()
+        {
+            device.begin();
+            device.clear();
+            device.show();
+        }
 
-    virtual void Update()
-    {
-        device.show();
-    }
-};
+        virtual void Put(uint16_t index, PixelColor &color)
+        {
+            device.setPixelColor(index, color.Red(),
+                                 color.Green(), color.Blue());
+        }
+
+        virtual void Update()
+        {
+            device.show();
+        }
+    };
+}
 #endif

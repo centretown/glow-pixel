@@ -3,21 +3,27 @@
 #define UNITY_INCLUDE_PRINT_FORMATTED
 #include <unity.h>
 #include "base.h"
-#include "StripActivities.h"
+#include "BlinkActivity.h"
+
+using namespace glow;
 
 void testPixelWriters();
-void testStripActivities();
-void testPixelGroups();
+void testPixelControllers();
+void testPixelSettings();
+// void testStripActivities();
 
-StripSettings stripSettings;
-StripActivities strip(stripSettings);
+PinDevice blinkPin;
+BlinkSettings blink(&blinkPin);
+BlinkMonitor monitor(&blink);
+BlinkActivity blinker(&monitor, &blink);
 
 void run()
 {
     UNITY_BEGIN();
     testPixelWriters();
-    testPixelGroups();
-    testStripActivities();
+    testPixelControllers();
+    testPixelSettings();
+    // testStripActivities();
     UNITY_END();
 }
 
@@ -27,14 +33,16 @@ void setup()
 {
     delay(2000);
     run();
-    strip.Setup();
+    blinkPin.Setup();
+    blinker.Reset();
+    blink.On(150);
+    blink.Off(350);
 }
 
-uint64_t now;
 void loop()
 {
-    Activity::Cycle();
-    strip.Pulse();
+    Monitor::Cycle();
+    blinker.Pulse();
 }
 
 #else

@@ -6,21 +6,26 @@
 #include "base.h"
 #include "PixelWriter.h"
 
-class NativePixelWriter : public PixelWriter
+namespace glow
 {
-public:
-    NativePixelWriter(size_t size = 4096)
+    class NativePixelWriter : public PixelWriter
     {
-        length = size;
-    }
-    ~NativePixelWriter() {}
-    virtual void Put(uint16_t index, uint8_t red, uint8_t green, uint8_t blue)
-    {
-        printf("Color:%u-%x:%x:%x\n", index, red, green, blue);
-    }
-    virtual void Update()
-    {
-        printf("Update\n");
-    }
-};
+    public:
+        NativePixelWriter(size_t size = 4096)
+        {
+            length = size;
+        }
+
+        virtual void Put(uint16_t index, PixelColor &color)
+        {
+            printf("Color:%u-%x:%x:%x\n", index, color.Red(),
+                   color.Green(), color.Blue());
+        }
+
+        virtual void Update()
+        {
+            printf("Update\n");
+        }
+    };
+}
 #endif
