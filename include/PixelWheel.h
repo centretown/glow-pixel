@@ -8,18 +8,18 @@ namespace glow
 {
     typedef enum : uint8_t
     {
-        RGB,
-        RBG,
-        GRB,
-        GBR,
-        BRG,
-        BGR,
+        Complementary,
+        Monochromatic,
+        Analogous,
+        Triadic,
+        Tetradic,
     } Transition;
 
     class PixelWheel : public ColorFilter
     {
     private:
-        /* data */
+        uint16_t position = 0;
+
     public:
         PixelWheel(/* args */);
         ~PixelWheel();

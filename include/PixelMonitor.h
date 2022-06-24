@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Dave Marsh. See LICENSE.
 
 #include "Monitor.h"
-#include "PixelSettings.h"
+#include "PixelStrip.h"
 
 namespace glow
 {
@@ -11,10 +11,10 @@ namespace glow
         bool ready = true;
 
     protected:
-        PixelSettings *pixel;
+        PixelStrip *pixel;
 
     public:
-        PixelMonitor(PixelSettings *pixel) : pixel(pixel) {}
+        PixelMonitor(PixelStrip *pixel) : pixel(pixel) {}
         ~PixelMonitor() {}
 
         virtual void Reset() {}

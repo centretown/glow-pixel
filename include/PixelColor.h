@@ -3,6 +3,13 @@
 #pragma once
 
 #include "base.h"
+
+#ifdef ARDUINO
+#include <Adafruit_NeoPixel.h>
+#else
+#include "NativePixel.h"
+#endif
+
 namespace glow
 {
     class PixelColor
@@ -43,17 +50,69 @@ namespace glow
             RGBW(r, g, b);
         }
 
-        inline void WRGB(uint8_t w = 0, uint8_t r = 0, uint8_t g = 0, uint8_t b = 0)
-        {
-            RGBW(r, g, b, w);
-        }
-
         inline void RGBW(uint8_t r = 0, uint8_t g = 0, uint8_t b = 0, uint8_t w = 0)
         {
             red = r;
             green = g;
             blue = b;
             white = w;
+        }
+
+        inline void Copy(PixelColor &color)
+        {
+            red = color.red;
+            green = color.green;
+            blue = color.blue;
+            white = color.white;
+        }
+
+        inline uint32_t Pack()
+        {
+#ifdef ARDUINO
+            return Adafruit_NeoPixel::Color(red, green, blue, white);
+#else
+            return NativePixel::Color(red, green, blue, white);
+#endif
+        }
+
+        inline void UnPack(uint32_t packed)
+        {
+            uint32_t mask = 0x000000ff;
+            blue = packed & mask;
+            green = (packed >> 8) & mask;
+            red = (packed >> 16) & mask;
+            white = (packed >> 24) & mask;
+        }
+
+        inline void HSV(uint16_t hue, uint8_t saturation = 255, uint8_t value = 255)
+        {
+            uint32_t packed = 0;
+#ifdef ARDUINO
+            packed = Adafruit_NeoPixel::ColorHSV(hue, saturation, value);
+#else
+            packed = NativePixel::ColorHSV(hue, saturation, value);
+#endif
+            UnPack(packed);
+        }
+
+        inline void Gamma()
+        {
+            uint32_t packed = 0;
+#ifdef ARDUINO
+            packed = Adafruit_NeoPixel::gamma32(Pack());
+#else
+            packed = NativePixel::gamma32(Pack());
+#endif
+            UnPack(packed);
+        }
+
+        static inline uint8_t Sine(uint8_t c)
+        {
+#ifdef ARDUINO
+            return Adafruit_NeoPixel::sine8(c);
+#else
+            return NativePixel::sine8(c);
+#endif
         }
     };
 }

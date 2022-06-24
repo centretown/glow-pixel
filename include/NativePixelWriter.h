@@ -1,4 +1,5 @@
 // Copyright (c) 2022 Dave Marsh. See LICENSE.
+// This file copied part of the Adafruit_NeoPixel.h library.
 
 #ifndef ARDUINO
 #pragma once
@@ -26,6 +27,7 @@ namespace glow
         {
             printf("Update\n");
         }
+
     };
 }
 #endif

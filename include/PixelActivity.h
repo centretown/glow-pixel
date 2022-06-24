@@ -8,10 +8,10 @@ namespace glow
     class PixelActivity : public MonitoredActivity
     {
     private:
-        PixelSettings *pixel;
+        PixelStrip *pixel;
 
     public:
-        PixelActivity(PixelMonitor *monitor, PixelSettings *pixel)
+        PixelActivity(PixelMonitor *monitor, PixelStrip *pixel)
             : MonitoredActivity(monitor), pixel(pixel) {}
         ~PixelActivity() {}
 

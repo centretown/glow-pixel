@@ -9,7 +9,8 @@ using namespace glow;
 
 void testPixelWriters();
 void testPixelControllers();
-void testPixelSettings();
+void testPixelStrip();
+void testPixelColor();
 // void testStripActivities();
 
 PinDevice blinkPin;
@@ -22,7 +23,8 @@ void run()
     UNITY_BEGIN();
     testPixelWriters();
     testPixelControllers();
-    testPixelSettings();
+    testPixelColor();
+    testPixelStrip();
     // testStripActivities();
     UNITY_END();
 }

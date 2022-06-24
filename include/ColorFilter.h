@@ -8,7 +8,19 @@ namespace glow
 {
     class ColorFilter
     {
+    private:
+        ColorFilter *next = NULL;
+
     public:
-        virtual PixelColor &Filter(PixelColor &source, PixelColor &color) = 0;
+        virtual PixelColor &Apply(PixelColor &source, PixelColor &color)
+        {
+            color.Copy(source);
+            return color;
+        }
+
+        void Link(ColorFilter *f)
+        {
+            next = f;
+        }
     };
 }

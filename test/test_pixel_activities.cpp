@@ -7,7 +7,7 @@
 // #include "config.h"
 // #include "Activity.h"
 // #include "PixelController.h"
-// #include "PixelSettings.h"
+// #include "PixelStrip.h"
 // #include "SolidActivity.h"
 // #include "TimeMonitor.h"
 
@@ -42,7 +42,7 @@
 // void testPixelSolid()
 // {
 //     Activity::Cycle();
-//     PixelSettings settings;
+//     PixelStrip settings;
 //     settings.Color().Red(0xff);
 //     SolidActivity solid(settings);
 //     solid.Setup();
@@ -66,7 +66,7 @@
 
 // void testStripActivities()
 // {
-//     PixelSettings::Setup(&pixelController);
+//     PixelStrip::Setup(&pixelController);
 //     RUN_TEST(testPixelSolid);
 
 //     // TimeMonitor monitor;
