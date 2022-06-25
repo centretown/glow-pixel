@@ -8,9 +8,12 @@ namespace glow
 {
     class PixelMapper
     {
+    protected:
+        size_t length;
+
     public:
-        virtual uint16_t Minimum() = 0;
-        virtual size_t Length() = 0;
+        PixelMapper(size_t length) : length(length) {}
+        inline size_t Length() { return length; }
         virtual uint16_t Get(uint16_t index) = 0;
     };
 }

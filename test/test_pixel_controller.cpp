@@ -12,11 +12,11 @@ void wait(uint32_t ms = 500);
 
 void writeController(PixelController &controller, PixelColor &color)
 {
-    for (size_t i = 0; i < controller.Count(); i++)
+    for (size_t i = 0; i < controller.PixelCount(); i++)
     {
         controller.Put(i, color);
     }
-    controller.Update(0, controller.Count());
+    controller.Update();
     wait();
 }
 
@@ -25,7 +25,7 @@ void testPixelController()
     // PixelController controller(pixelWriters, pixelWritersCount);
     // controller.Setup();
     TEST_ASSERT_GREATER_THAN(0, pixelWritersCount);
-    TEST_ASSERT_GREATER_THAN(0, pixelController.Count());
+    TEST_ASSERT_GREATER_THAN(0, pixelController.PixelCount());
     PixelColor color;
 
     color.GBR(255);

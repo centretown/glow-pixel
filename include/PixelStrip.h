@@ -33,7 +33,7 @@ namespace glow
 
         inline void Update()
         {
-            pixelController.Update(mapper->Minimum(), mapper->Length());
+            pixelController.Update();
         }
     };
 }

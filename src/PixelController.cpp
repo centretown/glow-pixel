@@ -6,18 +6,24 @@ namespace glow
 {
     // PixelController controller(pixelWriters, pixelWritersCount);
 
-    PixelController::PixelController(PixelWriter **writers, size_t length)
-        : writers(writers), length(length)
+    PixelController::PixelController(PixelWriter **writers, size_t writerCount)
+        : writers(writers), writerCount(writerCount)
     {
-        for (size_t i = 0; i < length; i++)
+        if (writerCount > MAX_PIXEL_WRITERS)
         {
-            count += writers[i]->Length();
+            writerCount = MAX_PIXEL_WRITERS;
+        }
+
+        for (size_t i = 0; i < writerCount; i++)
+        {
+            pixelCount += writers[i]->Length();
+            partitions[i] = pixelCount;
         }
     }
 
     void PixelController::Setup()
     {
-        for (size_t i = 0; i < length; i++)
+        for (size_t i = 0; i < writerCount; i++)
         {
             writers[i]->Setup();
         }
@@ -25,42 +31,24 @@ namespace glow
 
     void PixelController::Put(uint16_t index, PixelColor &color)
     {
-        size_t extent = 0;
-        size_t offset = 0;
-        for (size_t i = 0; i < length; i++)
+        index %= pixelCount;
+        size_t writerIndex = findWriterIndex(index);
+        if (writerIndex > 0)
         {
-            PixelWriter *p = writers[i];
-            extent += p->Length();
-            if (index < extent)
-            {
-                p->Put(index - offset, color);
-                return;
-            }
-            offset = extent;
+            index -= partitions[writerIndex - 1];
         }
+        writers[writerIndex]->Put(index, color);
     }
 
-    void PixelController::Update(uint16_t begin, uint16_t end)
+    void PixelController::Update()
     {
-        size_t extent = 0;
-        for (size_t i = 0; i < length; i++)
+        for (size_t i = 0; i < writerCount; i++)
         {
-            bool updated = false;
-            PixelWriter *p = writers[i];
-            extent += p->Length();
-            if (begin < extent)
+            if (mustUpdate(i))
             {
-                p->Update();
-                updated = true;
-            }
-            if (end < extent)
-            {
-                if (updated == false)
-                {
-                    p->Update();
-                }
-                return;
+                writers[i]->Update();
             }
         }
+        updateDone();
     }
 }
