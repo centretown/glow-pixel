@@ -4,6 +4,8 @@
 
 namespace glow
 {
+    // PixelController controller(pixelWriters, pixelWritersCount);
+
     PixelController::PixelController(PixelWriter **writers, size_t length)
         : writers(writers), length(length)
     {

@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include "base.h"
-#include "config.h"
 #include "PixelWriter.h"
 
 namespace glow
@@ -17,7 +15,6 @@ namespace glow
 
     public:
         PixelController(PixelWriter **writers, size_t length);
-        ~PixelController() {}
         inline size_t Count() { return count; }
 
         void Setup();

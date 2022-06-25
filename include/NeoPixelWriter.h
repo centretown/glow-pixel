@@ -14,11 +14,11 @@ namespace glow
         Adafruit_NeoPixel &device;
 
     public:
-        NeoPixelWriter(Adafruit_NeoPixel &device) : device(device)
+        NeoPixelWriter(Adafruit_NeoPixel &device)
+            : PixelWriter(0), device(device)
         {
             length = device.numPixels();
         }
-        ~NeoPixelWriter() {}
 
         virtual void Setup()
         {

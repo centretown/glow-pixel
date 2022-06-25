@@ -4,6 +4,7 @@
 
 #include <unity.h>
 #include "PixelController.h"
+#include "config.h"
 
 using namespace glow;
 
@@ -21,20 +22,22 @@ void writeController(PixelController &controller, PixelColor &color)
 
 void testPixelController()
 {
-    PixelController controller(pixelWriters, pixelWritersCount);
-    controller.Setup();
+    // PixelController controller(pixelWriters, pixelWritersCount);
+    // controller.Setup();
+    TEST_ASSERT_GREATER_THAN(0, pixelWritersCount);
+    TEST_ASSERT_GREATER_THAN(0, pixelController.Count());
     PixelColor color;
 
     color.GBR(255);
-    writeController(controller, color);
+    writeController(pixelController, color);
     color.BGR(255);
-    writeController(controller, color);
+    writeController(pixelController, color);
     color.RGB(255);
-    writeController(controller, color);
+    writeController(pixelController, color);
     color.RGB(127, 127);
-    writeController(controller, color);
+    writeController(pixelController, color);
     color.RGB();
-    writeController(controller, color);
+    writeController(pixelController, color);
 }
 
 void testPixelControllers()

@@ -5,14 +5,12 @@
 #include "PixelController.h"
 #include "ColorFilter.h"
 #include "PixelMapper.h"
+#include "config.h"
 
 namespace glow
 {
     class PixelStrip
     {
-    protected:
-        static PixelController control;
-
     private:
         PixelMapper *mapper;
 
@@ -23,19 +21,19 @@ namespace glow
 
         inline void Put(uint16_t index, PixelColor color)
         {
-            control.Put(mapper->Get(index), color);
+            pixelController.Put(mapper->Get(index), color);
         }
 
         inline void Put(uint16_t index, PixelColor color, ColorFilter *filter)
         {
             PixelColor filtered;
             filter->Apply(color, filtered);
-            control.Put(mapper->Get(index), filtered);
+            pixelController.Put(mapper->Get(index), filtered);
         }
 
         inline void Update()
         {
-            control.Update(mapper->Begin(), control.Count());
+            pixelController.Update(mapper->Minimum(), mapper->Length());
         }
     };
 }

@@ -4,6 +4,5 @@
 
 namespace glow
 {
-    PixelController PixelStrip::control(pixelWriters, pixelWritersCount);
-    // ColorFilter PixelStrip::defaultFilter;
+    // PixelController &PixelStrip::controller = controller;
 }

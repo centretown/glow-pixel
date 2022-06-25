@@ -15,6 +15,8 @@ namespace glow
         &writer1,
     };
     size_t pixelWritersCount = sizeof(pixelWriters) / sizeof(pixelWriters[0]);
+    PixelController pixelController(pixelWriters, pixelWritersCount);
+
 #else
 
 #ifdef ESP32
@@ -31,15 +33,18 @@ namespace glow
         &writer,
     };
     size_t pixelWritersCount = sizeof(pixelWriters) / sizeof(pixelWriters[0]);
+    PixelController pixelController(pixelWriters, pixelWritersCount);
 #endif // ESP32
 
 #endif // MEGAATMEGA2560
 
 #else
-    NativePixelWriter writer;
+    NativePixelWriter writer(16);
     PixelWriter *pixelWriters[] = {
         &writer,
     };
     size_t pixelWritersCount = sizeof(pixelWriters) / sizeof(pixelWriters[0]);
+    PixelController pixelController(pixelWriters, pixelWritersCount);
 #endif // ARDUINO
+
 }

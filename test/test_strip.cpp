@@ -4,13 +4,18 @@
 #include <unity.h>
 #include "base.h"
 #include "BlinkActivity.h"
+#include "PixelController.h"
+#include "config.h"
 
 using namespace glow;
 
 void testPixelWriters();
 void testPixelControllers();
-void testPixelStrip();
 void testPixelColor();
+void testColorFilter();
+void testPixelMapper();
+void testPixelStrip();
+
 // void testStripActivities();
 
 PinDevice blinkPin;
@@ -24,6 +29,8 @@ void run()
     testPixelWriters();
     testPixelControllers();
     testPixelColor();
+    testColorFilter();
+    testPixelMapper();
     testPixelStrip();
     // testStripActivities();
     UNITY_END();
@@ -34,6 +41,7 @@ void run()
 void setup()
 {
     delay(2000);
+    pixelController.Setup();
     run();
     blinkPin.Setup();
     blinker.Reset();

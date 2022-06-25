@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "base.h"
 #include "PixelColor.h"
 
 namespace glow
@@ -13,9 +12,7 @@ namespace glow
         size_t length = 0;
 
     public:
-        PixelWriter() {}
-        ~PixelWriter() {}
-
+        PixelWriter(size_t  length = 0) : length(length) {}
         inline size_t Length()
         {
             return length;

@@ -4,7 +4,7 @@
 
 #include <unity.h>
 
-#include "PixelStrip.h"
+#include "PixelColor.h"
 
 using namespace glow;
 
@@ -13,7 +13,7 @@ void testColor()
     const uint8_t tRed = 0xef;
     const uint8_t tGreen = 0x43;
     const uint8_t tBlue = 0x21;
-    const uint8_t tWhite = 0x09;
+    const uint8_t tWhite = 0x99;
     PixelColor color;
     TEST_ASSERT_EQUAL(0, color.Red());
     TEST_ASSERT_EQUAL(0, color.Green());
@@ -42,21 +42,43 @@ void testColor()
     TEST_ASSERT_EQUAL(tBlue, color.Blue());
     TEST_ASSERT_EQUAL(tWhite, color.White());
 
-    PixelColor other;
+    PixelColor other(color);
+    TEST_ASSERT_EQUAL(tRed, other.Red());
+    TEST_ASSERT_EQUAL(tGreen, other.Green());
+    TEST_ASSERT_EQUAL(tBlue, other.Blue());
+    TEST_ASSERT_EQUAL(tWhite, other.White());
+
+    other.RGB();
+    TEST_ASSERT_EQUAL(0, other.Red());
+    TEST_ASSERT_EQUAL(0, other.Green());
+    TEST_ASSERT_EQUAL(0, other.Blue());
+    TEST_ASSERT_EQUAL(0, other.White());
+
     other.Copy(color);
     TEST_ASSERT_EQUAL(tRed, other.Red());
     TEST_ASSERT_EQUAL(tGreen, other.Green());
     TEST_ASSERT_EQUAL(tBlue, other.Blue());
     TEST_ASSERT_EQUAL(tWhite, other.White());
 
-    other.Gamma();
-    TEST_ASSERT_NOT_EQUAL(tRed, other.Red());
-    TEST_ASSERT_NOT_EQUAL(tGreen, other.Green());
-    TEST_ASSERT_NOT_EQUAL(tBlue, other.Blue());
-    TEST_ASSERT_EQUAL(0, other.White());
+    other.Gamma(color);
+    TEST_ASSERT_EQUAL(_basePixel::gamma8(tRed), other.Red());
+    TEST_ASSERT_EQUAL(_basePixel::gamma8(tGreen), other.Green());
+    TEST_ASSERT_EQUAL(_basePixel::gamma8(tBlue), other.Blue());
+    TEST_ASSERT_EQUAL(_basePixel::gamma8(tWhite), other.White());
+
+    TEST_ASSERT_EQUAL(tRed, color.Red());
+    TEST_ASSERT_EQUAL(tGreen, color.Green());
+    TEST_ASSERT_EQUAL(tBlue, color.Blue());
+    TEST_ASSERT_EQUAL(tWhite, color.White());
+
+    other.Sine(color);
+    TEST_ASSERT_EQUAL(_basePixel::sine8(tRed), other.Red());
+    TEST_ASSERT_EQUAL(_basePixel::sine8(tGreen), other.Green());
+    TEST_ASSERT_EQUAL(_basePixel::sine8(tBlue), other.Blue());
+    TEST_ASSERT_EQUAL(_basePixel::sine8(tWhite), other.White());
 
     other.Copy(color);
-    other.HSV(0);
+    other.Hue(0);
     TEST_ASSERT_EQUAL(255, other.Red());
     TEST_ASSERT_EQUAL(0, other.Green());
     TEST_ASSERT_EQUAL(0, other.Blue());

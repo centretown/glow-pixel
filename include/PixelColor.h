@@ -3,12 +3,7 @@
 #pragma once
 
 #include "base.h"
-
-#ifdef ARDUINO
-#include <Adafruit_NeoPixel.h>
-#else
-#include "NativePixel.h"
-#endif
+#include "pixel_base.h"
 
 namespace glow
 {
@@ -28,6 +23,16 @@ namespace glow
             uint8_t white = 0)
             : red(red), green(green), blue(blue), white(white) {}
 
+        PixelColor(PixelColor &color)
+        {
+            red = color.red;
+            green = color.green;
+            blue = color.blue;
+            white = color.white;
+        }
+
+        // modify member
+        
         inline uint8_t Red() { return red; }
         inline void Red(uint8_t r) { red = r; }
         inline uint8_t Green() { return green; }
@@ -37,6 +42,8 @@ namespace glow
         inline uint8_t White() { return white; }
         inline void White(uint8_t w) { white = w; }
 
+        // modify all members
+
         inline void RGB(uint8_t r = 0, uint8_t g = 0, uint8_t b = 0)
         {
             RGBW(r, g, b);
@@ -45,7 +52,7 @@ namespace glow
         {
             RGBW(r, g, b);
         }
-        inline void BGR(uint8_t b = 0, uint8_t r = 0, uint8_t g = 0)
+        inline void BGR(uint8_t b = 0, uint8_t g = 0, uint8_t r = 0)
         {
             RGBW(r, g, b);
         }
@@ -58,23 +65,6 @@ namespace glow
             white = w;
         }
 
-        inline void Copy(PixelColor &color)
-        {
-            red = color.red;
-            green = color.green;
-            blue = color.blue;
-            white = color.white;
-        }
-
-        inline uint32_t Pack()
-        {
-#ifdef ARDUINO
-            return Adafruit_NeoPixel::Color(red, green, blue, white);
-#else
-            return NativePixel::Color(red, green, blue, white);
-#endif
-        }
-
         inline void UnPack(uint32_t packed)
         {
             uint32_t mask = 0x000000ff;
@@ -84,35 +74,58 @@ namespace glow
             white = (packed >> 24) & mask;
         }
 
-        inline void HSV(uint16_t hue, uint8_t saturation = 255, uint8_t value = 255)
+        inline void Hue(uint16_t hue, uint8_t saturation = 255, uint8_t value = 255)
         {
-            uint32_t packed = 0;
-#ifdef ARDUINO
-            packed = Adafruit_NeoPixel::ColorHSV(hue, saturation, value);
-#else
-            packed = NativePixel::ColorHSV(hue, saturation, value);
-#endif
-            UnPack(packed);
+            UnPack(hsv(hue, saturation, value));
         }
 
-        inline void Gamma()
+        // misc.
+        inline uint32_t Pack()
         {
-            uint32_t packed = 0;
-#ifdef ARDUINO
-            packed = Adafruit_NeoPixel::gamma32(Pack());
-#else
-            packed = NativePixel::gamma32(Pack());
-#endif
-            UnPack(packed);
+            return pack(red, green, blue, white);
         }
 
-        static inline uint8_t Sine(uint8_t c)
+        // filter functions (modify all)
+        inline void Copy(PixelColor &color)
         {
-#ifdef ARDUINO
-            return Adafruit_NeoPixel::sine8(c);
-#else
-            return NativePixel::sine8(c);
-#endif
+            red = color.red;
+            green = color.green;
+            blue = color.blue;
+            white = color.white;
+        }
+
+        inline void Gamma(PixelColor &color)
+        {
+            red = gamma8(color.red);
+            green = gamma8(color.green);
+            blue = gamma8(color.blue);
+            white = gamma8(color.white);
+        }
+
+        inline void Sine(PixelColor &color)
+        {
+            red = sine8(color.red);
+            green = sine8(color.green);
+            blue = sine8(color.blue);
+            white = sine8(color.white);
+        }
+
+    private:
+        inline uint32_t hsv(uint16_t hue, uint8_t saturation = 255, uint8_t value = 255)
+        {
+            return _basePixel::ColorHSV(hue, saturation, value);
+        }
+        inline uint32_t pack(uint8_t r, uint8_t g, uint8_t b, uint8_t w)
+        {
+            return _basePixel::Color(r, g, b, w);
+        }
+        inline uint8_t gamma8(uint8_t c)
+        {
+            return _basePixel::gamma8(c);
+        }
+        inline uint8_t sine8(uint8_t c)
+        {
+            return _basePixel::sine8(c);
         }
     };
 }

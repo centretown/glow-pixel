@@ -3,6 +3,7 @@
 #pragma once
 
 #include "PixelMapper.h"
+
 namespace glow
 {
     class SegmentMapper : public PixelMapper
@@ -18,6 +19,6 @@ namespace glow
 
         virtual size_t Length() { return length; }
         virtual uint16_t Get(uint16_t index) { return begin + index; }
-        virtual uint16_t Begin() { return begin; }
+        virtual uint16_t Minimum() { return begin; }
     };
 }

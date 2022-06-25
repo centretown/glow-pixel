@@ -12,10 +12,8 @@ namespace glow
     class NativePixelWriter : public PixelWriter
     {
     public:
-        NativePixelWriter(size_t size = 4096)
-        {
-            length = size;
-        }
+        NativePixelWriter(size_t length)
+            : PixelWriter(length) {}
 
         virtual void Put(uint16_t index, PixelColor &color)
         {
@@ -27,7 +25,6 @@ namespace glow
         {
             printf("Update\n");
         }
-
     };
 }
 #endif
