@@ -3,21 +3,21 @@
 #ifdef ARDUINO
 #pragma once
 
-#include "PixelWriter.h"
+#include "PixelDevice.h"
 #include <Adafruit_NeoPixel.h>
 
 namespace glow
 {
-    class NeoPixelWriter : public PixelWriter
+    class NeoPixelDevice : public PixelDevice
     {
     private:
         Adafruit_NeoPixel &device;
 
     public:
-        NeoPixelWriter(Adafruit_NeoPixel &device)
-            : PixelWriter(0), device(device)
+        NeoPixelDevice(Adafruit_NeoPixel &device)
+            : PixelDevice(0), device(device)
         {
-            length = device.numPixels();
+            pixelCount = device.numPixels();
         }
 
         virtual void Setup()

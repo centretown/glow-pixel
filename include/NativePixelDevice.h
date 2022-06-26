@@ -5,15 +5,15 @@
 #pragma once
 
 #include "base.h"
-#include "PixelWriter.h"
+#include "PixelDevice.h"
 
 namespace glow
 {
-    class NativePixelWriter : public PixelWriter
+    class NativePixelDevice : public PixelDevice
     {
     public:
-        NativePixelWriter(size_t length)
-            : PixelWriter(length) {}
+        NativePixelDevice(uint16_t pixelCount)
+            : PixelDevice(pixelCount) {}
 
         virtual void Put(uint16_t index, PixelColor &color)
         {

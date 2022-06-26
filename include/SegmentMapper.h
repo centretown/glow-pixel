@@ -6,20 +6,20 @@
 
 namespace glow
 {
-    class OrderedMapper : public PixelMapper
+    class SegmentMapper : public PixelMapper
     {
     private:
         uint16_t begin;
 
     public:
-        OrderedMapper(size_t length, uint16_t begin = 0)
-            : PixelMapper(length), begin(begin) {}
-        ~OrderedMapper() {}
+        SegmentMapper(uint16_t begin, uint16_t pixelCount)
+            : PixelMapper(pixelCount), begin(begin) {}
+        ~SegmentMapper() {}
 
         virtual uint16_t Get(uint16_t index)
         {
             // roll over if index exceeds length
-            index %= length;
+            index %= pixelCount;
             return begin + index;
         }
     };

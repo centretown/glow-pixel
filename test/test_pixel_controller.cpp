@@ -24,7 +24,7 @@ void testPixelController()
 {
     // PixelController controller(pixelWriters, pixelWritersCount);
     // controller.Setup();
-    TEST_ASSERT_GREATER_THAN(0, pixelWritersCount);
+    TEST_ASSERT_GREATER_THAN(0, pixelDeviceCount);
     TEST_ASSERT_GREATER_THAN(0, pixelController.PixelCount());
     PixelColor color;
 

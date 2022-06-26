@@ -9,11 +9,11 @@ namespace glow
     class PixelMapper
     {
     protected:
-        size_t length;
+        uint16_t pixelCount;
 
     public:
-        PixelMapper(size_t length) : length(length) {}
-        inline size_t Length() { return length; }
+        PixelMapper(uint16_t pixelCount) : pixelCount(pixelCount) {}
+        inline uint16_t PixelCount() { return pixelCount; }
         virtual uint16_t Get(uint16_t index) = 0;
     };
 }

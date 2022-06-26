@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "PixelWriter.h"
-#define MAX_PIXEL_WRITERS 16
+#include "PixelDevice.h"
+#define MAX_PIXEL_DEVICES 16
 
 namespace glow
 {
@@ -12,16 +12,17 @@ namespace glow
     class PixelController
     {
     private:
-        PixelWriter **writers;
-        size_t writerCount = 0;
-        size_t pixelCount = 0;
+        PixelDevice **devices;
+        uint16_t deviceCount = 0;
+        uint16_t pixelCount = 0;
+
         uint16_t updateFlag = 0;
-        uint16_t partitions[MAX_PIXEL_WRITERS] = {0};
+        uint16_t partitions[MAX_PIXEL_DEVICES] = {0};
 
     public:
-        PixelController(PixelWriter **writers, size_t length);
+        PixelController(PixelDevice **writers, uint16_t length);
 
-        inline size_t PixelCount() { return pixelCount; }
+        inline uint16_t PixelCount() { return pixelCount; }
 
         void Setup();
         void Put(uint16_t index, PixelColor &color);
@@ -30,7 +31,7 @@ namespace glow
     private:
         inline size_t findWriterIndex(uint16_t index)
         {
-            for (size_t i = 0; i < writerCount; i++)
+            for (size_t i = 0; i < deviceCount; i++)
             {
                 if (index < partitions[i])
                 {

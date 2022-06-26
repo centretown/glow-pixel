@@ -3,18 +3,18 @@
 #pragma once
 
 #include "base.h"
-#include "PixelWriter.h"
+#include "PixelDevice.h"
 #include "PixelController.h"
 
 #ifdef ARDUINO
-#include "NeoPixelWriter.h"
+#include "NeoPixelDevice.h"
 #else
-#include "NativePixelWriter.h"
+#include "NativePixelDevice.h"
 #endif
 
 namespace glow
 {
-    extern PixelWriter *pixelWriters[];
-    extern size_t pixelWritersCount;
+    extern PixelDevice *pixelDevices[];
+    extern size_t pixelDeviceCount;
     extern PixelController pixelController;
 }

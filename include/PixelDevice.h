@@ -6,16 +6,16 @@
 
 namespace glow
 {
-    class PixelWriter
+    class PixelDevice
     {
     protected:
-        size_t length = 0;
+        uint16_t pixelCount = 0;
 
     public:
-        PixelWriter(size_t  length = 0) : length(length) {}
-        inline size_t Length()
+        PixelDevice(uint16_t pixelCount = 0) : pixelCount(pixelCount) {}
+        inline uint16_t PixelCount()
         {
-            return length;
+            return pixelCount;
         }
 
         virtual void Setup() {}

@@ -17,7 +17,7 @@ namespace glow
     public:
         PixelStrip(PixelMapper *mapper) : mapper(mapper) {}
 
-        inline uint16_t Length() { return mapper->Length(); }
+        inline uint16_t PixelCount() { return mapper->PixelCount(); }
 
         inline void Put(uint16_t index, PixelColor color)
         {

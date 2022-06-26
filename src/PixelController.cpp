@@ -6,47 +6,47 @@ namespace glow
 {
     // PixelController controller(pixelWriters, pixelWritersCount);
 
-    PixelController::PixelController(PixelWriter **writers, size_t writerCount)
-        : writers(writers), writerCount(writerCount)
+    PixelController::PixelController(PixelDevice **devices, uint16_t deviceCount)
+        : devices(devices), deviceCount(deviceCount)
     {
-        if (writerCount > MAX_PIXEL_WRITERS)
+        if (deviceCount > MAX_PIXEL_DEVICES)
         {
-            writerCount = MAX_PIXEL_WRITERS;
+            deviceCount = MAX_PIXEL_DEVICES;
         }
 
-        for (size_t i = 0; i < writerCount; i++)
+        for (uint16_t i = 0; i < deviceCount; i++)
         {
-            pixelCount += writers[i]->Length();
+            pixelCount += devices[i]->PixelCount();
             partitions[i] = pixelCount;
         }
     }
 
     void PixelController::Setup()
     {
-        for (size_t i = 0; i < writerCount; i++)
+        for (uint16_t i = 0; i < deviceCount; i++)
         {
-            writers[i]->Setup();
+            devices[i]->Setup();
         }
     }
 
     void PixelController::Put(uint16_t index, PixelColor &color)
     {
         index %= pixelCount;
-        size_t writerIndex = findWriterIndex(index);
+        uint16_t writerIndex = findWriterIndex(index);
         if (writerIndex > 0)
         {
             index -= partitions[writerIndex - 1];
         }
-        writers[writerIndex]->Put(index, color);
+        devices[writerIndex]->Put(index, color);
     }
 
     void PixelController::Update()
     {
-        for (size_t i = 0; i < writerCount; i++)
+        for (uint16_t i = 0; i < deviceCount; i++)
         {
             if (mustUpdate(i))
             {
-                writers[i]->Update();
+                devices[i]->Update();
             }
         }
         updateDone();
