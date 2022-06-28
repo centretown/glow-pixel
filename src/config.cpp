@@ -51,6 +51,9 @@ namespace glow
         &device,
     };
 #endif // ARDUINO
-    size_t pixelDeviceCount = sizeof(pixelDevices) / sizeof(pixelDevices[0]);
-    PixelController pixelController(pixelDevices, pixelDeviceCount);
+    static size_t pixelDeviceCount = sizeof(pixelDevices) / sizeof(pixelDevices[0]);
+    static PixelController pixelController(pixelDevices, pixelDeviceCount);
+    PixelController &Pixels = pixelController;
+    size_t PixelDeviceCount() { return pixelDeviceCount; }
+
 }

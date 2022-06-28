@@ -20,27 +20,50 @@ void writeController(PixelController &controller, PixelColor &color)
     wait();
 }
 
+void putRange(PixelColor &color)
+{
+    Pixels.Put(Pixels.Domain(), color);
+    Pixels.Update();
+    wait();
+}
+
 void testPixelController()
 {
-    // PixelController controller(pixelWriters, pixelWritersCount);
-    // controller.Setup();
-    TEST_ASSERT_GREATER_THAN(0, pixelDeviceCount);
-    TEST_ASSERT_GREATER_THAN(0, pixelController.PixelCount());
+    TEST_ASSERT_GREATER_THAN(0, PixelDeviceCount());
+    TEST_ASSERT_GREATER_THAN(0, Pixels.PixelCount());
+
+    PixelController &ctl = Pixels;
+    PixelColor color;
+    color.GBR(255);
+    writeController(ctl, color);
+    color.BGR(255);
+    writeController(ctl, color);
+    color.RGB(255);
+    writeController(ctl, color);
+    color.RGB(127, 127);
+    writeController(ctl, color);
+    color.RGB();
+    writeController(ctl, color);
+}
+
+void testPixelControllerRanges()
+{
     PixelColor color;
 
-    color.GBR(255);
-    writeController(pixelController, color);
-    color.BGR(255);
-    writeController(pixelController, color);
-    color.RGB(255);
-    writeController(pixelController, color);
     color.RGB(127, 127);
-    writeController(pixelController, color);
+    putRange(color);
+    color.BGR(255);
+    putRange(color);
+    color.GBR(255);
+    putRange(color);
+    color.RGB(255);
+    putRange(color);
     color.RGB();
-    writeController(pixelController, color);
+    putRange(color);
 }
 
 void testPixelControllers()
 {
     RUN_TEST(testPixelController);
+    RUN_TEST(testPixelControllerRanges);
 }

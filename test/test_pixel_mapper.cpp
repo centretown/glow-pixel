@@ -13,15 +13,15 @@ using namespace glow;
 
 void testOrderedMapper()
 {
-    SegmentMapper mapper(0, pixelController.PixelCount());
-    TEST_ASSERT_EQUAL(pixelController.PixelCount(), mapper.PixelCount());
+    SegmentMapper mapper(0, Pixels.PixelCount());
+    TEST_ASSERT_EQUAL(Pixels.PixelCount(), mapper.PixelCount());
     TEST_ASSERT_EQUAL(0, mapper.Get(0));
     TEST_ASSERT_EQUAL(0, mapper.Get(mapper.PixelCount()));
     TEST_ASSERT_EQUAL(2, mapper.Get(2));
     TEST_ASSERT_EQUAL(2, mapper.Get(mapper.PixelCount() + 2));
 
-    SegmentMapper mapperA(2, pixelController.PixelCount() - 2);
-    TEST_ASSERT_EQUAL(pixelController.PixelCount() - 2, mapperA.PixelCount());
+    SegmentMapper mapperA(2, Pixels.PixelCount() - 2);
+    TEST_ASSERT_EQUAL(Pixels.PixelCount() - 2, mapperA.PixelCount());
     TEST_ASSERT_EQUAL(2, mapperA.Get(0));
     TEST_ASSERT_EQUAL(2, mapperA.Get(mapperA.PixelCount()));
     TEST_ASSERT_EQUAL(4, mapperA.Get(2));

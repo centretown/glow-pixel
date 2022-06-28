@@ -11,29 +11,26 @@ namespace glow
 {
     class PixelStrip
     {
-    private:
-        PixelMapper *mapper;
-
     public:
-        PixelStrip(PixelMapper *mapper) : mapper(mapper) {}
+        // inline void Put(uint16_t index, PixelColor color, PixelMapper *m = NULL)
+        // {
+        //     if (m == NULL)
+        //     {
+        //         m = mapper;
+        //     }
+        //     Pixels.Put(m->Get(index), color);
+        // }
 
-        inline uint16_t PixelCount() { return mapper->PixelCount(); }
+        // inline void Put(uint16_t index, PixelColor color, ColorFilter *filter)
+        // {
+        //     PixelColor filtered;
+        //     filter->Apply(color, filtered);
+        //     Pixels.Put(mapper->Get(index), filtered);
+        // }
 
-        inline void Put(uint16_t index, PixelColor color)
-        {
-            pixelController.Put(mapper->Get(index), color);
-        }
-
-        inline void Put(uint16_t index, PixelColor color, ColorFilter *filter)
-        {
-            PixelColor filtered;
-            filter->Apply(color, filtered);
-            pixelController.Put(mapper->Get(index), filtered);
-        }
-
-        inline void Update()
-        {
-            pixelController.Update();
-        }
+        // inline void Update()
+        // {
+        //     Pixels.Update();
+        // }
     };
 }

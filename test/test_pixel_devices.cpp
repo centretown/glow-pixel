@@ -26,16 +26,16 @@ void testColor(PixelDevice *device, PixelColor &color)
     wait();
 }
 
-void testPixelWriter()
+void testPixelDevice()
 {
-    for (size_t i = 0; i < pixelDeviceCount; i++)
+    for (size_t i = 0; i < PixelDeviceCount(); i++)
     {
         pixelDevices[i]->Setup();
     }
 
     PixelDevice *device;
     PixelColor color;
-    for (size_t i = 0; i < pixelDeviceCount; i++)
+    for (size_t i = 0; i < PixelDeviceCount(); i++)
     {
         device = pixelDevices[i];
         color.RGB(0xff, 0, 0);
@@ -49,7 +49,7 @@ void testPixelWriter()
     }
 }
 
-void testPixelWriters()
+void testPixelDevices()
 {
-    RUN_TEST(testPixelWriter);
+    RUN_TEST(testPixelDevice);
 }

@@ -9,7 +9,7 @@
 
 using namespace glow;
 
-void testPixelWriters();
+void testPixelDevices();
 void testPixelControllers();
 void testPixelColor();
 void testColorFilter();
@@ -26,7 +26,7 @@ BlinkActivity blinker(&monitor, &blink);
 void run()
 {
     UNITY_BEGIN();
-    testPixelWriters();
+    testPixelDevices();
     testPixelControllers();
     testPixelColor();
     testColorFilter();
@@ -41,7 +41,7 @@ void run()
 void setup()
 {
     delay(2000);
-    pixelController.Setup();
+    Pixels.Setup();
     run();
     blinkPin.Setup();
     blinker.Reset();

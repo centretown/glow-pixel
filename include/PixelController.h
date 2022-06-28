@@ -2,51 +2,60 @@
 
 #pragma once
 
+#include "Range.h"
+#include "FullRange.h"
 #include "PixelDevice.h"
-#define MAX_PIXEL_DEVICES 16
 
 namespace glow
 {
-    typedef uint16_t PixelControllerUpdateFlag;
+    typedef uint16_t partition_type;
+#define MAX_PIXEL_DEVICES ((sizeof(partition_type) * 8) - 1)
+    // #define MAX_PIXEL_DEVICES 15
 
     class PixelController
     {
     private:
         PixelDevice **devices;
-        uint16_t deviceCount = 0;
+        uint8_t deviceCount = 0;
         uint16_t pixelCount = 0;
+        FullRange range;
 
-        uint16_t updateFlag = 0;
-        uint16_t partitions[MAX_PIXEL_DEVICES] = {0};
+    private:
+        PixelDevice *selectedDevice = NULL;
+        partition_type selectedFlag = 0;
+        partition_type partitions[MAX_PIXEL_DEVICES + 1] = {0};
+        uint16_t selectedOffset = 0;
+        uint8_t selectedIndex = 0;
 
     public:
-        PixelController(PixelDevice **writers, uint16_t length);
+        PixelController(PixelDevice **devices, uint8_t deviceCount);
 
         inline uint16_t PixelCount() { return pixelCount; }
 
         void Setup();
+        void Put(Range *range, PixelColor &color);
         void Put(uint16_t index, PixelColor &color);
         void Update();
 
+        FullRange *Domain() { return &range; }
+
     private:
-        inline size_t findWriterIndex(uint16_t index)
+        inline void select(uint16_t index)
         {
-            for (size_t i = 0; i < deviceCount; i++)
-            {
-                if (index < partitions[i])
-                {
-                    updateFlag |= 1 << i;
-                    return i;
-                }
-            }
-            return 0;
+            for (selectedIndex = 0;
+                 partitions[selectedIndex + 1] < index;
+                 selectedIndex++)
+                ;
+            selectedFlag |= 1 << selectedIndex;
+            selectedOffset = index - partitions[selectedIndex];
+            selectedDevice = devices[selectedIndex];
         }
 
-        inline bool mustUpdate(size_t writerIndex)
+        inline bool mustUpdate(size_t deviceIndex)
         {
-            return ((1 << writerIndex) & updateFlag);
+            return ((1 << deviceIndex) & selectedFlag);
         }
 
-        inline void updateDone() { updateFlag = 0; }
+        inline void updateDone() { selectedFlag = 0; }
     };
 }

@@ -15,6 +15,6 @@
 namespace glow
 {
     extern PixelDevice *pixelDevices[];
-    extern size_t pixelDeviceCount;
-    extern PixelController pixelController;
+    extern PixelController &Pixels;
+    extern size_t PixelDeviceCount();
 }

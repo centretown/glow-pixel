@@ -10,15 +10,15 @@ using namespace glow;
 
 void wait(uint32_t ms = 500);
 
-void writeStrip(PixelStrip &pixel, PixelColor &color, uint32_t ms = 250)
-{
-    for (size_t i = 0; i < pixel.PixelCount(); i++)
-    {
-        pixel.Put(i, color);
-    }
-    pixel.Update();
-    wait(ms);
-}
+// void writeStrip(PixelStrip &pixel, PixelColor &color, uint32_t ms = 250)
+// {
+//     for (size_t i = 0; i < pixel.PixelCount(); i++)
+//     {
+//         pixel.Put(i, color);
+//     }
+//     pixel.Update();
+//     wait(ms);
+// }
 
 // void testDimmer()
 // {

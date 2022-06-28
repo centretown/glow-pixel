@@ -2,11 +2,12 @@
 
 #pragma once
 
+#include "Updater.h"
 #include "PixelColor.h"
 
 namespace glow
 {
-    class PixelDevice
+    class PixelDevice : public Updater
     {
     protected:
         uint16_t pixelCount = 0;
@@ -20,6 +21,5 @@ namespace glow
 
         virtual void Setup() {}
         virtual void Put(uint16_t index, PixelColor &color) = 0;
-        virtual void Update() = 0;
     };
 }

@@ -4,9 +4,8 @@
 
 namespace glow
 {
-    // PixelController controller(pixelWriters, pixelWritersCount);
 
-    PixelController::PixelController(PixelDevice **devices, uint16_t deviceCount)
+    PixelController::PixelController(PixelDevice **devices, uint8_t deviceCount)
         : devices(devices), deviceCount(deviceCount)
     {
         if (deviceCount > MAX_PIXEL_DEVICES)
@@ -17,27 +16,36 @@ namespace glow
         for (uint16_t i = 0; i < deviceCount; i++)
         {
             pixelCount += devices[i]->PixelCount();
-            partitions[i] = pixelCount;
+            partitions[i + 1] = pixelCount;
         }
+        range.Begin(0);
+        range.End(pixelCount);
     }
 
     void PixelController::Setup()
     {
-        for (uint16_t i = 0; i < deviceCount; i++)
+        for (uint8_t i = 0; i < deviceCount; i++)
         {
             devices[i]->Setup();
+        }
+    }
+
+    void PixelController::Put(Range *range, PixelColor &color)
+    {
+        for (uint16_t index = range->Begin();
+             index < range->End();
+             index = range->Next(index))
+        {
+            select(index);
+            selectedDevice->Put(selectedOffset, color);
         }
     }
 
     void PixelController::Put(uint16_t index, PixelColor &color)
     {
         index %= pixelCount;
-        uint16_t writerIndex = findWriterIndex(index);
-        if (writerIndex > 0)
-        {
-            index -= partitions[writerIndex - 1];
-        }
-        devices[writerIndex]->Put(index, color);
+        select(index);
+        selectedDevice->Put(selectedOffset, color);
     }
 
     void PixelController::Update()
