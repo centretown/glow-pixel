@@ -3,13 +3,22 @@
 #define UNITY_INCLUDE_PRINT_FORMATTED
 
 #include <unity.h>
-
+#include "config.h"
 #include "CopyFilter.h"
 #include "GammaFilter.h"
 #include "SineFilter.h"
 #include "BrightnessFilter.h"
 
 using namespace glow;
+
+void wait(uint32_t ms = 500);
+
+void putFilter(PixelColor color, uint32_t ms = 100)
+{
+    Pixels.Put(Pixels.Scope(), color);
+    Pixels.Update();
+    wait(ms);
+}
 
 void testFilter()
 {
@@ -73,6 +82,7 @@ void testFilter()
     TEST_ASSERT_EQUAL_HEX(_basePixel::gamma8(tGreen), color.Green());
     TEST_ASSERT_EQUAL_HEX(_basePixel::gamma8(tBlue), color.Blue());
     TEST_ASSERT_EQUAL_HEX(_basePixel::gamma8(tWhite), color.White());
+    putFilter(color);
 
     copyFilter.Link(&sineFilter);
     copyFilter.Apply(source, color);
@@ -203,8 +213,64 @@ void testBrightnessFilter()
     // TEST_ASSERT_EQUAL_HEX(testColor.White(), color.White());
 }
 
+void FadeOutFadeIn(PixelColor &source, BrightnessFilter &brightness)
+{
+    PixelColor color;
+    for (uint8_t i = 100; i > 0; i--)
+    {
+        brightness.Intensity(i);
+        brightness.Apply(source, color);
+        putFilter(color, 50);
+    }
+    for (uint8_t i = 0; i <= 100; i++)
+    {
+        brightness.Intensity(i);
+        brightness.Apply(source, color);
+        putFilter(color, 50);
+    }
+}
+
+void testFadeOutFadeIn()
+{
+    const uint8_t tGreen = 0xff;
+    PixelColor source;
+    source.GBR(tGreen);
+    BrightnessFilter brightness;
+    FadeOutFadeIn(source, brightness);
+}
+
+void testFadeOutFadeInGamma()
+{
+    const uint8_t tGreen = 0xff;
+    PixelColor source;
+    source.GBR(tGreen);
+    BrightnessFilter brightness;
+    GammaFilter gamma;
+    brightness.Link(&gamma);
+    FadeOutFadeIn(source, brightness);
+
+    source.RGBW(); // clear
+    putFilter(source);
+}
+
+void testFadeOutFadeInSine()
+{
+    const uint8_t tRed = 0x0f;
+    const uint8_t tGreen = 0x3f;
+    const uint8_t tBlue = 0x6f;
+    PixelColor source;
+    source.GBR(tGreen, tBlue, tRed);
+    BrightnessFilter brightness;
+    SineFilter sine;
+    brightness.Link(&sine);
+    FadeOutFadeIn(source, brightness);
+}
+
 void testColorFilter()
 {
     RUN_TEST(testFilter);
     RUN_TEST(testBrightnessFilter);
+    RUN_TEST(testFadeOutFadeIn);
+    RUN_TEST(testFadeOutFadeInGamma);
+    // RUN_TEST(testFadeOutFadeInSine);
 }

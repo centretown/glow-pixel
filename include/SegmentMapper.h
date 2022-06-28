@@ -22,5 +22,7 @@ namespace glow
             index %= pixelCount;
             return begin + index;
         }
+        uint16_t Begin() { return begin; }
+        uint16_t End() { return begin + pixelCount; }
     };
 }

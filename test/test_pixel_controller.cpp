@@ -22,7 +22,7 @@ void writeController(PixelController &controller, PixelColor &color)
 
 void putRange(PixelColor &color)
 {
-    Pixels.Put(Pixels.Domain(), color);
+    Pixels.Put(Pixels.Scope(), color);
     Pixels.Update();
     wait();
 }
@@ -58,7 +58,7 @@ void testPixelControllerRanges()
     putRange(color);
     color.RGB(255);
     putRange(color);
-    color.RGB();
+    // color.RGB();
     putRange(color);
 }
 

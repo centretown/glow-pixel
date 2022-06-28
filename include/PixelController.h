@@ -31,19 +31,18 @@ namespace glow
         PixelController(PixelDevice **devices, uint8_t deviceCount);
 
         inline uint16_t PixelCount() { return pixelCount; }
+        inline FullRange *Scope() { return &range; }
 
         void Setup();
         void Put(Range *range, PixelColor &color);
         void Put(uint16_t index, PixelColor &color);
         void Update();
 
-        FullRange *Domain() { return &range; }
-
     private:
         inline void select(uint16_t index)
         {
             for (selectedIndex = 0;
-                 partitions[selectedIndex + 1] < index;
+                 partitions[selectedIndex + 1] <= index;
                  selectedIndex++)
                 ;
             selectedFlag |= 1 << selectedIndex;

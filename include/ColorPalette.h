@@ -2,14 +2,12 @@
 
 #pragma once
 
+#include "PixelColor.h"
+
 namespace glow
 {
     class ColorPalette
     {
-    private:
-        /* data */
     public:
-        ColorPalette() {}
-        ~ColorPalette() {}
     };
 }

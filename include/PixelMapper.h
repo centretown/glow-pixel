@@ -3,10 +3,11 @@
 #pragma once
 
 #include "base.h"
+#include "Range.h"
 
 namespace glow
 {
-    class PixelMapper
+    class PixelMapper : public Range
     {
     protected:
         uint16_t pixelCount;

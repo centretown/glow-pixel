@@ -13,6 +13,7 @@ namespace glow
             deviceCount = MAX_PIXEL_DEVICES;
         }
 
+        partitions[0] = 0;
         for (uint16_t i = 0; i < deviceCount; i++)
         {
             pixelCount += devices[i]->PixelCount();
