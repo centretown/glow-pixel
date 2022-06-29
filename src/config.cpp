@@ -20,12 +20,12 @@ namespace glow
     static NeoPixelDevice devicec(strip9c);
     static NeoPixelDevice deviced(strip9d);
     PixelDevice *pixelDevices[] = {
-        &device,
-        &device1,
         &deviced,
         &deviceb,
         &devicea,
         &devicec,
+        &device,
+        &device1,
     };
 #else
 
@@ -35,11 +35,25 @@ namespace glow
     PixelDevice *pixelDevices[] = {
         &device,
     };
-#else
-    static Adafruit_NeoPixel strip4(4, 2, NEO_GRB + NEO_KHZ800);
-    static NeoPixelDevice device(strip4);
+#else  // XIAO
+    static Adafruit_NeoPixel strip9a(9, 2, NEO_GRB + NEO_KHZ800);
+    static Adafruit_NeoPixel strip9b(9, 3, NEO_GRB + NEO_KHZ800);
+    static Adafruit_NeoPixel strip9c(9, 4, NEO_GRB + NEO_KHZ800);
+    static Adafruit_NeoPixel strip9d(9, 5, NEO_GRB + NEO_KHZ800);
+
+    static NeoPixelDevice devicea(strip9a);
+    static NeoPixelDevice deviceb(strip9b);
+    static NeoPixelDevice devicec(strip9c);
+    static NeoPixelDevice deviced(strip9d);
+
+    // static Adafruit_NeoPixel strip4(4, 2, NEO_GRB + NEO_KHZ800);
+    // static NeoPixelDevice device(strip4);
     PixelDevice *pixelDevices[] = {
-        &device,
+        // &device,
+        &deviced,
+        &deviceb,
+        &devicea,
+        &devicec,
     };
 #endif // ESP32
 
