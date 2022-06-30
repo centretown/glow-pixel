@@ -31,13 +31,13 @@ namespace glow
         }
     }
 
-    void PixelController::Put(Range *range, PixelColor &color)
+    void PixelController::Put(PixelMapper *mapper, PixelColor &color)
     {
-        for (uint16_t index = range->Begin();
-             index < range->End();
-             index = range->Next(index))
+        for (uint16_t index = mapper->Begin();
+             index < mapper->End();
+             index++)
         {
-            select(index);
+            select(mapper->Get(index));
             selectedDevice->Put(selectedOffset, color);
         }
     }

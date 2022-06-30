@@ -8,14 +8,15 @@
 #include "GammaFilter.h"
 #include "SineFilter.h"
 #include "BrightnessFilter.h"
+#include "PixelMapper.h"
 
 using namespace glow;
 
 void wait(uint32_t ms = 500);
 
-void putFilter(PixelColor color, uint32_t ms = 100)
+void putFilter(PixelMapper *mapper, PixelColor color, uint32_t ms = 100)
 {
-    Pixels.Put(Pixels.Scope(), color);
+    Pixels.Put(mapper, color);
     Pixels.Update();
     wait(ms);
 }
@@ -29,6 +30,7 @@ void testFilter()
 
     PixelColor source, color;
     CopyFilter copyFilter;
+    PixelMapper mapper(0, Pixels.Scope()->End());
 
     TEST_ASSERT_EQUAL_HEX(0, color.Red());
     TEST_ASSERT_EQUAL_HEX(0, color.Green());
@@ -82,7 +84,7 @@ void testFilter()
     TEST_ASSERT_EQUAL_HEX(_basePixel::gamma8(tGreen), color.Green());
     TEST_ASSERT_EQUAL_HEX(_basePixel::gamma8(tBlue), color.Blue());
     TEST_ASSERT_EQUAL_HEX(_basePixel::gamma8(tWhite), color.White());
-    putFilter(color);
+    putFilter(&mapper, color);
 
     copyFilter.Link(&sineFilter);
     copyFilter.Apply(source, color);
@@ -216,17 +218,18 @@ void testBrightnessFilter()
 void FadeOutFadeIn(PixelColor &source, BrightnessFilter &brightness)
 {
     PixelColor color;
+    PixelMapper mapper(0, Pixels.Scope()->End());
     for (uint8_t i = 100; i > 0; i--)
     {
         brightness.Intensity(i);
         brightness.Apply(source, color);
-        putFilter(color, 50);
+        putFilter(&mapper, color, 50);
     }
     for (uint8_t i = 0; i <= 100; i++)
     {
         brightness.Intensity(i);
         brightness.Apply(source, color);
-        putFilter(color, 50);
+        putFilter(&mapper, color, 50);
     }
 }
 
@@ -242,6 +245,7 @@ void testFadeOutFadeIn()
 void testFadeOutFadeInGamma()
 {
     const uint8_t tGreen = 0xff;
+    PixelMapper mapper(0, Pixels.Scope()->End());
     PixelColor source;
     source.GBR(tGreen);
     BrightnessFilter brightness;
@@ -250,7 +254,7 @@ void testFadeOutFadeInGamma()
     FadeOutFadeIn(source, brightness);
 
     source.RGBW(); // clear
-    putFilter(source);
+    putFilter(&mapper, source);
 }
 
 void testFadeOutFadeInSine()

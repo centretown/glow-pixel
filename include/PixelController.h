@@ -2,8 +2,7 @@
 
 #pragma once
 
-#include "Range.h"
-#include "FullRange.h"
+#include "PixelMapper.h"
 #include "PixelDevice.h"
 
 namespace glow
@@ -18,7 +17,7 @@ namespace glow
         PixelDevice **devices;
         uint8_t deviceCount = 0;
         uint16_t pixelCount = 0;
-        FullRange range;
+        SimpleRange range;
 
     private:
         PixelDevice *selectedDevice = NULL;
@@ -31,10 +30,10 @@ namespace glow
         PixelController(PixelDevice **devices, uint8_t deviceCount);
 
         inline uint16_t PixelCount() { return pixelCount; }
-        inline FullRange *Scope() { return &range; }
+        inline SimpleRange *Scope() { return &range; }
 
         void Setup();
-        void Put(Range *range, PixelColor &color);
+        void Put(PixelMapper *mapper, PixelColor &color);
         void Put(uint16_t index, PixelColor &color);
         void Update();
 

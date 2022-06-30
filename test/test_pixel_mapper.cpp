@@ -6,35 +6,61 @@
 
 #include "PixelController.h"
 #include "config.h"
-#include "SegmentMapper.h"
+#include "PixelMapper.h"
 #include "MatrixMapper.h"
 
 using namespace glow;
 
+void wait(uint32_t ms = 500);
+
+void clearPixels()
+{
+    PixelMapper mapper(0, Pixels.PixelCount());
+    PixelColor backGround(0, 0, 0);
+    Pixels.Put(&mapper, backGround);
+    Pixels.Update();
+}
+
+void putMapper(PixelMapper *mapper, PixelColor color, uint32_t ms = 100)
+{
+    PixelColor backGround(0, 25, 25);
+    Pixels.Put(mapper, backGround);
+    Pixels.Update();
+
+    for (uint16_t i = mapper->Begin(); i < mapper->End(); i++)
+    {
+        Pixels.Put(i, color);
+        wait(ms);
+        Pixels.Update();
+    }
+    wait(1000);
+    clearPixels();
+}
+
 void testOrderedMapper()
 {
-    SegmentMapper mapper(0, Pixels.PixelCount());
-    TEST_ASSERT_EQUAL(Pixels.PixelCount(), mapper.PixelCount());
-    TEST_ASSERT_EQUAL(0, mapper.Get(0));
-    TEST_ASSERT_EQUAL(0, mapper.Get(mapper.PixelCount()));
-    TEST_ASSERT_EQUAL(2, mapper.Get(2));
-    TEST_ASSERT_EQUAL(2, mapper.Get(mapper.PixelCount() + 2)); // roll over
-    TEST_ASSERT_EQUAL(0, mapper.Begin());
-    TEST_ASSERT_EQUAL(Pixels.Scope()->End(), mapper.End());
+    PixelMapper mapper(Pixels.Scope());
+    PixelColor color(255);
 
-    SegmentMapper mapperA(2, Pixels.PixelCount() - 2);
-    TEST_ASSERT_EQUAL(Pixels.PixelCount() - 2, mapperA.PixelCount());
-    TEST_ASSERT_EQUAL(2, mapperA.Get(0));
-    TEST_ASSERT_EQUAL(2, mapperA.Get(mapperA.PixelCount()));
-    TEST_ASSERT_EQUAL(4, mapperA.Get(2));
-    TEST_ASSERT_EQUAL(4, mapperA.Get(mapperA.PixelCount() + 2));
+    TEST_ASSERT_EQUAL(Pixels.PixelCount(), mapper.End());
+    TEST_ASSERT_EQUAL(0, mapper.Begin());
+    TEST_ASSERT_EQUAL(2, mapper.Get(2));
+    TEST_ASSERT_EQUAL(Pixels.Scope()->End(), mapper.End());
+    putMapper(&mapper, color);
+
+    PixelMapper mapperA(2, Pixels.PixelCount());
     TEST_ASSERT_EQUAL(2, mapperA.Begin());
+    TEST_ASSERT_EQUAL(4, mapperA.Get(4));
     TEST_ASSERT_EQUAL(Pixels.Scope()->End(), mapperA.End());
+    color.GBR(255);
+    putMapper(&mapperA, color);
 }
 
 void testMatrix(const uint16_t *matrix, MatrixMapper &mapper)
 {
-    for (uint16_t i = 0; i < mapper.PixelCount(); i++)
+    for (auto i = mapper.Begin();
+         i < mapper.End();
+         i++)
     {
         TEST_ASSERT_EQUAL(matrix[i], mapper.Get(i));
     }
@@ -63,11 +89,14 @@ static uint16_t matrix16[16] = {
 
 void testMatrixMapper()
 {
-    MatrixMapper mapper16(matrix16, sizeof(matrix16) / sizeof(matrix16[0]));
+    auto mat16Size = sizeof(matrix16) / sizeof(matrix16[0]);
+    MatrixMapper mapper16(matrix16, mat16Size);
+    TEST_ASSERT_EQUAL(matrix16[0], mapper16.Begin());
+    TEST_ASSERT_EQUAL(matrix16[2], mapper16.Get(2));
+
     testMatrix(matrix16, mapper16);
-    TEST_ASSERT_EQUAL(matrix16[3], mapper16.Get(mapper16.PixelCount() + 3));
-    TEST_ASSERT_EQUAL(0, mapper16.Begin());
-    TEST_ASSERT_EQUAL(0x000f, mapper16.End());
+    TEST_ASSERT_EQUAL(matrix16[0], mapper16.Begin());
+    TEST_ASSERT_EQUAL(mat16Size, mapper16.End());
 }
 
 void testPixelMapper()

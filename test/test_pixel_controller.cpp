@@ -20,9 +20,9 @@ void writeController(PixelController &controller, PixelColor &color)
     wait();
 }
 
-void putRange(PixelColor &color)
+void putMapper(PixelMapper *mapper, PixelColor &color)
 {
-    Pixels.Put(Pixels.Scope(), color);
+    Pixels.Put(mapper, color);
     Pixels.Update();
     wait();
 }
@@ -49,17 +49,18 @@ void testPixelController()
 void testPixelControllerRanges()
 {
     PixelColor color;
+    PixelMapper mapper(0, Pixels.Scope()->End());
 
     color.RGB(127, 127);
-    putRange(color);
+    putMapper(&mapper, color);
     color.BGR(255);
-    putRange(color);
+    putMapper(&mapper, color);
     color.GBR(255);
-    putRange(color);
+    putMapper(&mapper, color);
     color.RGB(255);
-    putRange(color);
-    // color.RGB();
-    putRange(color);
+    putMapper(&mapper, color);
+    color.RGB();
+    putMapper(&mapper, color);
 }
 
 void testPixelControllers()

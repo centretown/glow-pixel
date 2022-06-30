@@ -28,10 +28,10 @@ void run()
     UNITY_BEGIN();
     testPixelDevices();
     testPixelControllers();
-    testPixelColor();
-    testColorFilter();
+    // testPixelColor();
+    // testColorFilter();
     testPixelMapper();
-    testPixelStrip();
+    // testPixelStrip();
     // testStripActivities();
     UNITY_END();
 }
