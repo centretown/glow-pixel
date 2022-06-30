@@ -5,7 +5,9 @@
 #include "PixelColor.h"
 #include "Filter.h"
 
-namespace glow
+using glow::Filter;
+
+namespace strip
 {
     class ColorFilter : public Filter<PixelColor>
     {

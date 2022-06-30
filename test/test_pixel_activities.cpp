@@ -11,7 +11,7 @@
 // #include "SolidActivity.h"
 // #include "TimeMonitor.h"
 
-// using namespace glow;
+// using namespace strip;
 
 
 // PixelController pixelController(pixelWriters, pixelWritersCount);

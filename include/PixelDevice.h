@@ -5,7 +5,9 @@
 #include "Updater.h"
 #include "PixelColor.h"
 
-namespace glow
+using glow::Updater;
+
+namespace strip
 {
     class PixelDevice : public Updater
     {

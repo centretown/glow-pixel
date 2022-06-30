@@ -5,7 +5,7 @@
 #include "base.h"
 #include "ColorFilter.h"
 
-namespace glow
+namespace strip
 {
     class BrightnessFilter : public ColorFilter
     {

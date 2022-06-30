@@ -12,7 +12,7 @@
 #include "NativePixelDevice.h"
 #endif
 
-namespace glow
+namespace strip
 {
     extern PixelDevice *pixelDevices[];
     extern PixelController &Pixels;

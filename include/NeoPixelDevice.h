@@ -6,7 +6,7 @@
 #include "PixelDevice.h"
 #include <Adafruit_NeoPixel.h>
 
-namespace glow
+namespace strip
 {
     class NeoPixelDevice : public PixelDevice
     {

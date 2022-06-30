@@ -10,7 +10,7 @@
 #include "BrightnessFilter.h"
 #include "PixelMapper.h"
 
-using namespace glow;
+using namespace strip;
 
 void wait(uint32_t ms = 500);
 

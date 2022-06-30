@@ -7,7 +7,7 @@
 #include "PixelController.h"
 #include "config.h"
 
-using namespace glow;
+using namespace strip;
 
 void testPixelDevices();
 void testPixelControllers();
@@ -18,21 +18,20 @@ void testPixelStrip();
 
 // void testStripActivities();
 
-PinDevice blinkPin;
-BlinkSettings blink(&blinkPin);
-BlinkMonitor monitor(&blink);
-BlinkActivity blinker(&monitor, &blink);
+glow::PinDevice blinkPin;
+glow::BlinkSettings blink(&blinkPin);
+glow::BlinkMonitor monitor(&blink);
+glow::BlinkActivity blinker(&monitor, &blink);
 
 void run()
 {
     UNITY_BEGIN();
     testPixelDevices();
     testPixelControllers();
-    // testPixelColor();
-    // testColorFilter();
+    testPixelColor();
+    testColorFilter();
     testPixelMapper();
-    // testPixelStrip();
-    // testStripActivities();
+    testPixelStrip();
     UNITY_END();
 }
 
@@ -51,7 +50,7 @@ void setup()
 
 void loop()
 {
-    Monitor::Cycle();
+    glow::Monitor::Cycle();
     blinker.Pulse();
 }
 

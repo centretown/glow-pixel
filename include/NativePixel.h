@@ -5,7 +5,7 @@
 #pragma once
 
 #include "base.h"
-namespace glow
+namespace strip
 {
     class NativePixel
     {

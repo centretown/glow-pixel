@@ -4,7 +4,7 @@
 
 #include "PixelMapper.h"
 
-namespace glow
+namespace strip
 {
     class MatrixMapper : public PixelMapper
     {

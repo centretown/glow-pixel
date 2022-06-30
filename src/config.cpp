@@ -2,7 +2,7 @@
 
 #include "config.h"
 
-namespace glow
+namespace strip
 {
 #ifdef ARDUINO
 #ifdef MEGAATMEGA2560

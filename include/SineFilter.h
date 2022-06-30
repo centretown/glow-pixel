@@ -4,7 +4,7 @@
 
 #include "ColorFilter.h"
 
-namespace glow
+namespace strip
 {
     class SineFilter : public ColorFilter
     {

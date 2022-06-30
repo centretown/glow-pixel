@@ -6,7 +6,7 @@
 
 #include "PixelColor.h"
 
-using namespace glow;
+using namespace strip;
 
 void testColor()
 {

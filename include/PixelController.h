@@ -5,7 +5,9 @@
 #include "PixelMapper.h"
 #include "PixelDevice.h"
 
-namespace glow
+using glow::SimpleRange;
+
+namespace strip
 {
     typedef uint16_t partition_type;
 #define MAX_PIXEL_DEVICES ((sizeof(partition_type) * 8) - 1)

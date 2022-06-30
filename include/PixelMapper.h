@@ -5,7 +5,10 @@
 #include "Mapper.h"
 #include "SimpleRange.h"
 
-namespace glow
+using glow::Mapper;
+using glow::SimpleRange;
+
+namespace strip
 {
     class PixelMapper : public Mapper<uint16_t>, public SimpleRange
     {

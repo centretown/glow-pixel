@@ -4,7 +4,7 @@
 
 #include "PixelColor.h"
 
-namespace glow
+namespace strip
 {
     class ColorPalette
     {

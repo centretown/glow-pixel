@@ -5,7 +5,7 @@
 #include "base.h"
 #include "pixel_base.h"
 
-namespace glow
+namespace strip
 {
     class PixelColor
     {

@@ -4,7 +4,7 @@
 
 #include "ColorFilter.h"
 
-namespace glow
+namespace strip
 {
     typedef enum : uint8_t
     {

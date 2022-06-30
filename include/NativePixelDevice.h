@@ -7,7 +7,7 @@
 #include "base.h"
 #include "PixelDevice.h"
 
-namespace glow
+namespace strip
 {
     class NativePixelDevice : public PixelDevice
     {

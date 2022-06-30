@@ -3,7 +3,9 @@
 #include "Monitor.h"
 #include "PixelStrip.h"
 
-namespace glow
+using glow::Monitor;
+
+namespace strip
 {
     class PixelMonitor : public Monitor
     {

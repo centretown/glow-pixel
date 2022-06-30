@@ -2,8 +2,8 @@
 
 #include "MonitoredActivity.h"
 #include "PixelMonitor.h"
-
-namespace glow
+using glow::MonitoredActivity;
+namespace strip
 {
     class PixelActivity : public MonitoredActivity
     {
@@ -17,7 +17,7 @@ namespace glow
 
         virtual void Update()
         {
-            pixel->Update();
+            // pixel->Update();
         }
     };
 }

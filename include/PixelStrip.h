@@ -7,7 +7,7 @@
 #include "PixelMapper.h"
 #include "config.h"
 
-namespace glow
+namespace strip
 {
     class PixelStrip
     {

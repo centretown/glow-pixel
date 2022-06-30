@@ -2,7 +2,7 @@
 
 #include "PixelController.h"
 
-namespace glow
+namespace strip
 {
 
     PixelController::PixelController(PixelDevice **devices, uint8_t deviceCount)

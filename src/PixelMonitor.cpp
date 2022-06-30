@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Dave Marsh. See LICENSE.
 
 #include "PixelMonitor.h"
-namespace glow
+namespace strip
 {
     bool PixelMonitor::Ready()
     {
