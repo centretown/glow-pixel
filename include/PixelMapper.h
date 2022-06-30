@@ -19,10 +19,9 @@ namespace strip
         PixelMapper(uint16_t begin = 0, uint16_t end = 0)
             : SimpleRange(begin, end) {}
         PixelMapper(Range *range) : SimpleRange(range) {}
-        virtual uint16_t &Get(uint16_t index)
+        virtual uint16_t Get(uint16_t index)
         {
-            current = index;
-            return current;
+            return index;
         };
     };
 }

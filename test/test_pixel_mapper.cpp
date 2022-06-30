@@ -23,13 +23,13 @@ void clearPixels()
 
 void putMapper(PixelMapper *mapper, PixelColor color, uint32_t ms = 100)
 {
-    PixelColor backGround(0, 25, 25);
-    Pixels.Put(mapper, backGround);
-    Pixels.Update();
+    // PixelColor backGround(0, 25, 25);
+    // Pixels.Put(mapper, backGround);
+    // Pixels.Update();
 
     for (uint16_t i = mapper->Begin(); i < mapper->End(); i++)
     {
-        Pixels.Put(i, color);
+        Pixels.Put(mapper->Get(i), color);
         wait(ms);
         Pixels.Update();
     }
@@ -67,10 +67,10 @@ void testMatrix(const uint16_t *matrix, MatrixMapper &mapper)
 }
 
 static uint16_t matrix16[16] = {
-    0x0000, 0x0004, 0x0008, 0x000c, // 0-3
-    0x0001, 0x0005, 0x0009, 0x000d, // 4-7
-    0x0002, 0x0006, 0x000a, 0x000e, // 8-11
-    0x0003, 0x0007, 0x000b, 0x000f, // 12-15
+    0, 9, 18, 27,  //
+    1, 10, 19, 28, //
+    2, 11, 20, 29, //
+    3, 12, 21, 30, //
 };
 
 // uint16_t matrix12[12] = {
@@ -97,6 +97,9 @@ void testMatrixMapper()
     testMatrix(matrix16, mapper16);
     TEST_ASSERT_EQUAL(matrix16[0], mapper16.Begin());
     TEST_ASSERT_EQUAL(mat16Size, mapper16.End());
+
+    PixelColor color(0, 0, 255);
+    putMapper(&mapper16, color);
 }
 
 void testPixelMapper()

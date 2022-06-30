@@ -29,9 +29,9 @@ void run()
     testPixelDevices();
     testPixelControllers();
     testPixelColor();
-    testColorFilter();
+    // testColorFilter();
     testPixelMapper();
-    testPixelStrip();
+    // testPixelStrip();
     UNITY_END();
 }
 
