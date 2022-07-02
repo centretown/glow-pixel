@@ -31,20 +31,14 @@ namespace strip
         }
     }
 
-    void PixelController::Put(PixelMapper *mapper, PixelColor &color)
+    void PixelController::SweepColor(PixelMapper *mapper, PixelColor color)
     {
-        for (uint16_t index = mapper->Begin();
-             index < mapper->End();
-             index++)
-        {
-            select(mapper->Get(index));
-            selectedDevice->Put(selectedOffset, color);
-        }
+        ColorSweep sw(mapper, color);
+        Sweep(mapper, &sw);
     }
 
-    void PixelController::Put(uint16_t index, PixelColor &color)
+    void PixelController::Put(uint16_t index, PixelColor color)
     {
-        index %= pixelCount;
         select(index);
         selectedDevice->Put(selectedOffset, color);
     }

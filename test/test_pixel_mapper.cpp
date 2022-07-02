@@ -8,31 +8,36 @@
 #include "config.h"
 #include "PixelMapper.h"
 #include "MatrixMapper.h"
+#include "PixelFrame.h"
+#include "Sweeper.h"
+#include "Putter.h"
 
+using namespace glow;
 using namespace strip;
-
-void wait(uint32_t ms = 500);
 
 void clearPixels()
 {
     PixelMapper mapper(0, Pixels.PixelCount());
     PixelColor backGround(0, 0, 0);
-    Pixels.Put(&mapper, backGround);
+    Pixels.SweepColor(&mapper, backGround);
     Pixels.Update();
 }
 
 void putMapper(PixelMapper *mapper, PixelColor color, uint32_t ms = 100)
 {
-    // PixelColor backGround(0, 25, 25);
-    // Pixels.Put(mapper, backGround);
-    // Pixels.Update();
+    TEST_ASSERT(mapper);
+    PixelColor backGround(15, 15, 5);
+    Pixels.SweepColor(mapper, backGround);
+    Pixels.Update();
 
-    for (uint16_t i = mapper->Begin(); i < mapper->End(); i++)
-    {
-        Pixels.Put(mapper->Get(i), color);
-        wait(ms);
-        Pixels.Update();
-    }
+    Puttee puttee;
+    puttee.mapper = mapper;
+    puttee.color = color;
+    puttee.ms = ms;
+    Putter putter;
+
+    putter.Sweep(mapper, &puttee);
+
     wait(1000);
     clearPixels();
 }
@@ -66,37 +71,36 @@ void testMatrix(const uint16_t *matrix, MatrixMapper &mapper)
     }
 }
 
-static uint16_t matrix16[16] = {
-    0, 9, 18, 27,  //
-    1, 10, 19, 28, //
-    2, 11, 20, 29, //
-    3, 12, 21, 30, //
-};
-
-// uint16_t matrix12[12] = {
-//     0x0000, 0x0004, 0x0008, // 0-
-//     0x0001, 0x0005, 0x0009, // 3-5
-//     0x0002, 0x0006, 0x000a, // 6-8
-//     0x0003, 0x0007, 0x000b, // 10-12
-// };
-
-// uint16_t matrix8[8] = {
-//     0x0004, 0x0008, // 0-1
-//     0x0005, 0x0009, // 2-3
-//     0x0006, 0x000a, // 4-5
-//     0x0007, 0x000b, // 6-7
-// };
-
 void testMatrixMapper()
 {
+    static uint16_t matrix16[16] = {
+        0, 9, 18, 27,  //
+        1, 10, 19, 28, //
+        2, 11, 20, 29, //
+        3, 12, 21, 30, //
+    };
+    // uint16_t matrix12[12] = {
+    //     0x0000, 0x0004, 0x0008, // 0-
+    //     0x0001, 0x0005, 0x0009, // 3-5
+    //     0x0002, 0x0006, 0x000a, // 6-8
+    //     0x0003, 0x0007, 0x000b, // 10-12
+    // };
+
+    // uint16_t matrix8[8] = {
+    //     0x0004, 0x0008, // 0-1
+    //     0x0005, 0x0009, // 2-3
+    //     0x0006, 0x000a, // 4-5
+    //     0x0007, 0x000b, // 6-7
+    // };
+
     auto mat16Size = sizeof(matrix16) / sizeof(matrix16[0]);
     MatrixMapper mapper16(matrix16, mat16Size);
     TEST_ASSERT_EQUAL(matrix16[0], mapper16.Begin());
     TEST_ASSERT_EQUAL(matrix16[2], mapper16.Get(2));
+    TEST_ASSERT_EQUAL(0, mapper16.Begin());
+    TEST_ASSERT_EQUAL(mat16Size, mapper16.End());
 
     testMatrix(matrix16, mapper16);
-    TEST_ASSERT_EQUAL(matrix16[0], mapper16.Begin());
-    TEST_ASSERT_EQUAL(mat16Size, mapper16.End());
 
     PixelColor color(0, 0, 255);
     putMapper(&mapper16, color);

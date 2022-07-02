@@ -30,21 +30,24 @@ namespace strip
 #else
 
 #ifdef ESP32
-    static Adafruit_NeoPixel strip9a(9, 27, NEO_GRB + NEO_KHZ800);
-    static Adafruit_NeoPixel strip9b(9, 14, NEO_GRB + NEO_KHZ800);
-    static Adafruit_NeoPixel strip9c(9, 12, NEO_GRB + NEO_KHZ800);
-    static Adafruit_NeoPixel strip9d(9, 13, NEO_GRB + NEO_KHZ800);
+    static Adafruit_NeoPixel strip9a(9, 27, NEO_GRB + NEO_KHZ800); // CH7
+    static Adafruit_NeoPixel strip9b(9, 14, NEO_GRB + NEO_KHZ800); // CH6
+    static Adafruit_NeoPixel strip9c(9, 12, NEO_GRB + NEO_KHZ800); // CH5
+    static Adafruit_NeoPixel strip9d(9, 13, NEO_GRB + NEO_KHZ800); // CH4
+    static Adafruit_NeoPixel strip4e(4, 26, NEO_GRB + NEO_KHZ800); // CH9
 
     static NeoPixelDevice devicea(strip9a);
     static NeoPixelDevice deviceb(strip9b);
     static NeoPixelDevice devicec(strip9c);
     static NeoPixelDevice deviced(strip9d);
+    static NeoPixelDevice devicee(strip4e);
 
     PixelDevice *pixelDevices[] = {
         &deviced,
         &devicea,
         &deviceb,
         &devicec,
+        &devicee,
     };
 #else  // XIAO
     static Adafruit_NeoPixel strip9a(9, 2, NEO_GRB + NEO_KHZ800);
@@ -71,7 +74,7 @@ namespace strip
 #endif // MEGAATMEGA2560
 
 #else
-    static NativePixelDevice device(16);
+    static NativePixelDevice device(256);
     PixelDevice *pixelDevices[] = {
         &device,
     };

@@ -17,7 +17,6 @@ namespace strip
 
         virtual void Put(uint16_t index, PixelColor &color)
         {
-            index %= pixelCount;
             printf("Color:%u-%x:%x:%x\n", index, color.Red(),
                    color.Green(), color.Blue());
         }

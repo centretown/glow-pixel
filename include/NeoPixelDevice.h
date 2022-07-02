@@ -29,7 +29,6 @@ namespace strip
 
         virtual void Put(uint16_t index, PixelColor &color)
         {
-            index %= pixelCount;
             device.setPixelColor(index, color.Red(),
                                  color.Green(), color.Blue());
         }

@@ -4,8 +4,10 @@
 
 #include "PixelMapper.h"
 #include "PixelDevice.h"
+#include "Sweeper.h"
 
 using glow::SimpleRange;
+using glow::Sweeper;
 
 namespace strip
 {
@@ -13,7 +15,19 @@ namespace strip
 #define MAX_PIXEL_DEVICES ((sizeof(partition_type) * 8) - 1)
     // #define MAX_PIXEL_DEVICES 15
 
+    class ColorSweep
+    {
+    public:
+        PixelMapper *mapper;
+        PixelColor color;
+
+    public:
+        ColorSweep(PixelMapper *mapper, PixelColor color)
+            : mapper(mapper), color(color) {}
+    };
+
     class PixelController
+        : public Sweeper<ColorSweep *>
     {
     private:
         PixelDevice **devices;
@@ -35,13 +49,20 @@ namespace strip
         inline SimpleRange *Scope() { return &range; }
 
         void Setup();
-        void Put(PixelMapper *mapper, PixelColor &color);
-        void Put(uint16_t index, PixelColor &color);
+        void SweepColor(PixelMapper *mapper, PixelColor color);
+        void Put(uint16_t index, PixelColor color);
         void Update();
+
+        void Act(uint16_t index, ColorSweep *cs)
+        {
+            select(cs->mapper->Get(index));
+            selectedDevice->Put(selectedOffset, cs->color);
+        }
 
     private:
         inline void select(uint16_t index)
         {
+            index %= pixelCount;
             for (selectedIndex = 0;
                  partitions[selectedIndex + 1] <= index;
                  selectedIndex++)

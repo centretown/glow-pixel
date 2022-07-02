@@ -15,6 +15,7 @@ void testPixelColor();
 void testColorFilter();
 void testPixelMapper();
 void testPixelStrip();
+void testPixelFrames();
 
 // void testStripActivities();
 
@@ -26,12 +27,13 @@ glow::BlinkActivity blinker(&monitor, &blink);
 void run()
 {
     UNITY_BEGIN();
-    testPixelDevices();
-    testPixelControllers();
-    testPixelColor();
+    // testPixelDevices();
+    // testPixelControllers();
+    // testPixelColor();
     // testColorFilter();
-    testPixelMapper();
-    // testPixelStrip();
+    // testPixelMapper();
+    // testPixelStrip()
+    testPixelFrames();
     UNITY_END();
 }
 
@@ -44,8 +46,8 @@ void setup()
     run();
     blinkPin.Setup();
     blinker.Reset();
-    blink.On(150);
-    blink.Off(350);
+    blink.On(50);
+    blink.Off(400);
 }
 
 void loop()

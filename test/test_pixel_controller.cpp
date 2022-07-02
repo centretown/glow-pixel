@@ -22,7 +22,7 @@ void writeController(PixelController &controller, PixelColor &color)
 
 void putMapper(PixelMapper *mapper, PixelColor &color)
 {
-    Pixels.Put(mapper, color);
+    Pixels.SweepColor(mapper, color);
     Pixels.Update();
     wait();
 }

@@ -16,7 +16,7 @@ void wait(uint32_t ms = 500);
 
 void putFilter(PixelMapper *mapper, PixelColor color, uint32_t ms = 100)
 {
-    Pixels.Put(mapper, color);
+    Pixels.SweepColor(mapper, color);
     Pixels.Update();
     wait(ms);
 }
