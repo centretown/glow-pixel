@@ -9,24 +9,21 @@ namespace strip
 {
     typedef enum : uint8_t
     {
-        AS_ROWS,
-        AS_COLS,
+        BY_ROW,
+        BY_COL,
         AS_RANGE,
-    } Orientation;
+    } GridOrder;
 
-    class PixelFrame : public PixelMapper
+    class PixelGrid : public PixelMapper
     {
     private:
         uint16_t rowLength;
         SimpleRange *rows;
         SimpleRange *cols;
-        Orientation orientation = AS_ROWS;
-
-    private:
-        static SimpleRange *global;
+        GridOrder order = BY_ROW;
 
     public:
-        PixelFrame(uint16_t begin, uint16_t end, uint16_t rowLength,
+        PixelGrid(uint16_t begin, uint16_t end, uint16_t rowLength,
                    SimpleRange *rows, SimpleRange *cols)
         {
             Resize(begin, end, rowLength, rows, cols);
@@ -46,26 +43,26 @@ namespace strip
 
         virtual uint16_t Get(uint16_t index)
         {
-            if (orientation == AS_ROWS)
+            if (order == BY_ROW)
             {
-                return GetAsRows(index);
+                return GetByRow(index);
             }
-            if (orientation == AS_COLS)
+            if (order == BY_COL)
             {
-                return GetAsCols(index);
+                return GetByCol(index);
             }
             return GetAsRange(index);
         }
 
-        inline void Orient(Orientation v) { orientation = v; }
-        inline Orientation Orient() { return orientation; }
+        inline void Order(GridOrder v) { order = v; }
+        inline GridOrder Order() { return order; }
 
         inline uint16_t GetAsRange(uint16_t index)
         {
             return PixelMapper::Get(index);
         }
 
-        inline uint16_t GetAsRows(uint16_t index)
+        inline uint16_t GetByRow(uint16_t index)
         {
             index -= Begin();
             auto row = (index / cols->Length()) + rows->Begin();
@@ -74,10 +71,12 @@ namespace strip
             return index;
         };
 
-        inline uint16_t GetAsCols(uint16_t index)
+        inline uint16_t GetByCol(uint16_t index)
         {
-            // auto row = Begin() + index % rows;
-            // auto col = index / rows;
+            index -= Begin();
+            auto row = (index % rows->Length()) + rows->Begin();
+            auto col = (index / rows->Length()) + cols->Begin();
+            index = Begin() + (row * rowLength) + col;
             return index;
         };
     };

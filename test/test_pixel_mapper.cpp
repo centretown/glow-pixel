@@ -8,7 +8,6 @@
 #include "config.h"
 #include "PixelMapper.h"
 #include "MatrixMapper.h"
-#include "PixelFrame.h"
 #include "Sweeper.h"
 #include "Putter.h"
 
