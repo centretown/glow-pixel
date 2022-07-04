@@ -19,8 +19,7 @@ namespace strip
             pixelCount += devices[i]->PixelCount();
             partitions[i + 1] = pixelCount;
         }
-        range.Begin(0);
-        range.End(pixelCount);
+        range.Resize(0, pixelCount);
     }
 
     void PixelController::Setup()

@@ -30,6 +30,13 @@ namespace strip
 #else
 
 #ifdef ESP32
+#ifdef ESP32LOCAL
+    static Adafruit_NeoPixel strip8a(8, 15, NEO_GRB + NEO_KHZ800); // CH3
+    static NeoPixelDevice devicea(strip8a);
+    PixelDevice *pixelDevices[] = {
+        &devicea,
+    };
+#else
     static Adafruit_NeoPixel strip9a(9, 27, NEO_GRB + NEO_KHZ800); // CH7
     static Adafruit_NeoPixel strip9b(9, 14, NEO_GRB + NEO_KHZ800); // CH6
     static Adafruit_NeoPixel strip9c(9, 12, NEO_GRB + NEO_KHZ800); // CH5
@@ -49,6 +56,8 @@ namespace strip
         &devicec,
         &devicee,
     };
+
+#endif // ESP32LOCAL
 #else  // XIAO
     static Adafruit_NeoPixel strip9a(9, 2, NEO_GRB + NEO_KHZ800);
     static Adafruit_NeoPixel strip9b(9, 3, NEO_GRB + NEO_KHZ800);
@@ -74,9 +83,17 @@ namespace strip
 #endif // MEGAATMEGA2560
 
 #else
-    static NativePixelDevice device(256);
+    static NativePixelDevice devicea(9);
+    static NativePixelDevice deviceb(9);
+    static NativePixelDevice devicec(9);
+    static NativePixelDevice deviced(9);
+    static NativePixelDevice devicee(4);
     PixelDevice *pixelDevices[] = {
-        &device,
+        &devicea,
+        &deviceb,
+        &devicec,
+        &deviced,
+        &devicee,
     };
 #endif // ARDUINO
     static size_t pixelDeviceCount = sizeof(pixelDevices) / sizeof(pixelDevices[0]);

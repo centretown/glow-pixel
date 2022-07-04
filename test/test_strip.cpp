@@ -27,12 +27,11 @@ glow::BlinkActivity blinker(&monitor, &blink);
 void run()
 {
     UNITY_BEGIN();
-    // testPixelDevices();
-    // testPixelControllers();
-    // testPixelColor();
-    // testColorFilter();
-    // testPixelMapper();
-    // testPixelStrip()
+    testPixelDevices();
+    testPixelControllers();
+    testPixelColor();
+    testColorFilter();
+    testPixelMapper();
     testPixelFrames();
     UNITY_END();
 }
