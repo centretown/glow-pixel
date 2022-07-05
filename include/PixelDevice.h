@@ -22,6 +22,6 @@ namespace strip
         }
 
         virtual void Setup() {}
-        virtual void Put(uint16_t index, PixelColor &color) = 0;
+        virtual void Put(uint16_t index, color_pack color) = 0;
     };
 }

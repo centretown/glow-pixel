@@ -4,7 +4,6 @@
 #ifndef ARDUINO
 #pragma once
 
-#include "base.h"
 #include "PixelDevice.h"
 
 namespace strip
@@ -15,8 +14,9 @@ namespace strip
         NativePixelDevice(uint16_t pixelCount)
             : PixelDevice(pixelCount) {}
 
-        virtual void Put(uint16_t index, PixelColor &color)
+        virtual void Put(uint16_t index, color_pack packed)
         {
+            PixelColor color(packed);
             printf("Color:%u-%x:%x:%x\n", index, color.Red(),
                    color.Green(), color.Blue());
         }

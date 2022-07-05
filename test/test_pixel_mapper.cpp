@@ -18,7 +18,7 @@ void clearPixels()
 {
     PixelMapper mapper(0, Pixels.PixelCount());
     PixelColor backGround(0, 0, 0);
-    Pixels.SweepColor(&mapper, backGround);
+    Pixels.SweepColor(&mapper, backGround.Pack());
     Pixels.Update();
 }
 
@@ -26,12 +26,12 @@ void putMapper(PixelMapper *mapper, PixelColor color, uint32_t ms = 100)
 {
     TEST_ASSERT(mapper);
     PixelColor backGround(15, 15, 5);
-    Pixels.SweepColor(mapper, backGround);
+    Pixels.SweepColor(mapper, backGround.Pack());
     Pixels.Update();
 
     ColorWrap puttee;
     puttee.mapper = mapper;
-    puttee.color = color;
+    puttee.packed = color.Pack();
     puttee.ms = ms;
     ColorSweeper putter;
 

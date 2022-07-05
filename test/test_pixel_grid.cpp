@@ -16,12 +16,12 @@ void putFrame(PixelGrid *frame, PixelColor color, uint32_t ms = 100)
 {
     TEST_ASSERT(frame);
     PixelColor backGround(15, 15, 5);
-    Pixels.SweepColor(frame, backGround);
+    Pixels.SweepColor(frame, backGround.Pack());
     Pixels.Update();
 
     ColorWrap puttee;
     puttee.mapper = frame;
-    puttee.color = color;
+    puttee.packed = color.Pack();
     puttee.ms = ms;
     ColorSweeper putter;
 

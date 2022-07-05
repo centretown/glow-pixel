@@ -19,11 +19,11 @@ namespace strip
     {
     public:
         PixelMapper *mapper;
-        PixelColor color;
+        color_pack packed;
 
     public:
-        ColorSweep(PixelMapper *mapper, PixelColor color)
-            : mapper(mapper), color(color) {}
+        ColorSweep(PixelMapper *mapper, color_pack packed)
+            : mapper(mapper), packed(packed) {}
     };
 
     class PixelController
@@ -49,14 +49,14 @@ namespace strip
         inline SimpleRange *Scope() { return &range; }
 
         void Setup();
-        void SweepColor(PixelMapper *mapper, PixelColor color);
-        void Put(uint16_t index, PixelColor color);
+        void SweepColor(PixelMapper *mapper, color_pack packed);
+        void Put(uint16_t index, color_pack color);
         void Update();
 
         void Act(uint16_t index, ColorSweep *cs)
         {
             select(cs->mapper->Get(index));
-            selectedDevice->Put(selectedOffset, cs->color);
+            selectedDevice->Put(selectedOffset, cs->packed);
         }
 
     private:
@@ -80,3 +80,4 @@ namespace strip
         inline void updateDone() { selectedFlag = 0; }
     };
 }
+

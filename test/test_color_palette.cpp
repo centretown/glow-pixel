@@ -19,7 +19,7 @@ void putPalette(PixelMapper *mapper,
 {
     TEST_ASSERT(mapper);
     PixelColor backGround(15, 15, 5);
-    Pixels.SweepColor(mapper, backGround);
+    Pixels.SweepColor(mapper, backGround.Pack());
     Pixels.Update();
 
     PaletteWrap wrapper;
@@ -42,7 +42,7 @@ void testSimplePalette()
     colors[2].Blue(63);
     colors[3].RGB(21, 21, 21);
     uint16_t length = sizeof(colors) / sizeof(colors[0]);
-    SimplePalette palette(colors, length);
+    SimplePalette palette((color_pack *)colors, length);
     PixelMapper mapper(0, Pixels.Scope()->End());
     putPalette(&mapper, &palette);
 }

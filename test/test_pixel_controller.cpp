@@ -14,7 +14,7 @@ void writeController(PixelController &controller, PixelColor &color)
 {
     for (size_t i = 0; i < controller.PixelCount(); i++)
     {
-        controller.Put(i, color);
+        controller.Put(i, color.Pack());
     }
     controller.Update();
     wait();
@@ -22,7 +22,7 @@ void writeController(PixelController &controller, PixelColor &color)
 
 void putMapper(PixelMapper *mapper, PixelColor &color)
 {
-    Pixels.SweepColor(mapper, color);
+    Pixels.SweepColor(mapper, color.Pack());
     Pixels.Update();
     wait();
 }

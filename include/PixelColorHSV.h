@@ -22,7 +22,7 @@ namespace strip
 
         PixelColorHSV(PixelColor &color)
         {
-            fromRGB(color);
+            // fromRGB(color.Pack());
         }
 
         inline uint16_t Hue() { return hue; }
@@ -32,12 +32,8 @@ namespace strip
         inline uint8_t Value() { return value; }
         inline void Value(uint8_t v) { value = v; }
 
-        PixelColor &RGB(PixelColor &color)
-        {
-            return color;
-        }
-
-        void fromRGB(PixelColor &color);
+        // color_type toRGB();
+        // void fromRGB(color_type rgb);
 
     private:
         inline uint8_t findMax(PixelColor &color)

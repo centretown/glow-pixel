@@ -30,16 +30,16 @@ namespace strip
         }
     }
 
-    void PixelController::SweepColor(PixelMapper *mapper, PixelColor color)
+    void PixelController::SweepColor(PixelMapper *mapper, color_pack packed)
     {
-        ColorSweep sw(mapper, color);
+        ColorSweep sw(mapper, packed);
         Sweep(mapper, &sw);
     }
 
-    void PixelController::Put(uint16_t index, PixelColor color)
+    void PixelController::Put(uint16_t index, color_pack packed)
     {
         select(index);
-        selectedDevice->Put(selectedOffset, color);
+        selectedDevice->Put(selectedOffset, packed);
     }
 
     void PixelController::Update()

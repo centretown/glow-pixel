@@ -27,8 +27,9 @@ namespace strip
             device.show();
         }
 
-        virtual void Put(uint16_t index, PixelColor &color)
+        virtual void Put(uint16_t index, color_pack packed)
         {
+            PixelColor color(packed);
             device.setPixelColor(index, color.Red(),
                                  color.Green(), color.Blue());
         }

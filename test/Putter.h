@@ -10,6 +10,7 @@
 #include "ColorPalette.h"
 
 using glow::Sweeper;
+using strip::color_pack;
 using strip::ColorPalette;
 using strip::PixelColor;
 using strip::PixelController;
@@ -22,7 +23,7 @@ typedef struct
 {
     uint32_t ms = 100;
     PixelMapper *mapper;
-    PixelColor color;
+    color_pack packed;
 } ColorWrap;
 
 class ColorSweeper : public Sweeper<ColorWrap *>
@@ -30,7 +31,7 @@ class ColorSweeper : public Sweeper<ColorWrap *>
 public:
     void Act(uint16_t i, ColorWrap *p)
     {
-        Pixels.Put(p->mapper->Get(i), p->color);
+        Pixels.Put(p->mapper->Get(i), p->packed);
         Pixels.Update();
         wait(p->ms);
     }

@@ -29,20 +29,27 @@ void testColor()
     color.White(tWhite);
     TEST_ASSERT_EQUAL(tWhite, color.White());
 
-    uint32_t packed = color.Pack();
+    // uint32_t packed = color.Pack();
+    uint32_t packed = color.base_pack(tRed, tGreen, tBlue, tWhite);
     uint32_t expected = (uint32_t)tWhite << 24;
     expected |= (uint32_t)tRed << 16;
     expected |= (uint32_t)tGreen << 8;
     expected |= (uint32_t)tBlue;
     TEST_ASSERT_EQUAL(expected, packed);
+    TEST_ASSERT_EQUAL(expected, color.Pack());
 
-    color.UnPack(packed);
     TEST_ASSERT_EQUAL(tRed, color.Red());
     TEST_ASSERT_EQUAL(tGreen, color.Green());
     TEST_ASSERT_EQUAL(tBlue, color.Blue());
     TEST_ASSERT_EQUAL(tWhite, color.White());
 
     PixelColor other(color);
+    TEST_ASSERT_EQUAL(tRed, other.Red());
+    TEST_ASSERT_EQUAL(tGreen, other.Green());
+    TEST_ASSERT_EQUAL(tBlue, other.Blue());
+    TEST_ASSERT_EQUAL(tWhite, other.White());
+
+    other.Pack(packed);
     TEST_ASSERT_EQUAL(tRed, other.Red());
     TEST_ASSERT_EQUAL(tGreen, other.Green());
     TEST_ASSERT_EQUAL(tBlue, other.Blue());
@@ -116,6 +123,10 @@ void testColor()
     TEST_ASSERT_EQUAL(tGreen, other.Green());
     TEST_ASSERT_EQUAL(tBlue, other.Blue());
     TEST_ASSERT_EQUAL(0, other.White());
+
+    color.RGBW(tRed, tGreen, tBlue, tWhite);
+    packed = color.base_pack(tRed, tGreen, tBlue, tWhite);
+    TEST_ASSERT_EQUAL_HEX32(packed, color.Pack());
 }
 
 void testPixelColor()

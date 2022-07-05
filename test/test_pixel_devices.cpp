@@ -15,12 +15,12 @@ void wait(uint32_t ms = 500)
 #endif
 }
 
-void testColor(PixelDevice *device, PixelColor &color)
+void testColor(PixelDevice *device, color_pack packed)
 {
     uint16_t count = device->PixelCount();
     for (uint16_t i = 0; i < count; i++)
     {
-        device->Put(i, color);
+        device->Put(i, packed);
     }
     device->Update();
     wait();
@@ -39,13 +39,13 @@ void testPixelDevice()
     {
         device = pixelDevices[i];
         color.RGB(0xff, 0, 0);
-        testColor(device, color);
+        testColor(device, color.Pack());
         color.RGB(0, 0xff, 0);
-        testColor(device, color);
+        testColor(device, color.Pack());
         color.RGB(0, 0, 0xff);
-        testColor(device, color);
+        testColor(device, color.Pack());
         color.RGB();
-        testColor(device, color);
+        testColor(device, color.Pack());
     }
 }
 

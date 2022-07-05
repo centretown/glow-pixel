@@ -7,42 +7,38 @@
 
 namespace strip
 {
+    typedef uint32_t color_pack;
     typedef struct
     {
-        uint8_t red;
-        uint8_t green;
         uint8_t blue;
+        uint8_t green;
+        uint8_t red;
         uint8_t white;
-    } PixelRGBW;
+    } color_rgbw;
 
     class PixelColor
     {
     private:
         union
         {
-            PixelRGBW rgbw;
-            uint32_t value;
+            color_rgbw rgbw;
+            color_pack pack;
         };
 
     public:
-        PixelColor(
-            uint8_t red = 0,
-            uint8_t green = 0,
-            uint8_t blue = 0,
-            uint8_t white = 0)
+        PixelColor() { pack = 0; }
+
+        PixelColor(color_pack pack) : pack(pack) {}
+
+        PixelColor(uint8_t red, uint8_t green,
+                   uint8_t blue, uint8_t white = 0)
         {
-            rgbw.red = red;
-            rgbw.green = green;
-            rgbw.blue = blue;
-            rgbw.white = white;
+            RGBW(red, green, blue, white);
         }
 
         PixelColor(PixelColor &color)
         {
-            rgbw.red = color.rgbw.red;
-            rgbw.green = color.rgbw.green;
-            rgbw.blue = color.rgbw.blue;
-            rgbw.white = color.rgbw.white;
+            Pack(color.Pack());
         }
 
         // access member
@@ -51,7 +47,7 @@ namespace strip
         inline uint8_t Green() { return rgbw.green; }
         inline uint8_t Blue() { return rgbw.blue; }
         inline uint8_t White() { return rgbw.white; }
-        inline uint32_t Value() { return value; }
+        inline color_pack Pack() { return pack; }
 
         // modify member
 
@@ -62,7 +58,7 @@ namespace strip
 
         // modify all members
 
-        inline void Value(uint32_t v) { value = v; }
+        inline void Pack(color_pack v) { pack = v; }
 
         inline void RGB(uint8_t r = 0, uint8_t g = 0, uint8_t b = 0)
         {
@@ -85,33 +81,15 @@ namespace strip
             rgbw.white = w;
         }
 
-        inline void UnPack(uint32_t packed)
-        {
-            const uint32_t mask = 0x000000ff;
-            rgbw.blue = packed & mask;
-            rgbw.green = (packed >> 8) & mask;
-            rgbw.red = (packed >> 16) & mask;
-            rgbw.white = (packed >> 24) & mask;
-        }
-
         inline void Hue(uint16_t hue, uint8_t saturation = 255, uint8_t value = 255)
         {
-            UnPack(hsv(hue, saturation, value));
-        }
-
-        // misc.
-        inline uint32_t Pack()
-        {
-            return pack(rgbw.red, rgbw.green, rgbw.blue, rgbw.white);
+            Pack(base_hsv(hue, saturation, value));
         }
 
         // filter functions (modify all)
         inline void Copy(PixelColor &color)
         {
-            rgbw.red = color.rgbw.red;
-            rgbw.green = color.rgbw.green;
-            rgbw.blue = color.rgbw.blue;
-            rgbw.white = color.rgbw.white;
+            Pack(color.Pack());
         }
 
         inline void Gamma(PixelColor &color)
@@ -130,14 +108,15 @@ namespace strip
             rgbw.white = sine8(color.rgbw.white);
         }
 
-    private:
-        inline uint32_t hsv(uint16_t hue, uint8_t saturation = 255, uint8_t value = 255)
-        {
-            return _basePixel::ColorHSV(hue, saturation, value);
-        }
-        inline uint32_t pack(uint8_t r, uint8_t g, uint8_t b, uint8_t w)
+        inline uint32_t base_pack(uint8_t r, uint8_t g, uint8_t b, uint8_t w)
         {
             return _basePixel::Color(r, g, b, w);
+        }
+
+    private:
+        inline uint32_t base_hsv(uint16_t hue, uint8_t saturation = 255, uint8_t value = 255)
+        {
+            return _basePixel::ColorHSV(hue, saturation, value);
         }
         inline uint8_t gamma8(uint8_t c)
         {

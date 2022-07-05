@@ -9,9 +9,9 @@ using glow::Mapper;
 
 namespace strip
 {
-    class ColorPalette : public Mapper<PixelColor&>
+    class ColorPalette : public Mapper<color_pack>
     {
     public:
-        virtual PixelColor& Get(uint16_t index) = 0;
+        virtual color_pack Get(uint16_t index) = 0;
     };
 }
