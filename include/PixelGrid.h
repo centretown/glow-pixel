@@ -24,9 +24,15 @@ namespace strip
 
     public:
         PixelGrid(uint16_t begin, uint16_t end, uint16_t rowLength,
-                   SimpleRange *rows, SimpleRange *cols)
+                  SimpleRange *rows, SimpleRange *cols)
         {
             Resize(begin, end, rowLength, rows, cols);
+        }
+
+        PixelGrid(Range *range, uint16_t rowLength,
+                  SimpleRange *rows, SimpleRange *cols)
+        {
+            Resize(range->Begin(), range->End(), rowLength, rows, cols);
         }
 
         inline SimpleRange *Rows() { return rows; }

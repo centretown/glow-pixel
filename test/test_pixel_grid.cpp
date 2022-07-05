@@ -4,7 +4,6 @@
 
 #include <unity.h>
 
-#include "PixelController.h"
 #include "config.h"
 #include "PixelGrid.h"
 #include "Putter.h"
@@ -20,11 +19,11 @@ void putFrame(PixelGrid *frame, PixelColor color, uint32_t ms = 100)
     Pixels.SweepColor(frame, backGround);
     Pixels.Update();
 
-    Puttee puttee;
+    ColorWrap puttee;
     puttee.mapper = frame;
     puttee.color = color;
     puttee.ms = ms;
-    Putter putter;
+    ColorPutter putter;
 
     putter.Sweep(frame, &puttee);
 
@@ -169,8 +168,8 @@ void testPixelGrid()
     putFrame(&grid, color);
 }
 
-void testPixelFrames()
+void testPixelGrids()
 {
-    // RUN_TEST(testIndicatorFrame);
+    RUN_TEST(testIndicatorFrame);
     RUN_TEST(testPixelGrid);
 }

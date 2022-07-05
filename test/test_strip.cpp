@@ -15,7 +15,8 @@ void testPixelColor();
 void testColorFilter();
 void testPixelMapper();
 void testPixelStrip();
-void testPixelFrames();
+void testPixelGrids();
+void testColorPalettes();
 
 // void testStripActivities();
 
@@ -27,12 +28,13 @@ glow::BlinkActivity blinker(&monitor, &blink);
 void run()
 {
     UNITY_BEGIN();
-    testPixelDevices();
-    testPixelControllers();
-    testPixelColor();
-    testColorFilter();
-    testPixelMapper();
-    testPixelFrames();
+    // testPixelDevices();
+    // testPixelControllers();
+    // testPixelColor();
+    // testColorFilter();
+    // testPixelMapper();
+    // testPixelGrids();
+    testColorPalettes();
     UNITY_END();
 }
 

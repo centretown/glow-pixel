@@ -29,11 +29,11 @@ void putMapper(PixelMapper *mapper, PixelColor color, uint32_t ms = 100)
     Pixels.SweepColor(mapper, backGround);
     Pixels.Update();
 
-    Puttee puttee;
+    ColorWrap puttee;
     puttee.mapper = mapper;
     puttee.color = color;
     puttee.ms = ms;
-    Putter putter;
+    ColorPutter putter;
 
     putter.Sweep(mapper, &puttee);
 

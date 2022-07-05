@@ -7,8 +7,10 @@
 #include "PixelController.h"
 #include "Sweeper.h"
 #include "config.h"
+#include "ColorPalette.h"
 
 using glow::Sweeper;
+using strip::ColorPalette;
 using strip::PixelColor;
 using strip::PixelController;
 using strip::PixelMapper;
@@ -21,14 +23,33 @@ typedef struct
     uint32_t ms = 100;
     PixelMapper *mapper;
     PixelColor color;
-} Puttee;
+} ColorWrap;
 
-class Putter : public Sweeper<Puttee *>
+class ColorPutter : public Sweeper<ColorWrap *>
 {
 public:
-    void Act(uint16_t i, Puttee *p)
+    void Act(uint16_t i, ColorWrap *p)
     {
         Pixels.Put(p->mapper->Get(i), p->color);
+        Pixels.Update();
+        wait(p->ms);
+    }
+};
+
+typedef struct
+{
+    uint32_t ms = 100;
+    PixelMapper *mapper;
+    ColorPalette *palette;
+} PaletteWrap;
+
+class PalettePutter : public Sweeper<PaletteWrap *>
+{
+public:
+    void Act(uint16_t i, PaletteWrap *p)
+    {
+        Pixels.Put(p->mapper->Get(i),
+                   p->palette->Get(i));
         Pixels.Update();
         wait(p->ms);
     }
