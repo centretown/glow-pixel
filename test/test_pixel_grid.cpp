@@ -23,7 +23,7 @@ void putFrame(PixelGrid *frame, PixelColor color, uint32_t ms = 100)
     puttee.mapper = frame;
     puttee.color = color;
     puttee.ms = ms;
-    ColorPutter putter;
+    ColorSweeper putter;
 
     putter.Sweep(frame, &puttee);
 

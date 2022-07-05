@@ -7,13 +7,22 @@
 
 namespace strip
 {
-    class PixelColor
+    typedef struct
     {
-    private:
         uint8_t red;
         uint8_t green;
         uint8_t blue;
         uint8_t white;
+    } PixelRGBW;
+
+    class PixelColor
+    {
+    private:
+        union
+        {
+            PixelRGBW rgbw;
+            uint32_t value;
+        };
 
     public:
         PixelColor(
@@ -21,28 +30,39 @@ namespace strip
             uint8_t green = 0,
             uint8_t blue = 0,
             uint8_t white = 0)
-            : red(red), green(green), blue(blue), white(white) {}
+        {
+            rgbw.red = red;
+            rgbw.green = green;
+            rgbw.blue = blue;
+            rgbw.white = white;
+        }
 
         PixelColor(PixelColor &color)
         {
-            red = color.red;
-            green = color.green;
-            blue = color.blue;
-            white = color.white;
+            rgbw.red = color.rgbw.red;
+            rgbw.green = color.rgbw.green;
+            rgbw.blue = color.rgbw.blue;
+            rgbw.white = color.rgbw.white;
         }
 
+        // access member
+
+        inline uint8_t Red() { return rgbw.red; }
+        inline uint8_t Green() { return rgbw.green; }
+        inline uint8_t Blue() { return rgbw.blue; }
+        inline uint8_t White() { return rgbw.white; }
+        inline uint32_t Value() { return value; }
+
         // modify member
-        
-        inline uint8_t Red() { return red; }
-        inline void Red(uint8_t r) { red = r; }
-        inline uint8_t Green() { return green; }
-        inline void Green(uint8_t g) { green = g; }
-        inline uint8_t Blue() { return blue; }
-        inline void Blue(uint8_t b) { blue = b; }
-        inline uint8_t White() { return white; }
-        inline void White(uint8_t w) { white = w; }
+
+        inline void Red(uint8_t r) { rgbw.red = r; }
+        inline void Green(uint8_t g) { rgbw.green = g; }
+        inline void Blue(uint8_t b) { rgbw.blue = b; }
+        inline void White(uint8_t w) { rgbw.white = w; }
 
         // modify all members
+
+        inline void Value(uint32_t v) { value = v; }
 
         inline void RGB(uint8_t r = 0, uint8_t g = 0, uint8_t b = 0)
         {
@@ -59,19 +79,19 @@ namespace strip
 
         inline void RGBW(uint8_t r = 0, uint8_t g = 0, uint8_t b = 0, uint8_t w = 0)
         {
-            red = r;
-            green = g;
-            blue = b;
-            white = w;
+            rgbw.red = r;
+            rgbw.green = g;
+            rgbw.blue = b;
+            rgbw.white = w;
         }
 
         inline void UnPack(uint32_t packed)
         {
-            uint32_t mask = 0x000000ff;
-            blue = packed & mask;
-            green = (packed >> 8) & mask;
-            red = (packed >> 16) & mask;
-            white = (packed >> 24) & mask;
+            const uint32_t mask = 0x000000ff;
+            rgbw.blue = packed & mask;
+            rgbw.green = (packed >> 8) & mask;
+            rgbw.red = (packed >> 16) & mask;
+            rgbw.white = (packed >> 24) & mask;
         }
 
         inline void Hue(uint16_t hue, uint8_t saturation = 255, uint8_t value = 255)
@@ -82,32 +102,32 @@ namespace strip
         // misc.
         inline uint32_t Pack()
         {
-            return pack(red, green, blue, white);
+            return pack(rgbw.red, rgbw.green, rgbw.blue, rgbw.white);
         }
 
         // filter functions (modify all)
         inline void Copy(PixelColor &color)
         {
-            red = color.red;
-            green = color.green;
-            blue = color.blue;
-            white = color.white;
+            rgbw.red = color.rgbw.red;
+            rgbw.green = color.rgbw.green;
+            rgbw.blue = color.rgbw.blue;
+            rgbw.white = color.rgbw.white;
         }
 
         inline void Gamma(PixelColor &color)
         {
-            red = gamma8(color.red);
-            green = gamma8(color.green);
-            blue = gamma8(color.blue);
-            white = gamma8(color.white);
+            rgbw.red = gamma8(color.rgbw.red);
+            rgbw.green = gamma8(color.rgbw.green);
+            rgbw.blue = gamma8(color.rgbw.blue);
+            rgbw.white = gamma8(color.rgbw.white);
         }
 
         inline void Sine(PixelColor &color)
         {
-            red = sine8(color.red);
-            green = sine8(color.green);
-            blue = sine8(color.blue);
-            white = sine8(color.white);
+            rgbw.red = sine8(color.rgbw.red);
+            rgbw.green = sine8(color.rgbw.green);
+            rgbw.blue = sine8(color.rgbw.blue);
+            rgbw.white = sine8(color.rgbw.white);
         }
 
     private:

@@ -28,18 +28,18 @@ glow::BlinkActivity blinker(&monitor, &blink);
 void run()
 {
     UNITY_BEGIN();
-    // testPixelDevices();
-    // testPixelControllers();
-    // testPixelColor();
-    // testColorFilter();
-    // testPixelMapper();
-    // testPixelGrids();
+    testPixelDevices();
+    testPixelControllers();
+    testPixelColor();
+    testColorFilter();
+    testPixelMapper();
+    testPixelGrids();
     testColorPalettes();
     UNITY_END();
 }
 
 #ifdef ARDUINO
-
+ 
 void setup()
 {
     delay(2000);

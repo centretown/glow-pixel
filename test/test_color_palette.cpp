@@ -26,9 +26,9 @@ void putPalette(PixelMapper *mapper,
     wrapper.mapper = mapper;
     wrapper.palette = palette;
     wrapper.ms = ms;
-    PalettePutter putter;
+    PaletteSweeper sweeper;
 
-    putter.Sweep(mapper, &wrapper);
+    sweeper.Sweep(mapper, &wrapper);
 
     wait(1000);
     clearPixels();

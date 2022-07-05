@@ -25,7 +25,7 @@ typedef struct
     PixelColor color;
 } ColorWrap;
 
-class ColorPutter : public Sweeper<ColorWrap *>
+class ColorSweeper : public Sweeper<ColorWrap *>
 {
 public:
     void Act(uint16_t i, ColorWrap *p)
@@ -43,13 +43,12 @@ typedef struct
     ColorPalette *palette;
 } PaletteWrap;
 
-class PalettePutter : public Sweeper<PaletteWrap *>
+class PaletteSweeper : public Sweeper<PaletteWrap *>
 {
 public:
     void Act(uint16_t i, PaletteWrap *p)
     {
-        Pixels.Put(p->mapper->Get(i),
-                   p->palette->Get(i));
+        Pixels.Put(p->mapper->Get(i), p->palette->Get(i));
         Pixels.Update();
         wait(p->ms);
     }
