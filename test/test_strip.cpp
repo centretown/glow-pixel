@@ -17,6 +17,7 @@ void testPixelMapper();
 void testPixelStrip();
 void testPixelGrids();
 void testColorPalettes();
+void testPixelColorHsv();
 
 // void testStripActivities();
 
@@ -28,18 +29,19 @@ glow::BlinkActivity blinker(&monitor, &blink);
 void run()
 {
     UNITY_BEGIN();
-    testPixelDevices();
-    testPixelControllers();
-    testPixelColor();
-    testColorFilter();
-    testPixelMapper();
-    testPixelGrids();
-    testColorPalettes();
+    // testPixelDevices();
+    // testPixelControllers();
+    // testPixelColor();
+    // testColorFilter();
+    // testPixelMapper();
+    // testPixelGrids();
+    // testColorPalettes();
+    testPixelColorHsv();
     UNITY_END();
 }
 
 #ifdef ARDUINO
- 
+
 void setup()
 {
     delay(2000);

@@ -18,14 +18,6 @@ namespace strip
     class PixelColorHSV
     {
     private:
-        typedef struct
-        {
-            uint16_t value_multiplier;
-            uint16_t saturation_multiplier;
-            uint8_t saturation_added;
-        } Adjusted;
-
-    private:
         uint16_t hue;
         uint8_t saturation;
         uint8_t value;
@@ -47,12 +39,17 @@ namespace strip
         inline void Saturation(uint8_t v) { saturation = v; }
         inline uint8_t Value() { return value; }
         inline void Value(uint8_t v) { value = v; }
+        inline void HSV(uint16_t h, uint8_t s, uint8_t v)
+        {
+            hue = h;
+            saturation = s;
+            value = v;
+        }
 
-        color_pack RGB();
+        color_pack ToRGB();
         // void fromRGB(color_pack rgb);
 
-    private:
-    private:
+        // private:
         inline uint8_t biggest(PixelColor &color)
         {
             uint8_t colorMax = color.Red();
@@ -156,20 +153,44 @@ namespace strip
             return color.Pack();
         }
 
-        inline void adjustSaturationValue(Adjusted &adjusted)
+        color_pack applySaturationValue(color_pack pack)
         {
-            adjusted.value_multiplier = 1 + value;           // v1 1 to 256; allows >>8 instead of /255
-            adjusted.saturation_multiplier = 1 + saturation; // s1 1 to 256; same reason
-            adjusted.saturation_added = 255 - saturation;    // s2 255 to 0
+            uint16_t saturation_multiplier = 1 + saturation; // s1 1 to 256; same reason
+            uint16_t value_multiplier = 1 + value;           // v1 1 to 256; allows >>8 instead of /255
+            uint8_t saturation_added = 255 - saturation;     // s2 255 to 0
+
+            PixelColor color(pack);
+
+            uint8_t applied = apply(color.Red(),
+                                    saturation_multiplier,
+                                    value_multiplier,
+                                    saturation_added);
+            color.Red(applied);
+
+            applied = apply(color.Green(),
+                            saturation_multiplier,
+                            value_multiplier,
+                            saturation_added);
+            color.Green(applied);
+
+            applied = apply(color.Blue(),
+                            saturation_multiplier,
+                            value_multiplier,
+                            saturation_added);
+            color.Blue(applied);
+            return color.Pack();
         }
 
-        inline uint8_t applySaturationValue(uint8_t color_value, Adjusted &adjusted)
+        inline uint8_t apply(uint8_t color,
+                             uint16_t saturation_multiplier,
+                             uint16_t value_multiplier,
+                             uint8_t saturation_added)
         {
-            uint16_t color_result = color_value *
-                                    adjusted.saturation_multiplier;
+            uint16_t color_result = color * saturation_multiplier;
             color_result >>= 8; // divide by 255
-            color_result += adjusted.saturation_added;
-            color_result *= adjusted.value_multiplier;
+            color_result += saturation_added;
+            color_result *= value_multiplier;
+            color_result >>= 8; // shift to lower 8
             return static_cast<uint8_t>(color_result);
         }
     };

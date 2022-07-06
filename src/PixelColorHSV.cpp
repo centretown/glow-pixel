@@ -11,17 +11,12 @@ namespace strip
     //     const uint8_t delta = cmax - cmin;
     // }
 
-    color_pack PixelColorHSV::RGB()
+    color_pack PixelColorHSV::ToRGB()
     {
-        Adjusted adjusted;
-        adjustSaturationValue(adjusted);
         uint16_t mappedHue = mapHue();
-        color_pack colorPack = mapHueToColor(mappedHue);
-        PixelColor color(colorPack);
-        color.RGB(applySaturationValue(color.Red(), adjusted),
-                  applySaturationValue(color.Green(), adjusted),
-                  applySaturationValue(color.Blue(), adjusted));
-        return color.Pack();
+        color_pack pack = mapHueToColor(mappedHue);
+        pack = applySaturationValue(pack);
+        return pack;
     }
 
 } // namespace strip
