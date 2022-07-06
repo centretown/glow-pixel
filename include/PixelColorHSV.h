@@ -7,8 +7,24 @@
 
 namespace strip
 {
+    const uint8_t max_color = 255;
+    const uint16_t red_to_yellow = 255;
+    const uint16_t red_to_green = 510;
+    const uint16_t green_to_cyan = 765;
+    const uint16_t green_to_blue = 1020;
+    const uint16_t blue_to_magenta = 1275;
+    const uint16_t blue_to_red = 1530;
+
     class PixelColorHSV
     {
+    private:
+        typedef struct
+        {
+            uint16_t value_multiplier;
+            uint16_t saturation_multiplier;
+            uint8_t saturation_added;
+        } Adjusted;
+
     private:
         uint16_t hue;
         uint8_t saturation;
@@ -32,35 +48,129 @@ namespace strip
         inline uint8_t Value() { return value; }
         inline void Value(uint8_t v) { value = v; }
 
-        // color_type toRGB();
-        // void fromRGB(color_type rgb);
+        color_pack RGB();
+        // void fromRGB(color_pack rgb);
 
     private:
-        inline uint8_t findMax(PixelColor &color)
+    private:
+        inline uint8_t biggest(PixelColor &color)
         {
-            uint8_t cmax = color.Red();
-            if (color.Green() > cmax)
+            uint8_t colorMax = color.Red();
+            if (color.Green() > colorMax)
             {
-                cmax = color.Green();
+                colorMax = color.Green();
             }
-            if (color.Blue() > cmax)
+            if (color.Blue() > colorMax)
             {
-                cmax = color.Blue();
+                colorMax = color.Blue();
             }
-            return cmax;
+            return colorMax;
         }
-        inline uint8_t findMin(PixelColor &color)
+        inline uint8_t smallest(PixelColor &color)
         {
-            uint8_t cmin = color.Red();
-            if (color.Green() < cmin)
+            uint8_t colorMin = color.Red();
+            if (color.Green() < colorMin)
             {
-                cmin = color.Green();
+                colorMin = color.Green();
             }
-            if (color.Blue() < cmin)
+            if (color.Blue() < colorMin)
             {
-                cmin = color.Blue();
+                colorMin = color.Blue();
             }
-            return cmin;
+            return colorMin;
+        }
+        inline uint16_t mapHue()
+        {
+            uint32_t mapped_hue = hue * 1530 + 32768;
+            mapped_hue /= 65536;
+            return static_cast<uint16_t>(mapped_hue);
+        }
+
+        color_pack mapHueToColor(uint16_t mapped_hue)
+        {
+            if (mapped_hue < red_to_green)
+            {
+                return redToGreen(mapped_hue);
+            }
+
+            if (mapped_hue < green_to_blue)
+            {
+                return greenToBlue(mapped_hue);
+            }
+
+            if (mapped_hue < blue_to_red)
+            {
+                return blueToRed(mapped_hue);
+            }
+
+            // full red
+            PixelColor color(max_color, 0, 0);
+            return color.Pack();
+        }
+
+        inline color_pack redToGreen(uint16_t mapped_hue)
+        {
+            PixelColor color;
+            if (mapped_hue < red_to_yellow)
+            {
+                color.Red(max_color);
+                color.Green(static_cast<uint8_t>(mapped_hue));
+            }
+            else // yellow to green
+            {
+                color.Red(static_cast<uint8_t>(red_to_green - mapped_hue));
+                color.Green(max_color);
+            }
+            return color.Pack();
+        }
+
+        inline color_pack greenToBlue(uint16_t mapped_hue)
+        {
+            PixelColor color;
+            if (mapped_hue < green_to_cyan)
+            {
+                color.Green(max_color);
+                color.Blue(static_cast<uint8_t>(mapped_hue - red_to_green));
+            }
+            else // cyan to blue
+            {
+                color.Green(static_cast<uint8_t>(green_to_blue - mapped_hue));
+                color.Blue(max_color);
+            }
+            return color.Pack();
+        }
+
+        inline color_pack blueToRed(uint16_t mapped_hue)
+        {
+            PixelColor color;
+            if (mapped_hue < blue_to_magenta)
+            {
+                color.Blue(max_color);
+                color.Red(static_cast<uint8_t>(mapped_hue - green_to_blue));
+            }
+            else // magenta to red
+            {
+                color.Blue(static_cast<uint8_t>(blue_to_red - mapped_hue));
+                color.Red(max_color);
+            }
+            return color.Pack();
+        }
+
+        inline void adjustSaturationValue(Adjusted &adjusted)
+        {
+            adjusted.value_multiplier = 1 + value;           // v1 1 to 256; allows >>8 instead of /255
+            adjusted.saturation_multiplier = 1 + saturation; // s1 1 to 256; same reason
+            adjusted.saturation_added = 255 - saturation;    // s2 255 to 0
+        }
+
+        inline uint8_t applySaturationValue(uint8_t color_value, Adjusted &adjusted)
+        {
+            uint16_t color_result = color_value *
+                                    adjusted.saturation_multiplier;
+            color_result >>= 8; // divide by 255
+            color_result += adjusted.saturation_added;
+            color_result *= adjusted.value_multiplier;
+            return static_cast<uint8_t>(color_result);
         }
     };
 
