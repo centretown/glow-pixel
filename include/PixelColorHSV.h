@@ -7,7 +7,7 @@
 
 namespace strip
 {
-    const uint8_t max_color = 255;
+    const uint16_t max_color = 255;
     const uint16_t red_to_yellow = 255;
     const uint16_t red_to_green = 510;
     const uint16_t green_to_cyan = 765;
@@ -78,7 +78,7 @@ namespace strip
         }
         inline uint16_t mapHue()
         {
-            uint32_t mapped_hue = hue * 1530 + 32768;
+            uint32_t mapped_hue = hue * 1530L + 32768;
             mapped_hue /= 65536;
             return static_cast<uint16_t>(mapped_hue);
         }

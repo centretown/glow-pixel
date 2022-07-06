@@ -50,7 +50,7 @@ void testColorHsv()
     TEST_ASSERT_EQUAL_HEX32(0x804040, pack);
 }
 
-uint32_t testHsvStepsOrg(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
+void testHsvStepsOrg(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
 {
     uint8_t red, green, blue;
     red = green = blue = 0;
@@ -64,8 +64,6 @@ uint32_t testHsvStepsOrg(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
     PixelColor colorHsv;
     colorHsv.Hue(tHue, tSaturation, tValue);
     TEST_ASSERT_EQUAL_HEX32(colorHsv.Pack(), packed_org);
-
-    return packed_org;
 }
 
 void testHsvStepsNew(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
@@ -86,7 +84,9 @@ void testHsvStepsNew(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
     TEST_ASSERT_EQUAL(tValue, hsv.Value());
 
     uint16_t mapped_hue_new = hsv.mapHue();
-    TEST_ASSERT_EQUAL_HEX16(mapped_hue_org, mapped_hue_new);
+    char buffer[32] = {0};
+    snprintf(buffer, sizeof(buffer), "h=%x,s=%x,v=%x", tHue, tSaturation, tValue);
+    TEST_ASSERT_EQUAL_HEX16_MESSAGE(mapped_hue_org, mapped_hue_new, buffer);
 
     color_pack pack = hsv.mapHueToColor(mapped_hue_new);
     PixelColor color(pack);
@@ -101,7 +101,7 @@ void testHsvStepsNew(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
 }
 
 static uint16_t hueTable[]{
-    0x0000, 0x0001, 0x0003, 0x0081, 0x00f0, 0x02f0, //
+    0x0000, 0x0001, 0x0003, 0x0082, 0x00f0, 0x02f0, //
     0x0300, 0x0301, 0x0ff3, 0x0fff, 0xf0f0, 0xffff, //
 };
 static uint8_t hueCount = sizeof(hueTable) / sizeof(hueTable[0]);
@@ -129,12 +129,12 @@ void testHsvSteps()
         for (uint8_t j = 0; j < satCount; j++)
         {
             tSaturation = satTable[j];
-            uint32_t packed_org = testHsvStepsOrg(tHue, tSaturation, tValue);
+            testHsvStepsOrg(tHue, tSaturation, tValue);
             testHsvStepsNew(tHue, tSaturation, tValue);
             for (uint8_t k = 0; k < valCount; k++)
             {
                 tValue = valTable[k];
-                uint32_t packed_org = testHsvStepsOrg(tHue, tSaturation, tValue);
+                testHsvStepsOrg(tHue, tSaturation, tValue);
                 testHsvStepsNew(tHue, tSaturation, tValue);
             }
         }
@@ -142,12 +142,12 @@ void testHsvSteps()
         for (uint8_t k = 0; k < valCount; k++)
         {
             tValue = valTable[k];
-            uint32_t packed_org = testHsvStepsOrg(tHue, tSaturation, tValue);
+            testHsvStepsOrg(tHue, tSaturation, tValue);
             testHsvStepsNew(tHue, tSaturation, tValue);
             for (uint8_t j = 0; j < satCount; j++)
             {
                 tSaturation = satTable[j];
-                uint32_t packed_org = testHsvStepsOrg(tHue, tSaturation, tValue);
+                testHsvStepsOrg(tHue, tSaturation, tValue);
                 testHsvStepsNew(tHue, tSaturation, tValue);
             }
         }
@@ -160,7 +160,7 @@ void testHsvSingleStep()
     uint8_t tSaturation = 127;
     uint8_t tValue = 127;
 
-    uint32_t packed_org = testHsvStepsOrg(tHue, tSaturation, tValue);
+    testHsvStepsOrg(tHue, tSaturation, tValue);
     testHsvStepsNew(tHue, tSaturation, tValue);
 }
 
