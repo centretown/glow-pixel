@@ -11,29 +11,6 @@
 
 using namespace strip;
 
-void clearPixels();
-
-void putPalette(PixelMapper *mapper,
-                ColorPalette *palette,
-                uint32_t ms = 100)
-{
-    TEST_ASSERT(mapper);
-    PixelColor backGround(15, 15, 5);
-    Pixels.SweepColor(mapper, backGround.Pack());
-    Pixels.Update();
-
-    PaletteWrap wrapper;
-    wrapper.mapper = mapper;
-    wrapper.palette = palette;
-    wrapper.ms = ms;
-    PaletteSweeper sweeper;
-
-    sweeper.Sweep(mapper, &wrapper);
-
-    wait(1000);
-    clearPixels();
-}
-
 void testSimplePalette()
 {
     PixelColor colors[4];
@@ -43,7 +20,7 @@ void testSimplePalette()
     colors[3].RGB(21, 21, 21);
     uint16_t length = sizeof(colors) / sizeof(colors[0]);
     SimplePalette palette((color_pack *)colors, length);
-    PixelMapper mapper(0, Pixels.Scope()->End());
+    PixelMapper mapper(Pixels.Scope());
     putPalette(&mapper, &palette);
 }
 

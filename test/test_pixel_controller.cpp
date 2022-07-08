@@ -5,27 +5,9 @@
 #include <unity.h>
 #include "PixelController.h"
 #include "config.h"
+#include "Putter.h"
 
 using namespace strip;
-
-void wait(uint32_t ms = 500);
-
-void writeController(PixelController &controller, PixelColor &color)
-{
-    for (size_t i = 0; i < controller.PixelCount(); i++)
-    {
-        controller.Put(i, color.Pack());
-    }
-    controller.Update();
-    wait();
-}
-
-void putMapper(PixelMapper *mapper, PixelColor &color)
-{
-    Pixels.SweepColor(mapper, color.Pack());
-    Pixels.Update();
-    wait();
-}
 
 void testPixelController()
 {
@@ -49,18 +31,18 @@ void testPixelController()
 void testPixelControllerRanges()
 {
     PixelColor color;
-    PixelMapper mapper(0, Pixels.Scope()->End());
+    PixelMapper mapper(Pixels.Scope());
 
     color.RGB(127, 127);
-    putMapper(&mapper, color);
+    putController(&mapper, color);
     color.BGR(255);
-    putMapper(&mapper, color);
+    putController(&mapper, color);
     color.GBR(255);
-    putMapper(&mapper, color);
+    putController(&mapper, color);
     color.RGB(255);
-    putMapper(&mapper, color);
+    putController(&mapper, color);
     color.RGB();
-    putMapper(&mapper, color);
+    putController(&mapper, color);
 }
 
 void testPixelControllers()

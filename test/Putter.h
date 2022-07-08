@@ -18,22 +18,23 @@ using strip::PixelMapper;
 using strip::Pixels;
 
 void wait(uint32_t ms = 500);
+void clearPixels();
 
 typedef struct
 {
-    uint32_t ms = 100;
     PixelMapper *mapper;
-    color_pack packed;
+    color_pack color;
+    uint32_t ms = 100;
 } ColorWrap;
 
-class ColorSweeper : public Sweeper<ColorWrap *>
+class ColorSweeper : public Sweeper<ColorWrap &>
 {
 public:
-    void Act(uint16_t i, ColorWrap *p)
+    void Act(uint16_t i, ColorWrap &wrap)
     {
-        Pixels.Put(p->mapper->Get(i), p->packed);
+        Pixels.Put(wrap.mapper->Get(i), wrap.color);
         Pixels.Update();
-        wait(p->ms);
+        wait(wrap.ms);
     }
 };
 
@@ -44,13 +45,25 @@ typedef struct
     ColorPalette *palette;
 } PaletteWrap;
 
-class PaletteSweeper : public Sweeper<PaletteWrap *>
+class PaletteSweeper : public Sweeper<PaletteWrap &>
 {
 public:
-    void Act(uint16_t i, PaletteWrap *p)
+    void Act(uint16_t i, PaletteWrap &wrap)
     {
-        Pixels.Put(p->mapper->Get(i), p->palette->Get(i));
+        Pixels.Put(wrap.mapper->Get(i), wrap.palette->Get(i));
         Pixels.Update();
-        wait(p->ms);
+        wait(wrap.ms);
     }
 };
+
+void putPalette(PixelMapper *mapper,
+                ColorPalette *palette,
+                uint32_t ms = 100);
+
+void writeController(PixelController &controller,
+                     PixelColor &color);
+
+void putMapper(PixelMapper *mapper, PixelColor &color,
+               bool reverse = false, uint32_t ms = 100);
+void putController(PixelMapper *mapper,
+                   PixelColor &color, bool reverse = false);

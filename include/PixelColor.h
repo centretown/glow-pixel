@@ -26,9 +26,7 @@ namespace strip
         };
 
     public:
-        PixelColor() { pack = 0; }
-
-        PixelColor(color_pack pack) : pack(pack) {}
+        PixelColor(color_pack pack = 0) : pack(pack) {}
 
         PixelColor(uint8_t red, uint8_t green,
                    uint8_t blue, uint8_t white = 0)

@@ -6,14 +6,9 @@
 #include "base.h"
 #include "config.h"
 #include "PixelDevice.h"
-using namespace strip;
+#include "Putter.h"
 
-void wait(uint32_t ms = 500)
-{
-#ifdef ARDUINO
-    delay(ms);
-#endif
-}
+using namespace strip;
 
 void testColor(PixelDevice *device, color_pack packed)
 {

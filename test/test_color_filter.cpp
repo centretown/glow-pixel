@@ -30,7 +30,7 @@ void testFilter()
 
     PixelColor source, color;
     CopyFilter copyFilter;
-    PixelMapper mapper(0, Pixels.Scope()->End());
+    PixelMapper mapper(Pixels.Scope());
 
     TEST_ASSERT_EQUAL_HEX(0, color.Red());
     TEST_ASSERT_EQUAL_HEX(0, color.Green());
@@ -218,7 +218,7 @@ void testBrightnessFilter()
 void FadeOutFadeIn(PixelColor &source, BrightnessFilter &brightness)
 {
     PixelColor color;
-    PixelMapper mapper(0, Pixels.Scope()->End());
+    PixelMapper mapper(Pixels.Scope());
     for (uint8_t i = 100; i > 0; i--)
     {
         brightness.Intensity(i);
@@ -245,7 +245,7 @@ void testFadeOutFadeIn()
 void testFadeOutFadeInGamma()
 {
     const uint8_t tGreen = 0xff;
-    PixelMapper mapper(0, Pixels.Scope()->End());
+    PixelMapper mapper(Pixels.Scope());
     PixelColor source;
     source.GBR(tGreen);
     BrightnessFilter brightness;

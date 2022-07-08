@@ -7,48 +7,9 @@
 #include "config.h"
 #include "Putter.h"
 #include "PixelColorHSV.h"
+#include "hsvTest.h"
 
 using namespace strip;
-
-void clearPixels();
-void map_hue_color(uint16_t hue,
-                   uint8_t &r,
-                   uint8_t &g,
-                   uint8_t &b);
-uint16_t map_hue(uint16_t hue);
-uint32_t apply_saturation_value(uint8_t sat, uint8_t val,
-                                uint8_t r, uint8_t g, uint8_t b);
-
-void testColorHsv()
-{
-    uint16_t tHue = 0;
-    uint8_t tSaturation = 0;
-    uint8_t tValue = 127;
-    PixelColorHSV hsv(tHue, tSaturation, tValue);
-    TEST_ASSERT_EQUAL(tHue, hsv.Hue());
-    TEST_ASSERT_EQUAL(tSaturation, hsv.Saturation());
-    TEST_ASSERT_EQUAL(tValue, hsv.Value());
-
-    PixelColor colorHsv;
-    colorHsv.Hue(tHue, tSaturation, tValue);
-
-    color_pack pack = hsv.ToRGB();
-    PixelColor color(pack);
-    TEST_ASSERT_EQUAL_HEX32(0x808080, pack);
-
-    tHue = 0;
-    tSaturation = 127;
-    tValue = 127;
-    hsv.HSV(tHue, tSaturation, tValue);
-    TEST_ASSERT_EQUAL(tHue, hsv.Hue());
-    TEST_ASSERT_EQUAL(tSaturation, hsv.Saturation());
-    TEST_ASSERT_EQUAL(tValue, hsv.Value());
-    pack = hsv.ToRGB();
-    color.Pack(pack);
-    colorHsv.Hue(tHue, tSaturation, tValue);
-    TEST_ASSERT_EQUAL_HEX32(colorHsv.Pack(), pack);
-    TEST_ASSERT_EQUAL_HEX32(0x804040, pack);
-}
 
 void testHsvStepsOrg(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
 {
@@ -68,6 +29,7 @@ void testHsvStepsOrg(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
 
 void testHsvStepsNew(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
 {
+    char buffer[32] = {0};
     uint8_t red, green, blue;
     red = green = blue = 0;
     uint16_t mapped_hue_org = map_hue(tHue);
@@ -84,7 +46,6 @@ void testHsvStepsNew(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
     TEST_ASSERT_EQUAL(tValue, hsv.Value());
 
     uint16_t mapped_hue_new = hsv.mapHue();
-    char buffer[32] = {0};
     snprintf(buffer, sizeof(buffer), "h=%x,s=%x,v=%x", tHue, tSaturation, tValue);
     TEST_ASSERT_EQUAL_HEX16_MESSAGE(mapped_hue_org, mapped_hue_new, buffer);
 
@@ -168,5 +129,4 @@ void testPixelColorHsv()
 {
     RUN_TEST(testHsvSingleStep);
     RUN_TEST(testHsvSteps);
-    // RUN_TEST(testColorHsv);
 }

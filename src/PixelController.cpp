@@ -30,10 +30,10 @@ namespace strip
         }
     }
 
-    void PixelController::SweepColor(PixelMapper *mapper, color_pack packed)
+    void PixelController::SweepColor(PixelMapper *mapper, color_pack color, bool reverse)
     {
-        ColorSweep sw(mapper, packed);
-        Sweep(mapper, &sw);
+        ColorSweep colorSweep(mapper, color);
+        Sweep(mapper->Pack(), colorSweep);
     }
 
     void PixelController::Put(uint16_t index, color_pack packed)

@@ -14,33 +14,6 @@
 using namespace glow;
 using namespace strip;
 
-void clearPixels()
-{
-    PixelMapper mapper(0, Pixels.PixelCount());
-    PixelColor backGround(0, 0, 0);
-    Pixels.SweepColor(&mapper, backGround.Pack());
-    Pixels.Update();
-}
-
-void putMapper(PixelMapper *mapper, PixelColor color, uint32_t ms = 100)
-{
-    TEST_ASSERT(mapper);
-    PixelColor backGround(15, 15, 5);
-    Pixels.SweepColor(mapper, backGround.Pack());
-    Pixels.Update();
-
-    ColorWrap puttee;
-    puttee.mapper = mapper;
-    puttee.packed = color.Pack();
-    puttee.ms = ms;
-    ColorSweeper putter;
-
-    putter.Sweep(mapper, &puttee);
-
-    wait(1000);
-    clearPixels();
-}
-
 void testOrderedMapper()
 {
     PixelMapper mapper(Pixels.Scope());
@@ -49,13 +22,13 @@ void testOrderedMapper()
     TEST_ASSERT_EQUAL(Pixels.PixelCount(), mapper.End());
     TEST_ASSERT_EQUAL(0, mapper.Begin());
     TEST_ASSERT_EQUAL(2, mapper.Get(2));
-    TEST_ASSERT_EQUAL(Pixels.Scope()->End(), mapper.End());
+    TEST_ASSERT_EQUAL(Pixels.Scope(), mapper.Pack());
     putMapper(&mapper, color);
 
     PixelMapper mapperA(2, Pixels.PixelCount());
     TEST_ASSERT_EQUAL(2, mapperA.Begin());
     TEST_ASSERT_EQUAL(4, mapperA.Get(4));
-    TEST_ASSERT_EQUAL(Pixels.Scope()->End(), mapperA.End());
+    TEST_ASSERT_NOT_EQUAL(Pixels.Scope(), mapperA.Pack());
     color.GBR(255);
     putMapper(&mapperA, color);
 }

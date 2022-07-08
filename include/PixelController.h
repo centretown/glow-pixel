@@ -6,7 +6,8 @@
 #include "PixelDevice.h"
 #include "Sweeper.h"
 
-using glow::SimpleRange;
+using glow::Range;
+using glow::range_pack;
 using glow::Sweeper;
 
 namespace strip
@@ -19,21 +20,21 @@ namespace strip
     {
     public:
         PixelMapper *mapper;
-        color_pack packed;
+        color_pack color;
 
     public:
-        ColorSweep(PixelMapper *mapper, color_pack packed)
-            : mapper(mapper), packed(packed) {}
+        ColorSweep(PixelMapper *mapper, color_pack color)
+            : mapper(mapper), color(color) {}
     };
 
     class PixelController
-        : public Sweeper<ColorSweep *>
+        : public Sweeper<ColorSweep &>
     {
     private:
         PixelDevice **devices;
         uint8_t deviceCount = 0;
         uint16_t pixelCount = 0;
-        SimpleRange range;
+        Range range;
 
     private:
         PixelDevice *selectedDevice = NULL;
@@ -46,17 +47,17 @@ namespace strip
         PixelController(PixelDevice **devices, uint8_t deviceCount);
 
         inline uint16_t PixelCount() { return pixelCount; }
-        inline SimpleRange *Scope() { return &range; }
+        inline range_pack Scope() { return range.Pack(); }
 
         void Setup();
-        void SweepColor(PixelMapper *mapper, color_pack packed);
+        void SweepColor(PixelMapper *mapper, color_pack packed, bool reverse = false);
         void Put(uint16_t index, color_pack color);
         void Update();
 
-        void Act(uint16_t index, ColorSweep *cs)
+        void Act(uint16_t index, ColorSweep &cs)
         {
-            select(cs->mapper->Get(index));
-            selectedDevice->Put(selectedOffset, cs->packed);
+            select(cs.mapper->Get(index));
+            selectedDevice->Put(selectedOffset, cs.color);
         }
 
     private:
@@ -80,4 +81,3 @@ namespace strip
         inline void updateDone() { selectedFlag = 0; }
     };
 }
-

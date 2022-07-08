@@ -6,9 +6,8 @@
 
 #include "PixelStrip.h"
 
-using namespace strip;
+// using namespace strip;
 
-void wait(uint32_t ms = 500);
 
 // void writeStrip(PixelStrip &pixel, PixelColor &color, uint32_t ms = 250)
 // {
