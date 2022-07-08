@@ -84,14 +84,12 @@ namespace strip
         // private:
         inline uint16_t mapHue()
         {
-            const uint32_t acutal_ticks = 1530;
-            const uint32_t half_limit = 32768;
-            const uint32_t limit = 65536;
-            const uint32_t hue = hsv.hue;
-            // uint32_t mapped_hue = hsv.hue * 1530L + 32768;
-            // uint32_t mapped_hue = hsv.hue * static_cast<uint16_t>(1530) + 32768;
-            // mapped_hue /= 65536;
-            uint32_t mapped_hue = hue * acutal_ticks + half_limit;
+            const uint32_t actual_ticks = 1530;
+            const uint32_t half_limit = 32768; // 0x8000
+            const uint32_t limit = 65536;      // 0x10000
+            uint32_t mapped_hue = hsv.hue;
+            mapped_hue *= actual_ticks;
+            mapped_hue += half_limit;
             mapped_hue /= limit;
             return static_cast<uint16_t>(mapped_hue);
         }
