@@ -26,6 +26,7 @@ namespace strip
 
         T Span() { return span; }
         void Span(T v) { span = v; }
+
     };
 
 } // namespace strip

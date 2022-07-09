@@ -30,15 +30,15 @@ glow::BlinkActivity blinker(&monitor, &blink);
 void run()
 {
     UNITY_BEGIN();
-    testPixelDevices();
-    testPixelControllers();
-    testPixelColor();
-    testColorFilter();
-    testPixelMapper();
+    // testPixelDevices();
+    // testPixelControllers();
+    // testPixelColor();
+    // testColorFilter();
+    // testPixelMapper();
     testPixelGrids();
-    testColorPalettes();
-    testPixelColorHsv();
-    testGradientPalettes();
+    // testColorPalettes();
+    // testPixelColorHsv();
+    // testGradientPalettes();
     UNITY_END();
 }
 

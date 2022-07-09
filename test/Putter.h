@@ -8,6 +8,7 @@
 #include "Sweeper.h"
 #include "config.h"
 #include "ColorPalette.h"
+#include "Looper.h"
 
 using glow::Sweeper;
 using strip::color_pack;
@@ -24,6 +25,7 @@ typedef struct
 {
     PixelMapper *mapper;
     color_pack color;
+    color_pack background;
     uint32_t ms = 100;
 } ColorWrap;
 
@@ -32,7 +34,8 @@ class ColorSweeper : public Sweeper<ColorWrap &>
 public:
     void Act(uint16_t i, ColorWrap &wrap)
     {
-        Pixels.Put(wrap.mapper->Get(i), wrap.color);
+        color_pack color = (i % 2) ? wrap.color : wrap.background;
+        Pixels.Put(wrap.mapper->Get(i), color);
         Pixels.Update();
         wait(wrap.ms);
     }
@@ -65,5 +68,9 @@ void writeController(PixelController &controller,
 
 void putMapper(PixelMapper *mapper, PixelColor &color,
                bool reverse = false, uint32_t ms = 100);
+
+void putGrid(PixelMapper *mapper, PixelColor &even, PixelColor &odd,
+             bool reverse = false, uint32_t ms = 100);
+
 void putController(PixelMapper *mapper,
                    PixelColor &color, bool reverse = false);

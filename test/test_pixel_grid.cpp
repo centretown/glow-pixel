@@ -50,103 +50,100 @@ void testIndicatorFrame()
     putMapper(&indicator, color);
 }
 
-void testPixelGrid()
+void testGrids(range_pack pack, uint16_t rowLength, uint16_t colLength)
 {
-    PixelColor color;
-    uint16_t rowLength = 9;
-    uint16_t colLength = 4;
-
     Range rows(0, colLength);
     Range cols(0, rowLength);
-    uint16_t length = rows.Length() * cols.Length();
+
+    range_pack rowsPack = rows.Pack();
+    range_pack colsPack = cols.Pack();
+
+    PixelRows rowGrid(pack, rowLength, rows.Pack(), cols.Pack());
+    PixelColumns colGrid;
+    PixelColor color(63, 63, 0);
+    PixelColor color1(0, 63, 63);
+    PixelColor color2(63, 0, 63);
+
+    const uint32_t DELAY = 0;
+    auto put = [&]()
+    {
+        putGrid(&rowGrid, color, color1, false, DELAY);
+        putGrid(&rowGrid, color, color1, true, DELAY);
+
+        colGrid.Copy(&rowGrid);
+        putGrid(&colGrid, color1, color2, false, DELAY);
+        putGrid(&colGrid, color1, color2, true, DELAY);
+    };
+
+    auto reset = [&]()
+    {
+        rows.Pack(rowsPack);
+        cols.Pack(colsPack);
+        rowGrid.Resize(pack, rowLength, rows.Pack(), cols.Pack());
+    };
+
+    auto compare = [&]()
+    {
+        return (cols.Length() > 0 && rows.Length() > 0);
+    };
+    auto increment_row_begin = [&]()
+    {
+        rows.Resize(rows.Begin() + 1, rows.End());
+        rowGrid.Resize(pack, rowLength, rows.Pack(), cols.Pack());
+    };
+    auto decrement_row_end = [&]()
+    {
+        rows.Resize(rows.Begin(), rows.End() - 1);
+        rowGrid.Resize(pack, rowLength, rows.Pack(), cols.Pack());
+    };
+    Looper(compare, put, increment_row_begin, reset);
+    Looper(compare, put, decrement_row_end, reset);
+
+    auto increment_col_begin = [&]()
+    {
+        cols.Resize(cols.Begin() + 1, cols.End());
+        rowGrid.Resize(pack, rowLength, rows.Pack(), cols.Pack());
+    };
+    auto decrement_col_end = [&]()
+    {
+        cols.Resize(cols.Begin(), cols.End() - 1);
+        rowGrid.Resize(pack, rowLength, rows.Pack(), cols.Pack());
+    };
+    Looper(compare, put, increment_col_begin, reset);
+    Looper(compare, put, decrement_col_end, reset);
+
+    auto increment_both_begin = [&]()
+    {
+        rows.Resize(rows.Begin() + 1, rows.End());
+        cols.Resize(cols.Begin() + 1, cols.End());
+        rowGrid.Resize(pack, rowLength, rows.Pack(), cols.Pack());
+    };
+    auto decrement_both_end = [&]()
+    {
+        rows.Resize(rows.Begin(), rows.End() - 1);
+        cols.Resize(cols.Begin(), cols.End() - 1);
+        rowGrid.Resize(pack, rowLength, rows.Pack(), cols.Pack());
+    };
+
+    Looper(compare, put, increment_both_begin, reset);
+    Looper(compare, put, decrement_both_end, reset);
+
+    auto squeeze = [&]()
+    {
+        rows.Resize(rows.Begin() + 1, rows.End() - 1);
+        cols.Resize(cols.Begin() + 1, cols.End() - 1);
+        rowGrid.Resize(pack, rowLength, rows.Pack(), cols.Pack());
+    };
+    Looper(compare, put, squeeze, reset);
+}
+
+void testPixelGrid()
+{
+    uint16_t rowLength = 9;
+    uint16_t colLength = 4;
+    uint16_t length = rowLength * colLength;
     Range range(0, length);
-
-    PixelRows rowGrid(range.Pack(), rowLength,
-                   rows.Pack(), cols.Pack());
-    auto begin = rowGrid.Begin();
-    auto end = rowGrid.End();
-    TEST_ASSERT_EQUAL(end, rowGrid.End());
-    TEST_ASSERT_EQUAL(end - length, rowGrid.Get(begin));
-    TEST_ASSERT_EQUAL(begin, rowGrid.Get(begin));
-    TEST_ASSERT_EQUAL(begin + 1, rowGrid.Get(begin + 1));
-    TEST_ASSERT_EQUAL(begin + 2, rowGrid.Get(begin + 2));
-    TEST_ASSERT_EQUAL(begin + 3, rowGrid.Get(begin + 3));
-    TEST_ASSERT_EQUAL(begin + 8, rowGrid.Get(begin + 8));
-    TEST_ASSERT_EQUAL(begin + 9, rowGrid.Get(begin + 9));
-    TEST_ASSERT_EQUAL(begin + 10, rowGrid.Get(begin + 10));
-    color.BGR(127, 127);
-    putMapper(&rowGrid, color);
-
-    PixelColumns colGrid(range.Pack(), rowLength,
-                   rows.Pack(), cols.Pack());
-    TEST_ASSERT_EQUAL(end, colGrid.End());
-    TEST_ASSERT_EQUAL(end - length, rowGrid.Get(begin));
-    TEST_ASSERT_EQUAL(begin, colGrid.Get(begin));
-    // TEST_ASSERT_EQUAL(begin + 1, colGrid.Get(begin + 1));
-    // TEST_ASSERT_EQUAL(begin + 2, colGrid.Get(begin + 2));
-    // TEST_ASSERT_EQUAL(begin + 3, colGrid.Get(begin + 3));
-    // TEST_ASSERT_EQUAL(begin + 8, colGrid.Get(begin + 8));
-    // TEST_ASSERT_EQUAL(begin + 9, colGrid.Get(begin + 9));
-    // TEST_ASSERT_EQUAL(begin + 10, colGrid.Get(begin + 10));
-
-    color.BGR(195, 95);
-    putMapper(&colGrid, color);
-
-    // cols.Resize(0, rowLength - 1);
-    // length = rows.Length() * cols.Length();
-    // rowGrid.Resize(0, length, rowLength, &rows, &cols);
-    // color.BGR(127, 127);
-    // rowGrid.Order(BY_ROW);
-    // putMapper(&rowGrid, color);
-
-    // rows.Resize(0, colLength - 1);
-    // length = rows.Length() * cols.Length();
-    // rowGrid.Resize(0, length, rowLength, &rows, &cols);
-    // color.BGR(195, 95);
-    // rowGrid.Order(BY_COL);
-    // putMapper(&rowGrid, color);
-
-    // rows.Resize(1, colLength);
-    // cols.Resize(1, rowLength);
-    // length = rows.Length() * cols.Length();
-    // rowGrid.Resize(0, length, rowLength, &rows, &cols);
-    // rowGrid.Order(BY_ROW);
-    // color.BGR(95, 195);
-    // putMapper(&rowGrid, color);
-
-    // rowGrid.Reverse(true);
-    // color.RGB(95, 0, 195);
-    // putMapper(&rowGrid, color);
-
-    // rowGrid.Reverse(false);
-    // rowGrid.Order(BY_COL);
-    // color.RGB(95, 195);
-    // putMapper(&rowGrid, color);
-
-    // rowGrid.Reverse(true);
-    // color.RGB(95, 0, 195);
-    // putMapper(&rowGrid, color);
-
-    // rows.Resize(1, colLength - 1);
-    // cols.Resize(1, rowLength - 1);
-    // length = rows.Length() * cols.Length();
-    // rowGrid.Resize(0, length, rowLength, &rows, &cols);
-    // rowGrid.Order(BY_ROW);
-    // color.BGR(95, 195);
-    // putMapper(&rowGrid, color);
-
-    // rowGrid.Reverse(true);
-    // color.RGB(95, 0, 195);
-    // putMapper(&rowGrid, color);
-
-    // rowGrid.Reverse(false);
-    // rowGrid.Order(BY_COL);
-    // color.RGB(95, 195);
-    // putMapper(&rowGrid, color);
-
-    // rowGrid.Reverse(true);
-    // color.RGB(95, 0, 195);
-    // putMapper(&rowGrid, color);
+    testGrids(range.Pack(), rowLength, colLength);
 }
 
 void testPixelGrids()
