@@ -3,23 +3,16 @@
 #include "Putter.h"
 
 void putPalette(PixelMapper *mapper,
-                ColorPalette *palette,
+                ColorPalette *palette, bool reverse,
                 uint32_t ms)
 {
-    PixelColor backGround(15, 15, 5);
-    Pixels.SweepColor(mapper, backGround.Pack());
-    Pixels.Update();
-
     PaletteWrap wrapper;
     wrapper.mapper = mapper;
     wrapper.palette = palette;
     wrapper.ms = ms;
     PaletteSweeper sweeper;
 
-    sweeper.Sweep(mapper->Pack(), wrapper);
-
-    wait(1000);
-    clearPixels();
+    sweeper.Sweep(mapper->Pack(), wrapper, reverse);
 }
 
 void writeController(PixelController &controller, PixelColor &color)

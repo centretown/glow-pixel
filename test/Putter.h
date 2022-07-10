@@ -8,9 +8,10 @@
 #include "Sweeper.h"
 #include "config.h"
 #include "ColorPalette.h"
-#include "Looper.h"
+#include "Spin.h"
 
 using glow::Sweeper;
+using glow::Spin;
 using strip::color_pack;
 using strip::ColorPalette;
 using strip::PixelColor;
@@ -61,6 +62,7 @@ public:
 
 void putPalette(PixelMapper *mapper,
                 ColorPalette *palette,
+                bool reverse = false,
                 uint32_t ms = 100);
 
 void writeController(PixelController &controller,

@@ -96,8 +96,8 @@ void testGrids(range_pack pack, uint16_t rowLength, uint16_t colLength)
         rows.Resize(rows.Begin(), rows.End() - 1);
         rowGrid.Resize(pack, rowLength, rows.Pack(), cols.Pack());
     };
-    Looper(compare, put, increment_row_begin, reset);
-    Looper(compare, put, decrement_row_end, reset);
+    Spin(compare, put, increment_row_begin, reset);
+    Spin(compare, put, decrement_row_end, reset);
 
     auto increment_col_begin = [&]()
     {
@@ -109,8 +109,8 @@ void testGrids(range_pack pack, uint16_t rowLength, uint16_t colLength)
         cols.Resize(cols.Begin(), cols.End() - 1);
         rowGrid.Resize(pack, rowLength, rows.Pack(), cols.Pack());
     };
-    Looper(compare, put, increment_col_begin, reset);
-    Looper(compare, put, decrement_col_end, reset);
+    Spin(compare, put, increment_col_begin, reset);
+    Spin(compare, put, decrement_col_end, reset);
 
     auto increment_both_begin = [&]()
     {
@@ -125,8 +125,8 @@ void testGrids(range_pack pack, uint16_t rowLength, uint16_t colLength)
         rowGrid.Resize(pack, rowLength, rows.Pack(), cols.Pack());
     };
 
-    Looper(compare, put, increment_both_begin, reset);
-    Looper(compare, put, decrement_both_end, reset);
+    Spin(compare, put, increment_both_begin, reset);
+    Spin(compare, put, decrement_both_end, reset);
 
     auto squeeze = [&]()
     {
@@ -134,7 +134,7 @@ void testGrids(range_pack pack, uint16_t rowLength, uint16_t colLength)
         cols.Resize(cols.Begin() + 1, cols.End() - 1);
         rowGrid.Resize(pack, rowLength, rows.Pack(), cols.Pack());
     };
-    Looper(compare, put, squeeze, reset);
+    Spin(compare, put, squeeze, reset);
 }
 
 void testPixelGrid()
