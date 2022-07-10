@@ -10,12 +10,13 @@
 #include "ColorPalette.h"
 #include "Spin.h"
 
-using glow::Sweeper;
 using glow::Spin;
+using glow::Sweeper;
 using strip::color_pack;
 using strip::ColorPalette;
 using strip::PixelColor;
 using strip::PixelController;
+using strip::PixelDevice;
 using strip::PixelMapper;
 using strip::Pixels;
 
@@ -64,6 +65,12 @@ void putPalette(PixelMapper *mapper,
                 ColorPalette *palette,
                 bool reverse = false,
                 uint32_t ms = 100);
+
+void writeDevice(PixelDevice *device, color_pack packed,
+                 uint32_t ms = 500);
+
+void writeDevicePixel(PixelDevice *device, uint16_t offset,
+                      color_pack packed, uint32_t ms = 20);
 
 void writeController(PixelController &controller,
                      PixelColor &color);

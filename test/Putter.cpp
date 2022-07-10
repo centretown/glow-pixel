@@ -15,6 +15,25 @@ void putPalette(PixelMapper *mapper,
     sweeper.Sweep(mapper->Pack(), wrapper, reverse);
 }
 
+void writeDevice(PixelDevice *device, color_pack packed, uint32_t ms)
+{
+    uint16_t count = device->PixelCount();
+    for (uint16_t i = 0; i < count; i++)
+    {
+        device->Put(i, packed);
+    }
+    device->Update();
+    wait(ms);
+}
+
+void writeDevicePixel(PixelDevice *device, uint16_t offset,
+                      color_pack packed, uint32_t ms)
+{
+    device->Put(offset, packed);
+    device->Update();
+    wait(ms);
+}
+
 void writeController(PixelController &controller, PixelColor &color)
 {
     for (size_t i = 0; i < controller.PixelCount(); i++)

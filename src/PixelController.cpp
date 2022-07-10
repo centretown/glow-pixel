@@ -20,6 +20,14 @@ namespace strip
             partitions[i + 1] = pixelCount;
         }
         range.Resize(0, pixelCount);
+
+        index = (pixel_index *)
+            malloc(sizeof(pixel_index) * pixelCount);
+    }
+
+    PixelController::~PixelController()
+    {
+        free(index);
     }
 
     void PixelController::Setup()

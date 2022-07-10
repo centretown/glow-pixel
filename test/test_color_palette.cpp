@@ -83,10 +83,10 @@ void testSimpleHSVPalette()
 
     Spin(compare, put, incrementValue, reset);
     putPalette(&mapper, &palette, false, 0);
-    wait(5000);
+    wait(500);
     Spin(compare, put, incrementHue, reset);
     putPalette(&mapper, &palette, false, 0);
-    wait(5000);
+    wait(500);
     Spin(compare, put, incrementSaturation, reset);
     putPalette(&mapper, &palette, false, 0);
 

@@ -11,7 +11,7 @@ using namespace strip;
 
 void testPixelController()
 {
-    TEST_ASSERT_GREATER_THAN(0, PixelDeviceCount());
+    TEST_ASSERT_GREATER_THAN(0, pixel_count);
     TEST_ASSERT_GREATER_THAN(0, Pixels.PixelCount());
 
     PixelController &ctl = Pixels;

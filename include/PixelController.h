@@ -5,6 +5,7 @@
 #include "PixelMapper.h"
 #include "PixelDevice.h"
 #include "Sweeper.h"
+#include "PixelIndex.h"
 
 using glow::Range;
 using glow::range_pack;
@@ -35,6 +36,7 @@ namespace strip
         uint8_t deviceCount = 0;
         uint16_t pixelCount = 0;
         Range range;
+        pixel_index *index = NULL;
 
     private:
         PixelDevice *selectedDevice = NULL;
@@ -45,6 +47,7 @@ namespace strip
 
     public:
         PixelController(PixelDevice **devices, uint8_t deviceCount);
+        ~PixelController();
 
         inline uint16_t PixelCount() { return pixelCount; }
         inline range_pack Scope() { return range.Pack(); }

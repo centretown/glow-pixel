@@ -10,37 +10,26 @@
 
 using namespace strip;
 
-void testColor(PixelDevice *device, color_pack packed)
-{
-    uint16_t count = device->PixelCount();
-    for (uint16_t i = 0; i < count; i++)
-    {
-        device->Put(i, packed);
-    }
-    device->Update();
-    wait();
-}
-
 void testPixelDevice()
 {
-    for (size_t i = 0; i < PixelDeviceCount(); i++)
+    for (size_t i = 0; i < device_count; i++)
     {
         pixelDevices[i]->Setup();
     }
 
     PixelDevice *device;
     PixelColor color;
-    for (size_t i = 0; i < PixelDeviceCount(); i++)
+    for (size_t i = 0; i < device_count; i++)
     {
         device = pixelDevices[i];
         color.RGB(0xff, 0, 0);
-        testColor(device, color.Pack());
+        writeDevice(device, color.Pack());
         color.RGB(0, 0xff, 0);
-        testColor(device, color.Pack());
+        writeDevice(device, color.Pack());
         color.RGB(0, 0, 0xff);
-        testColor(device, color.Pack());
+        writeDevice(device, color.Pack());
         color.RGB();
-        testColor(device, color.Pack());
+        writeDevice(device, color.Pack());
     }
 }
 

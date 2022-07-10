@@ -14,7 +14,14 @@
 
 namespace strip
 {
+    extern const uint8_t device_count;
+    extern const uint16_t pixel_count;
+    extern const pixel_index *pixelIndex;
+
     extern PixelDevice *pixelDevices[];
     extern PixelController &Pixels;
-    extern size_t PixelDeviceCount();
+
+    pixel_index *buildIndex(pixel_index *index,
+                            const uint16_t pixelCount,
+                            const uint16_t *partitions);
 }
