@@ -35,10 +35,10 @@ void run()
     // testPixelColor();
     // testColorFilter();
     // testPixelMapper();
-    testPixelGrids();
-    // testColorPalettes();
-    // testPixelColorHsv();
-    // testGradientPalettes();
+    // testPixelGrids();
+    testColorPalettes();
+    testPixelColorHsv();
+    testGradientPalettes();
     UNITY_END();
 }
 

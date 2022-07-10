@@ -76,11 +76,6 @@ void putMapper(PixelMapper *mapper, PixelColor &color, bool reverse, uint32_t ms
 void putGrid(PixelMapper *mapper, PixelColor &even, PixelColor &odd,
              bool reverse, uint32_t ms)
 {
-    PixelColor backGround(5, 5, 15);
-    Pixels.SweepColor(mapper, backGround.Pack(), reverse);
-    Pixels.Update();
-    wait(100);
-
     ColorWrap puttee;
     puttee.mapper = mapper;
     puttee.color = even.Pack();
@@ -90,6 +85,6 @@ void putGrid(PixelMapper *mapper, PixelColor &even, PixelColor &odd,
 
     putter.Sweep(mapper->Pack(), puttee, reverse);
 
-    wait(500);
+    wait(250);
     clearPixels();
 }
