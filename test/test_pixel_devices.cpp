@@ -5,7 +5,6 @@
 #include <unity.h>
 #include "base.h"
 #include "config.h"
-#include "PixelDevice.h"
 #include "Putter.h"
 
 using namespace strip;

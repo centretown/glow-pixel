@@ -2,26 +2,60 @@
 
 #pragma once
 
-#include "Updater.h"
 #include "PixelColor.h"
-
-using glow::Updater;
 
 namespace strip
 {
-    class PixelDevice : public Updater
+    template <typename DEVICE>
+    class PixelDeviceGenerator
     {
-    protected:
-        uint16_t pixelCount = 0;
+    private:
+        DEVICE &device;
+        const uint16_t pixelCount;
+        PixelColor color;
 
     public:
-        PixelDevice(uint16_t pixelCount = 0) : pixelCount(pixelCount) {}
-        inline uint16_t PixelCount()
+        PixelDeviceGenerator(DEVICE &device)
+            : device(device), pixelCount(device.numPixels()) {}
+
+        inline const uint16_t PixelCount() { return pixelCount; }
+
+        inline void Setup()
         {
-            return pixelCount;
+            device.begin();
+            device.clear();
+            device.show();
         }
 
-        virtual void Setup() {}
-        virtual void Put(uint16_t index, color_pack color) = 0;
+        inline void Put(uint16_t index, color_pack pack)
+        {
+            color.Pack(pack);
+            device.setPixelColor(index, color.Red(),
+                                 color.Green(), color.Blue());
+        }
+
+        inline void Update()
+        {
+            device.show();
+        }
     };
+
+#ifdef ARDUINO
+#include <Adafruit_NeoPixel.h>
+    class PixelDevice : public PixelDeviceGenerator<Adafruit_NeoPixel>
+    {
+    public:
+        PixelDevice(Adafruit_NeoPixel &device)
+            : PixelDeviceGenerator<Adafruit_NeoPixel>(device) {}
+    };
+#else
+#include "NativeDevice.h"
+    class PixelDevice : public PixelDeviceGenerator<NativeDevice>
+    {
+    public:
+        PixelDevice(NativeDevice &device)
+            : PixelDeviceGenerator<NativeDevice>(device) {}
+    };
+#endif
+
 }

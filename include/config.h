@@ -3,14 +3,7 @@
 #pragma once
 
 #include "base.h"
-#include "PixelDevice.h"
 #include "PixelController.h"
-
-#ifdef ARDUINO
-#include "NeoPixelDevice.h"
-#else
-#include "NativePixelDevice.h"
-#endif
 
 namespace strip
 {

@@ -29,8 +29,8 @@ namespace strip
     static Adafruit_NeoPixel device_02(device_02_size, pixel_pin_02,
                                        NEO_BRG + NEO_KHZ800);
 
-    static NeoPixelDevice pixel_device_01(device_01);
-    static NeoPixelDevice pixel_device_02(device_02);
+    static PixelDevice pixel_device_01(device_01);
+    static PixelDevice pixel_device_02(device_02);
 
     PixelDevice *pixelDevices[] = {
         &pixel_device_01,
@@ -47,7 +47,7 @@ namespace strip
     const uint16_t device_04_size = 9;
     const uint16_t device_05_size = 4;
 
-    const uint16_t pixel_pin_01 = 13; 
+    const uint16_t pixel_pin_01 = 13;
     const uint16_t pixel_pin_02 = 27;
     const uint16_t pixel_pin_03 = 14;
     const uint16_t pixel_pin_04 = 12;
@@ -82,11 +82,11 @@ namespace strip
     static Adafruit_NeoPixel device_05(device_05_size, pixel_pin_05,
                                        NEO_GRB + NEO_KHZ800); // CH9
 
-    static NeoPixelDevice pixel_device_01(device_01);
-    static NeoPixelDevice pixel_device_02(device_02);
-    static NeoPixelDevice pixel_device_03(device_03);
-    static NeoPixelDevice pixel_device_04(device_04);
-    static NeoPixelDevice pixel_device_05(device_05);
+    static PixelDevice pixel_device_01(device_01);
+    static PixelDevice pixel_device_02(device_02);
+    static PixelDevice pixel_device_03(device_03);
+    static PixelDevice pixel_device_04(device_04);
+    static PixelDevice pixel_device_05(device_05);
 
     PixelDevice *pixelDevices[] = {
         &pixel_device_01,
@@ -113,7 +113,7 @@ namespace strip
     static Adafruit_NeoPixel device_01(device_01_size, pixel_pin_01,
                                        NEO_GRB + NEO_KHZ800); // CH3
 
-    static NeoPixelDevice pixel_device_01(device_01);
+    static PixelDevice pixel_device_01(device_01);
     PixelDevice *pixelDevices[] = {
         &pixel_device_01,
     };
@@ -136,7 +136,7 @@ namespace strip
     static Adafruit_NeoPixel device_01(device_01_size, pixel_pin_01,
                                        NEO_GRB + NEO_KHZ800); // CH3
 
-    static NeoPixelDevice pixel_device_01(device_01);
+    static PixelDevice pixel_device_01(device_01);
     PixelDevice *pixelDevices[] = {
         &pixel_device_01,
     };
@@ -171,11 +171,17 @@ namespace strip
             device_01_size + device_02_size + device_03_size + device_04_size + device_05_size,
     };
 
-    static NativePixelDevice pixel_device_01(device_01_size);
-    static NativePixelDevice pixel_device_02(device_02_size);
-    static NativePixelDevice pixel_device_03(device_03_size);
-    static NativePixelDevice pixel_device_04(device_04_size);
-    static NativePixelDevice pixel_device_05(device_05_size);
+    static NativeDevice device_01(device_01_size); // CH7
+    static NativeDevice device_02(device_02_size); // CH6
+    static NativeDevice device_03(device_03_size); // CH5
+    static NativeDevice device_04(device_04_size); // CH4
+    static NativeDevice device_05(device_05_size); // CH9
+
+    static PixelDevice pixel_device_01(device_01);
+    static PixelDevice pixel_device_02(device_02);
+    static PixelDevice pixel_device_03(device_03);
+    static PixelDevice pixel_device_04(device_04);
+    static PixelDevice pixel_device_05(device_05);
 
     PixelDevice *pixelDevices[] = {
         &pixel_device_01,
@@ -188,7 +194,8 @@ namespace strip
     pixel_index theIndex[pixel_count];
     const pixel_index *pixelIndex = buildIndex(theIndex, pixel_count, pixel_partitions);
 
-    static PixelController pixelController(pixelDevices, device_count);
+    static PixelController pixelController(pixelDevices, device_count,
+                                           pixelIndex, pixel_count);
     PixelController &Pixels = pixelController;
 
     pixel_index *buildIndex(pixel_index *index,

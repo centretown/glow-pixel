@@ -2,10 +2,11 @@
 
 #pragma once
 
-#include "PixelMapper.h"
-#include "PixelDevice.h"
 #include "Sweeper.h"
 #include "PixelIndex.h"
+#include "PixelColor.h"
+#include "PixelDevice.h"
+#include "PixelMapper.h"
 
 using glow::Range;
 using glow::range_pack;
@@ -33,49 +34,47 @@ namespace strip
     {
     private:
         PixelDevice **devices;
-        uint8_t deviceCount = 0;
-        uint16_t pixelCount = 0;
+        const uint8_t deviceCount;
+        const pixel_index *pixelIndex;
+        const uint16_t pixelCount;
         Range range;
-        pixel_index *index = NULL;
 
     private:
-        PixelDevice *selectedDevice = NULL;
         partition_type selectedFlag = 0;
-        partition_type partitions[MAX_PIXEL_DEVICES + 1] = {0};
-        uint16_t selectedOffset = 0;
-        uint8_t selectedIndex = 0;
 
     public:
-        PixelController(PixelDevice **devices, uint8_t deviceCount);
-        ~PixelController();
+        PixelController(PixelDevice **devices, const uint8_t deviceCount,
+                        const pixel_index *pixelIndex, const uint16_t pixelCount)
+            : devices(devices), deviceCount(deviceCount),
+              pixelIndex(pixelIndex), pixelCount(pixelCount)
+        {
+            range.Resize(0, pixelCount);
+        }
+        ~PixelController() {}
 
         inline uint16_t PixelCount() { return pixelCount; }
         inline range_pack Scope() { return range.Pack(); }
 
         void Setup();
+
         void SweepColor(PixelMapper *mapper, color_pack packed, bool reverse = false);
-        void Put(uint16_t index, color_pack color);
+        inline void Put(uint16_t index, color_pack color)
+        {
+            if (index < pixelCount)
+            {
+                pixel_index px = pixelIndex[index];
+                devices[px.device]->Put(px.offset, color);
+                selectedFlag |= 1 << px.device;
+            }
+        }
         void Update();
 
         void Act(uint16_t index, ColorSweep &cs)
         {
-            select(cs.mapper->Get(index));
-            selectedDevice->Put(selectedOffset, cs.color);
+            Put(index, cs.color);
         }
 
     private:
-        inline void select(uint16_t index)
-        {
-            index %= pixelCount;
-            for (selectedIndex = 0;
-                 partitions[selectedIndex + 1] <= index;
-                 selectedIndex++)
-                ;
-            selectedFlag |= 1 << selectedIndex;
-            selectedOffset = index - partitions[selectedIndex];
-            selectedDevice = devices[selectedIndex];
-        }
-
         inline bool mustUpdate(size_t deviceIndex)
         {
             return ((1 << deviceIndex) & selectedFlag);
