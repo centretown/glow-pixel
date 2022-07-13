@@ -15,7 +15,7 @@ void putPalette(PixelMapper *mapper,
     sweeper.Sweep(mapper->Pack(), wrapper, reverse);
 }
 
-void writeDevice(PixelDevice *device, color_pack packed, uint32_t ms)
+void writeDevice(Device *device, color_pack packed, uint32_t ms)
 {
     uint16_t count = device->PixelCount();
     for (uint16_t i = 0; i < count; i++)
@@ -26,7 +26,7 @@ void writeDevice(PixelDevice *device, color_pack packed, uint32_t ms)
     wait(ms);
 }
 
-void writeDevicePixel(PixelDevice *device, uint16_t offset,
+void writeDevicePixel(Device *device, uint16_t offset,
                       color_pack packed, uint32_t ms)
 {
     device->Put(offset, packed);
@@ -34,7 +34,7 @@ void writeDevicePixel(PixelDevice *device, uint16_t offset,
     wait(ms);
 }
 
-void writeController(PixelController &controller, PixelColor &color)
+void writeController(Controller &controller, Color &color)
 {
     for (size_t i = 0; i < controller.PixelCount(); i++)
     {
@@ -44,31 +44,24 @@ void writeController(PixelController &controller, PixelColor &color)
     wait();
 }
 
-void putController(PixelMapper *mapper, PixelColor &color, bool reverse)
+void putController(PixelMapper *mapper, Color &color, bool reverse)
 {
     Pixels.SweepColor(mapper, color.Pack(), reverse);
     Pixels.Update();
     wait();
 }
 
-void wait(uint32_t ms)
-{
-#ifdef ARDUINO
-    delay(ms);
-#endif
-}
-
 void clearPixels()
 {
     PixelMapper mapper(0, Pixels.PixelCount());
-    PixelColor backGround(0, 0, 0);
+    Color backGround(0);
     Pixels.SweepColor(&mapper, backGround.Pack());
     Pixels.Update();
 }
 
-void putMapper(PixelMapper *mapper, PixelColor &color, bool reverse, uint32_t ms)
+void putMapper(PixelMapper *mapper, Color &color, bool reverse, uint32_t ms)
 {
-    PixelColor backGround(15, 15, 5);
+    Color backGround(15, 15, 5);
     Pixels.SweepColor(mapper, backGround.Pack(), reverse);
     Pixels.Update();
 
@@ -85,7 +78,7 @@ void putMapper(PixelMapper *mapper, PixelColor &color, bool reverse, uint32_t ms
     clearPixels();
 }
 
-void putGrid(PixelMapper *mapper, PixelColor &even, PixelColor &odd,
+void putGrid(PixelMapper *mapper, Color &even, Color &odd,
              bool reverse, uint32_t ms)
 {
     ColorWrap puttee;

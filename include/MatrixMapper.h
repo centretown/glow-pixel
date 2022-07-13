@@ -4,7 +4,7 @@
 
 #include "PixelMapper.h"
 
-namespace strip
+namespace pixel
 {
     class MatrixMapper : public PixelMapper
     {

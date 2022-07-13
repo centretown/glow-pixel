@@ -4,7 +4,7 @@
 
 #include "Gradient.h"
 
-namespace strip
+namespace pixel
 {
     class HueGradient : public Gradient<uint16_t>
     {
@@ -14,7 +14,7 @@ namespace strip
                            uint16_t span = (uint16_t)-1)
             : Gradient(pack, gamma, span) {}
 
-        HueGradient(PixelColorHSV &colorHSV,
+        HueGradient(ColorHSV &colorHSV,
                            bool gamma = false,
                            uint16_t span = (uint16_t)-1)
             : Gradient(colorHSV, gamma, span) {}
@@ -22,7 +22,7 @@ namespace strip
         virtual color_pack Get(uint16_t index) { return 0; }
     };
 
-} // namespace strip
+} // namespace pixel
 
 /*!
   @brief   Fill NeoPixel strip with one or more cycles of hues.

@@ -4,7 +4,7 @@
 
 #include "Gradient.h"
 
-namespace strip
+namespace pixel
 {
     class ValueGradient : public Gradient<uint8_t>
     {
@@ -14,11 +14,11 @@ namespace strip
                            uint8_t span = (uint8_t)-1)
             : Gradient(pack, gamma, span) {}
 
-        ValueGradient(PixelColorHSV &colorHSV,
+        ValueGradient(ColorHSV &colorHSV,
                            bool gamma = false,
                            uint8_t span = (uint8_t)-1)
             : Gradient(colorHSV, gamma, span) {}
 
         virtual color_pack Get(uint16_t index) { return 0; }
     };
-} // namespace strip
+} // namespace pixel

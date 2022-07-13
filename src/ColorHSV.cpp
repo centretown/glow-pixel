@@ -1,8 +1,8 @@
 // Copyright (c) 2022 Dave Marsh. See LICENSE.
 
-#include "PixelColorHSV.h"
+#include "ColorHSV.h"
 
-namespace strip
+namespace pixel
 {
     // void PixelColorHSV::fromRGB(PixelColor &color)
     // {
@@ -11,7 +11,7 @@ namespace strip
     //     const uint8_t delta = cmax - cmin;
     // }
 
-    color_pack PixelColorHSV::ToRGB()
+    color_pack ColorHSV::ToRGB()
     {
         uint16_t mappedHue = mapHue();
         color_pack pack = mapHueToColor(mappedHue);
@@ -19,4 +19,4 @@ namespace strip
         return pack;
     }
 
-} // namespace strip
+} // namespace pixel

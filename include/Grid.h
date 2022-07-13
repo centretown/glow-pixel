@@ -5,28 +5,28 @@
 #include "PixelMapper.h"
 #include "config.h"
 
-namespace strip
+namespace pixel
 {
-    class PixelGrid : public PixelMapper
+    class Grid : public PixelMapper
     {
     protected:
         uint16_t rowLength;
         Range rows, cols;
 
     public:
-        PixelGrid(range_pack pack = 0, uint16_t rowLength = 1,
+        Grid(range_pack pack = 0, uint16_t rowLength = 1,
                   range_pack rows = 0, range_pack cols = 0)
         {
             Resize(pack, rowLength, rows, cols);
         }
 
-        PixelGrid(Range &range, uint16_t rowLength,
+        Grid(Range &range, uint16_t rowLength,
                   range_pack rows, range_pack cols)
         {
             Resize(range.Pack(), rowLength, rows, cols);
         }
 
-        PixelGrid(PixelGrid *grid)
+        Grid(Grid *grid)
         {
             Copy(grid);
         }
@@ -36,7 +36,7 @@ namespace strip
         inline range_pack Cols() { return cols.Pack(); }
 
         // modify all
-        inline void Copy(PixelGrid *grid)
+        inline void Copy(Grid *grid)
         {
             Resize(grid->Pack(), grid->rowLength,
                    grid->rows.Pack(), grid->cols.Pack());
@@ -59,4 +59,4 @@ namespace strip
             Range::Resize(Begin(), end);
         }
     };
-} // namespace strip
+} // namespace pixel

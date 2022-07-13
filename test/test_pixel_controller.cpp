@@ -3,19 +3,19 @@
 #define UNITY_INCLUDE_PRINT_FORMATTED
 
 #include <unity.h>
-#include "PixelController.h"
+#include "Controller.h"
 #include "config.h"
 #include "Putter.h"
 
-using namespace strip;
+using namespace pixel;
 
 void testPixelController()
 {
     TEST_ASSERT_GREATER_THAN(0, pixel_count);
     TEST_ASSERT_GREATER_THAN(0, Pixels.PixelCount());
 
-    PixelController &ctl = Pixels;
-    PixelColor color;
+    Controller &ctl = Pixels;
+    Color color;
     color.GBR(255);
     writeController(ctl, color);
     color.BGR(255);
@@ -30,7 +30,7 @@ void testPixelController()
 
 void testPixelControllerRanges()
 {
-    PixelColor color;
+    Color color;
     PixelMapper mapper(Pixels.Scope());
 
     color.RGB(127, 127);

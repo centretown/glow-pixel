@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include "PixelController.h"
+#include "Controller.h"
 #include "ColorFilter.h"
 #include "PixelMapper.h"
 #include "config.h"
 
-namespace strip
+namespace pixel
 {
     class PixelStrip
     {

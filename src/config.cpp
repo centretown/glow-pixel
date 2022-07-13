@@ -2,7 +2,7 @@
 
 #include "config.h"
 
-namespace strip
+namespace pixel
 {
 #ifdef ARDUINO
 #ifdef MEGAATMEGA2560
@@ -29,12 +29,12 @@ namespace strip
     static Adafruit_NeoPixel device_02(device_02_size, pixel_pin_02,
                                        NEO_BRG + NEO_KHZ800);
 
-    static PixelDevice pixel_device_01(device_01);
-    static PixelDevice pixel_device_02(device_02);
+    static Device pixel_device_01(device_01);
+    static Device pixel_device_02(device_02);
 
-    PixelDevice *pixelDevices[] = {
-        &pixel_device_01,
-        &pixel_device_02,
+    Device pixelDevices[device_count] = {
+        pixel_device_01,
+        pixel_device_02,
     };
     // MEGAATMEGA2560
 #else
@@ -82,20 +82,28 @@ namespace strip
     static Adafruit_NeoPixel device_05(device_05_size, pixel_pin_05,
                                        NEO_GRB + NEO_KHZ800); // CH9
 
-    static PixelDevice pixel_device_01(device_01);
-    static PixelDevice pixel_device_02(device_02);
-    static PixelDevice pixel_device_03(device_03);
-    static PixelDevice pixel_device_04(device_04);
-    static PixelDevice pixel_device_05(device_05);
+    static Device pixel_device_01(device_01);
+    static Device pixel_device_02(device_02);
+    static Device pixel_device_03(device_03);
+    static Device pixel_device_04(device_04);
+    static Device pixel_device_05(device_05);
 
-    PixelDevice *pixelDevices[] = {
-        &pixel_device_01,
-        &pixel_device_02,
-        &pixel_device_03,
-        &pixel_device_04,
-        &pixel_device_05,
+    Device pixelDevices[device_count] = {
+        pixel_device_01,
+        pixel_device_02,
+        pixel_device_03,
+        pixel_device_04,
+        pixel_device_05,
     };
-    // ESP32
+
+    // PixelDevice *pixelDevices[] = {
+    //     &pixel_device_01,
+    //     &pixel_device_02,
+    //     &pixel_device_03,
+    //     &pixel_device_04,
+    //     &pixel_device_05,
+    // };
+    // // ESP32
 #else  // ESP32LOCAL
     const uint16_t device_01_size = 8;
 
@@ -114,8 +122,8 @@ namespace strip
                                        NEO_GRB + NEO_KHZ800); // CH3
 
     static PixelDevice pixel_device_01(device_01);
-    PixelDevice *pixelDevices[] = {
-        &pixel_device_01,
+    PixelDevice pixelDevices[] = {
+        pixel_device_01,
     };
     // ESP32LOCAL
 #endif // not ESP32LOCAL
@@ -137,8 +145,8 @@ namespace strip
                                        NEO_GRB + NEO_KHZ800); // CH3
 
     static PixelDevice pixel_device_01(device_01);
-    PixelDevice *pixelDevices[] = {
-        &pixel_device_01,
+    PixelDevice pixelDevices[] = {
+        pixel_device_01,
     };
     // XIAO
 #endif // ESP32
@@ -177,32 +185,37 @@ namespace strip
     static NativeDevice device_04(device_04_size); // CH4
     static NativeDevice device_05(device_05_size); // CH9
 
-    static PixelDevice pixel_device_01(device_01);
-    static PixelDevice pixel_device_02(device_02);
-    static PixelDevice pixel_device_03(device_03);
-    static PixelDevice pixel_device_04(device_04);
-    static PixelDevice pixel_device_05(device_05);
+    static Device pixel_device_01(device_01);
+    static Device pixel_device_02(device_02);
+    static Device pixel_device_03(device_03);
+    static Device pixel_device_04(device_04);
+    static Device pixel_device_05(device_05);
 
-    PixelDevice *pixelDevices[] = {
-        &pixel_device_01,
-        &pixel_device_02,
-        &pixel_device_03,
-        &pixel_device_04,
-        &pixel_device_05,
+    Device pixelDevices[] = {
+        pixel_device_01,
+        pixel_device_02,
+        pixel_device_03,
+        pixel_device_04,
+        pixel_device_05,
+        // &pixel_device_01,
+        // &pixel_device_02,
+        // &pixel_device_03,
+        // &pixel_device_04,
+        // &pixel_device_05,
     };
 #endif // ARDUINO
     pixel_index theIndex[pixel_count];
     const pixel_index *pixelIndex = buildIndex(theIndex, pixel_count, pixel_partitions);
 
-    static PixelController pixelController(pixelDevices, device_count,
-                                           pixelIndex, pixel_count);
-    PixelController &Pixels = pixelController;
+    static Controller pixelController(pixelDevices, device_count,
+                                      pixelIndex, pixel_count);
+    Controller &Pixels = pixelController;
 
     pixel_index *buildIndex(pixel_index *index,
                             const uint16_t pixelCount,
                             const uint16_t *partitions)
     {
-        for (size_t i = 0; i < pixelCount; i++)
+        for (uint16_t i = 0; i < pixelCount; i++)
         {
             uint8_t deviceIndex = 0;
             for (; partitions[deviceIndex + 1] <= i;
@@ -214,4 +227,4 @@ namespace strip
         return index;
     }
 
-} // namespace strip
+} // namespace pixel

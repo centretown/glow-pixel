@@ -4,9 +4,9 @@
 
 #include <unity.h>
 
-#include "PixelColor.h"
+#include "Color.h"
 
-using namespace strip;
+using namespace pixel;
 
 void testColor()
 {
@@ -14,7 +14,7 @@ void testColor()
     const uint8_t tGreen = 0x43;
     const uint8_t tBlue = 0x21;
     const uint8_t tWhite = 0x99;
-    PixelColor color;
+    Color color;
     TEST_ASSERT_EQUAL(0, color.Red());
     TEST_ASSERT_EQUAL(0, color.Green());
     TEST_ASSERT_EQUAL(0, color.Blue());
@@ -43,7 +43,7 @@ void testColor()
     TEST_ASSERT_EQUAL(tBlue, color.Blue());
     TEST_ASSERT_EQUAL(tWhite, color.White());
 
-    PixelColor other(color);
+    Color other(color);
     TEST_ASSERT_EQUAL(tRed, other.Red());
     TEST_ASSERT_EQUAL(tGreen, other.Green());
     TEST_ASSERT_EQUAL(tBlue, other.Blue());

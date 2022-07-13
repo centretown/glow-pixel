@@ -4,7 +4,7 @@
 
 #include "GradientPalette.h"
 
-namespace strip
+namespace pixel
 {
     template <typename T>
     class Gradient : public GradientPalette
@@ -19,7 +19,7 @@ namespace strip
                  T span = (T)-1)
             : GradientPalette(pack, gamma), span(span) {}
 
-        Gradient(PixelColorHSV &colorHSV,
+        Gradient(ColorHSV &colorHSV,
                  bool gamma = false,
                  T span = (T)-1)
             : GradientPalette(colorHSV, gamma), span(span) {}
@@ -29,4 +29,4 @@ namespace strip
 
     };
 
-} // namespace strip
+} // namespace pixel

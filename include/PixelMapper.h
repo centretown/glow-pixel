@@ -9,7 +9,7 @@ using glow::Mapper;
 using glow::Range;
 using glow::range_pack;
 
-namespace strip
+namespace pixel
 {
     class PixelMapper : public Mapper<uint16_t>, public Range
     {

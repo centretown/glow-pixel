@@ -5,7 +5,7 @@
 #pragma once
 
 #include "base.h"
-namespace strip
+namespace pixel
 {
     class NativePixel
     {

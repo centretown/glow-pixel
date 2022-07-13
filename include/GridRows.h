@@ -2,22 +2,22 @@
 
 #pragma once
 
-#include "PixelGrid.h"
+#include "Grid.h"
 
-namespace strip
+namespace pixel
 {
-    class PixelRows : public PixelGrid
+    class GridRows : public Grid
     {
     public:
-        PixelRows(range_pack pack = 0, uint16_t rowLength = 1,
+        GridRows(range_pack pack = 0, uint16_t rowLength = 1,
                   range_pack rows = 0, range_pack cols = 0)
-            : PixelGrid(pack, rowLength, rows, cols) {}
+            : Grid(pack, rowLength, rows, cols) {}
 
-        PixelRows(Range &range, uint16_t rowLength,
+        GridRows(Range &range, uint16_t rowLength,
                   range_pack rows, range_pack cols)
-            : PixelGrid(range, rowLength, rows, cols) {}
+            : Grid(range, rowLength, rows, cols) {}
 
-        PixelRows(PixelGrid *grid)
+        GridRows(Grid *grid)
         {
             Copy(grid);
         }
@@ -32,4 +32,4 @@ namespace strip
         }
     };
 
-} // namespace strip
+} // namespace pixel

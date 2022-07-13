@@ -5,7 +5,7 @@
 #include "base.h"
 #include "ColorFilter.h"
 
-namespace strip
+namespace pixel
 {
     class BrightnessFilter : public ColorFilter
     {
@@ -26,7 +26,7 @@ namespace strip
 
     private:
         inline uint8_t dim(uint8_t v) { return (intensity * v) / 100; }
-        virtual void apply(PixelColor &source, PixelColor &color)
+        virtual void apply(Color &source, Color &color)
         {
             color.RGBW(dim(source.Red()), dim(source.Green()),
                        dim(source.Blue()), dim(source.White()));

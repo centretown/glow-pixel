@@ -6,32 +6,31 @@
 #include "PixelIndex.h"
 #include "Putter.h"
 
-using namespace strip;
+using namespace pixel;
 
 void testPixelIndex()
 {
-    PixelDevice **devices = pixelDevices;
+    Device *devices = pixelDevices;
     TEST_ASSERT_NOT_NULL(devices);
-    size_t deviceCount = device_count;
+    const uint8_t deviceCount = device_count;
     TEST_ASSERT_GREATER_THAN(0, deviceCount);
 
-    partition_type partitions[MAX_PIXEL_DEVICES + 1] = {0};
+    uint16_t partitions[deviceCount + 1] = {0};
 
     uint16_t pixelCount = 0;
     partitions[0] = 0;
-    for (uint16_t i = 0; i < deviceCount; i++)
+    for (uint8_t i = 0; i < deviceCount; i++)
     {
-        pixelCount += devices[i]->PixelCount();
+        pixelCount += devices[i].PixelCount();
         partitions[i + 1] = pixelCount;
     }
 
-    //////////////////////////////////////
-    pixel_index *index = (pixel_index *)
-        malloc(sizeof(pixel_index) * pixelCount);
+    // //////////////////////////////////////
+    pixel_index index[pixel_count];
 
     uint8_t deviceIndex = 0;
 
-    for (size_t i = 0; i < pixelCount; i++)
+    for (uint16_t i = 0; i < pixelCount; i++)
     {
         for (deviceIndex = 0;
              partitions[deviceIndex + 1] <= i;
@@ -41,7 +40,7 @@ void testPixelIndex()
         index[i].device = deviceIndex;
     }
 
-    for (size_t i = 0; i < pixelCount; i++)
+    for (uint16_t i = 0; i < pixelCount; i++)
     {
         for (deviceIndex = 0;
              partitions[deviceIndex + 1] <= i;
@@ -54,15 +53,15 @@ void testPixelIndex()
         TEST_ASSERT_EQUAL(index[i].offset, pixelIndex[i].offset);
     }
 
-    PixelColor color(0, 0, 0x80);
+    Color color(0, 0, 0x80);
     for (size_t i = 0; i < pixelCount; i++)
     {
-        writeDevicePixel(devices[index[i].device],
+        writeDevicePixel(&devices[index[i].device],
                          index[i].offset, color.Pack(), 200);
     }
 
-    //////////////////////////////////////
-    free(index);
+    // //////////////////////////////////////
+    // free(index);
 }
 
 void testPixelIndeces()

@@ -5,7 +5,7 @@
 #include "base.h"
 #include "pixel_base.h"
 
-namespace strip
+namespace pixel
 {
     typedef uint32_t color_pack;
     typedef struct
@@ -16,7 +16,7 @@ namespace strip
         uint8_t white;
     } color_rgbw;
 
-    class PixelColor
+    class Color
     {
     private:
         union
@@ -26,15 +26,15 @@ namespace strip
         };
 
     public:
-        PixelColor(color_pack pack = 0) : pack(pack) {}
+        Color(color_pack pack = 0) : pack(pack) {}
 
-        PixelColor(uint8_t red, uint8_t green,
+        Color(uint8_t red, uint8_t green,
                    uint8_t blue, uint8_t white = 0)
         {
             RGBW(red, green, blue, white);
         }
 
-        PixelColor(PixelColor &color)
+        Color(Color &color)
         {
             Pack(color.Pack());
         }
@@ -85,12 +85,12 @@ namespace strip
         }
 
         // filter functions (modify all)
-        inline void Copy(PixelColor &color)
+        inline void Copy(Color &color)
         {
             Pack(color.Pack());
         }
 
-        inline void Gamma(PixelColor &color)
+        inline void Gamma(Color &color)
         {
             rgbw.red = gamma8(color.rgbw.red);
             rgbw.green = gamma8(color.rgbw.green);
@@ -98,7 +98,7 @@ namespace strip
             rgbw.white = gamma8(color.rgbw.white);
         }
 
-        inline void Sine(PixelColor &color)
+        inline void Sine(Color &color)
         {
             rgbw.red = sine8(color.rgbw.red);
             rgbw.green = sine8(color.rgbw.green);

@@ -7,10 +7,9 @@
 #include "HueGradient.h"
 #include "SaturationGradient.h"
 #include "ValueGradient.h"
-#include "PixelGrid.h"
 #include "Putter.h"
 
-using namespace strip;
+using namespace pixel;
 
 void testGradientPaletteContructors()
 {
@@ -19,7 +18,7 @@ void testGradientPaletteContructors()
     TEST_ASSERT_EQUAL(false, hueGradient.Gamma());
     TEST_ASSERT_EQUAL(0, hueGradient.HSV().Pack());
 
-    PixelColorHSV colorHSV(23, 127, 127);
+    ColorHSV colorHSV(23, 127, 127);
     SaturationGradient satGradient(colorHSV, true, 25);
     TEST_ASSERT_EQUAL(25, satGradient.Span());
     TEST_ASSERT_EQUAL(true, satGradient.Gamma());

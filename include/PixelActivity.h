@@ -3,7 +3,7 @@
 #include "MonitoredActivity.h"
 #include "PixelMonitor.h"
 using glow::MonitoredActivity;
-namespace strip
+namespace pixel
 {
     class PixelActivity : public MonitoredActivity
     {

@@ -10,11 +10,11 @@
 #include "BrightnessFilter.h"
 #include "PixelMapper.h"
 
-using namespace strip;
+using namespace pixel;
 
 void wait(uint32_t ms = 500);
 
-void putFilter(PixelMapper *mapper, PixelColor color, uint32_t ms = 100)
+void putFilter(PixelMapper *mapper, Color color, uint32_t ms = 100)
 {
     Pixels.SweepColor(mapper, color.Pack());
     Pixels.Update();
@@ -28,7 +28,7 @@ void testFilter()
     const uint8_t tBlue = 0x06;
     const uint8_t tWhite = 0xff;
 
-    PixelColor source, color;
+    Color source, color;
     CopyFilter copyFilter;
     PixelMapper mapper(Pixels.Scope());
 
@@ -43,7 +43,7 @@ void testFilter()
     TEST_ASSERT_EQUAL_HEX(tBlue, source.Blue());
     TEST_ASSERT_EQUAL_HEX(tWhite, source.White());
 
-    PixelColor &result = copyFilter.Apply(source, color);
+    Color &result = copyFilter.Apply(source, color);
     TEST_ASSERT_EQUAL_HEX(tRed, result.Red());
     TEST_ASSERT_EQUAL_HEX(tGreen, result.Green());
     TEST_ASSERT_EQUAL_HEX(tBlue, result.Blue());
@@ -148,7 +148,7 @@ void testBrightnessFilter()
     brightness.Intensity(100);
     TEST_ASSERT_EQUAL_HEX(100, brightness.Intensity());
 
-    PixelColor source, color;
+    Color source, color;
     source.RGBW(tRed, tGreen, tBlue, tWhite);
     TEST_ASSERT_EQUAL_HEX(tRed, source.Red());
     TEST_ASSERT_EQUAL_HEX(tGreen, source.Green());
@@ -184,7 +184,7 @@ void testBrightnessFilter()
     TEST_ASSERT_EQUAL_HEX(tWhite / 10, color.White());
 
     GammaFilter gamma;
-    PixelColor testColor;
+    Color testColor;
     testColor.Gamma(color);
 
     brightness.Link(&gamma);
@@ -215,9 +215,9 @@ void testBrightnessFilter()
     // TEST_ASSERT_EQUAL_HEX(testColor.White(), color.White());
 }
 
-void FadeOutFadeIn(PixelColor &source, BrightnessFilter &brightness)
+void FadeOutFadeIn(Color &source, BrightnessFilter &brightness)
 {
-    PixelColor color;
+    Color color;
     PixelMapper mapper(Pixels.Scope());
     for (uint8_t i = 100; i > 0; i--)
     {
@@ -236,7 +236,7 @@ void FadeOutFadeIn(PixelColor &source, BrightnessFilter &brightness)
 void testFadeOutFadeIn()
 {
     const uint8_t tGreen = 0xff;
-    PixelColor source;
+    Color source;
     source.GBR(tGreen);
     BrightnessFilter brightness;
     FadeOutFadeIn(source, brightness);
@@ -246,7 +246,7 @@ void testFadeOutFadeInGamma()
 {
     const uint8_t tGreen = 0xff;
     PixelMapper mapper(Pixels.Scope());
-    PixelColor source;
+    Color source;
     source.GBR(tGreen);
     BrightnessFilter brightness;
     GammaFilter gamma;
@@ -262,7 +262,7 @@ void testFadeOutFadeInSine()
     const uint8_t tRed = 0x0f;
     const uint8_t tGreen = 0x3f;
     const uint8_t tBlue = 0x6f;
-    PixelColor source;
+    Color source;
     source.GBR(tGreen, tBlue, tRed);
     BrightnessFilter brightness;
     SineFilter sine;

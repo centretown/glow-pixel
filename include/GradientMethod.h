@@ -1,8 +1,8 @@
 // Copyright (c) 2022 Dave Marsh. See LICENSE.
 
-#include "PixelColorHSV.h"
+#include "ColorHSV.h"
 
-namespace strip
+namespace pixel
 {
     typedef enum : uint8_t
     {
@@ -18,4 +18,4 @@ namespace strip
         virtual uint16_t Limit() = 0;
     };
 
-} // namespace strip
+} // namespace pixel

@@ -7,28 +7,22 @@
 #include "config.h"
 #include "Putter.h"
 
-using namespace strip;
+using namespace pixel;
 
 void testPixelDevice()
 {
+    Color color;
     for (size_t i = 0; i < device_count; i++)
     {
-        pixelDevices[i]->Setup();
-    }
-
-    PixelDevice *device;
-    PixelColor color;
-    for (size_t i = 0; i < device_count; i++)
-    {
-        device = pixelDevices[i];
+        Device &device = pixelDevices[i];
         color.RGB(0xff, 0, 0);
-        writeDevice(device, color.Pack());
+        writeDevice(&device, color.Pack());
         color.RGB(0, 0xff, 0);
-        writeDevice(device, color.Pack());
+        writeDevice(&device, color.Pack());
         color.RGB(0, 0, 0xff);
-        writeDevice(device, color.Pack());
+        writeDevice(&device, color.Pack());
         color.RGB();
-        writeDevice(device, color.Pack());
+        writeDevice(&device, color.Pack());
     }
 }
 

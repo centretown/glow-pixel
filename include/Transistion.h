@@ -4,7 +4,7 @@
 
 #include "base.h"
 
-namespace strip
+namespace pixel
 {
     typedef enum : uint8_t
     {

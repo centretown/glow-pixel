@@ -2,25 +2,24 @@
 
 #pragma once
 
-#include "PixelColor.h"
+#include "Color.h"
 #include "PixelMapper.h"
-#include "PixelController.h"
+#include "Controller.h"
 #include "Sweeper.h"
 #include "config.h"
 #include "ColorPalette.h"
-#include "Spin.h"
+#include "wait.h"
 
-using glow::Spin;
+// using glow::Spin;
 using glow::Sweeper;
-using strip::color_pack;
-using strip::ColorPalette;
-using strip::PixelColor;
-using strip::PixelController;
-using strip::PixelDevice;
-using strip::PixelMapper;
-using strip::Pixels;
+using pixel::color_pack;
+using pixel::ColorPalette;
+using pixel::Color;
+using pixel::Controller;
+using pixel::Device;
+using pixel::PixelMapper;
+using pixel::Pixels;
 
-void wait(uint32_t ms = 500);
 void clearPixels();
 
 typedef struct
@@ -66,20 +65,20 @@ void putPalette(PixelMapper *mapper,
                 bool reverse = false,
                 uint32_t ms = 100);
 
-void writeDevice(PixelDevice *device, color_pack packed,
+void writeDevice(Device *device, color_pack packed,
                  uint32_t ms = 500);
 
-void writeDevicePixel(PixelDevice *device, uint16_t offset,
+void writeDevicePixel(Device *device, uint16_t offset,
                       color_pack packed, uint32_t ms = 20);
 
-void writeController(PixelController &controller,
-                     PixelColor &color);
+void writeController(Controller &controller,
+                     Color &color);
 
-void putMapper(PixelMapper *mapper, PixelColor &color,
+void putMapper(PixelMapper *mapper, Color &color,
                bool reverse = false, uint32_t ms = 100);
 
-void putGrid(PixelMapper *mapper, PixelColor &even, PixelColor &odd,
+void putGrid(PixelMapper *mapper, Color &even, Color &odd,
              bool reverse = false, uint32_t ms = 100);
 
 void putController(PixelMapper *mapper,
-                   PixelColor &color, bool reverse = false);
+                   Color &color, bool reverse = false);

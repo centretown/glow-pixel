@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "PixelColor.h"
+#include "Color.h"
 
-namespace strip
+namespace pixel
 {
     typedef uint32_t color_hsv_pack;
     typedef struct
@@ -26,7 +26,7 @@ namespace strip
     const uint8_t saturation_limit = 0xff;
     const uint8_t value_limit = 0xff;
 
-    class PixelColorHSV
+    class ColorHSV
     {
     private:
         union
@@ -36,23 +36,23 @@ namespace strip
         };
 
     public:
-        PixelColorHSV(color_hsv_pack pack = 0) : pack(pack) {}
+        ColorHSV(color_hsv_pack pack = 0) : pack(pack) {}
 
-        PixelColorHSV(uint16_t hue,
+        ColorHSV(uint16_t hue,
                       uint8_t saturation,
                       uint8_t value)
         {
             HSV(hue, saturation, value);
         }
 
-        PixelColorHSV(PixelColorHSV &colorHSV)
+        ColorHSV(ColorHSV &colorHSV)
         {
             HSV(colorHSV.Hue(),
                 colorHSV.Saturation(),
                 colorHSV.Value());
         }
 
-        PixelColorHSV(PixelColor &color)
+        ColorHSV(Color &color)
         {
             // fromRGB(color.Pack());
         }
@@ -76,7 +76,7 @@ namespace strip
             hsv.value = v;
         }
         void Pack(color_hsv_pack v) { pack = v; }
-        void Copy(PixelColorHSV &v) { pack = v.Pack(); }
+        void Copy(ColorHSV &v) { pack = v.Pack(); }
 
         // RGB conversion
         color_pack ToRGB();
@@ -112,13 +112,13 @@ namespace strip
             }
 
             // full red
-            PixelColor color(max_color, 0, 0);
+            Color color(max_color, 0, 0);
             return color.Pack();
         }
 
         inline color_pack redToGreen(uint16_t mapped_hue)
         {
-            PixelColor color;
+            Color color;
             if (mapped_hue < red_to_yellow)
             {
                 color.Red(max_color);
@@ -134,7 +134,7 @@ namespace strip
 
         inline color_pack greenToBlue(uint16_t mapped_hue)
         {
-            PixelColor color;
+            Color color;
             if (mapped_hue < green_to_cyan)
             {
                 color.Green(max_color);
@@ -150,7 +150,7 @@ namespace strip
 
         inline color_pack blueToRed(uint16_t mapped_hue)
         {
-            PixelColor color;
+            Color color;
             if (mapped_hue < blue_to_magenta)
             {
                 color.Blue(max_color);
@@ -170,7 +170,7 @@ namespace strip
             uint16_t value_multiplier = 1 + hsv.value;           // v1 1 to 256; allows >>8 instead of /255
             uint8_t saturation_added = 255 - hsv.saturation;     // s2 255 to 0
 
-            PixelColor color(pack);
+            Color color(pack);
 
             uint8_t applied = apply(color.Red(),
                                     saturation_multiplier,
@@ -205,7 +205,7 @@ namespace strip
             return static_cast<uint8_t>(color_result);
         }
 
-        inline uint8_t biggest(PixelColor &color)
+        inline uint8_t biggest(Color &color)
         {
             uint8_t colorMax = color.Red();
             if (color.Green() > colorMax)
@@ -218,7 +218,7 @@ namespace strip
             }
             return colorMax;
         }
-        inline uint8_t smallest(PixelColor &color)
+        inline uint8_t smallest(Color &color)
         {
             uint8_t colorMin = color.Red();
             if (color.Green() < colorMin)
@@ -233,4 +233,4 @@ namespace strip
         }
     };
 
-} // namespace strip
+} // namespace pixel

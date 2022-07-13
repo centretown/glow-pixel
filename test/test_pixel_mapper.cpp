@@ -4,7 +4,7 @@
 
 #include <unity.h>
 
-#include "PixelController.h"
+#include "Controller.h"
 #include "config.h"
 #include "PixelMapper.h"
 #include "MatrixMapper.h"
@@ -12,12 +12,12 @@
 #include "Putter.h"
 
 using namespace glow;
-using namespace strip;
+using namespace pixel;
 
 void testOrderedMapper()
 {
     PixelMapper mapper(Pixels.Scope());
-    PixelColor color(255);
+    Color color(255);
 
     TEST_ASSERT_EQUAL(Pixels.PixelCount(), mapper.End());
     TEST_ASSERT_EQUAL(0, mapper.Begin());
@@ -74,7 +74,7 @@ void testMatrixMapper()
 
     testMatrix(matrix16, mapper16);
 
-    PixelColor color(0, 0, 255);
+    Color color(0, 0, 255);
     putMapper(&mapper16, color);
 }
 

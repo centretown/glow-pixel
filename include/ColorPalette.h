@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include "PixelColor.h"
+#include "Color.h"
 #include "Mapper.h"
 
 using glow::Mapper;
 
-namespace strip
+namespace pixel
 {
     class ColorPalette : public Mapper<color_pack>
     {

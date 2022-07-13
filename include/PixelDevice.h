@@ -2,21 +2,25 @@
 
 #pragma once
 
-#include "PixelColor.h"
+#include "Color.h"
+#include "Range.h"
 
-namespace strip
+using glow::Range;
+
+namespace pixel
 {
     template <typename DEVICE>
-    class PixelDeviceGenerator
+    class DeviceGenerator : public Range
     {
     private:
         DEVICE &device;
         const uint16_t pixelCount;
-        PixelColor color;
+        Color color;
 
     public:
-        PixelDeviceGenerator(DEVICE &device)
-            : device(device), pixelCount(device.numPixels()) {}
+        DeviceGenerator(DEVICE &device)
+            : Range(0, device.numPixels()), device(device),
+              pixelCount(device.numPixels()) {}
 
         inline const uint16_t PixelCount() { return pixelCount; }
 
@@ -42,19 +46,19 @@ namespace strip
 
 #ifdef ARDUINO
 #include <Adafruit_NeoPixel.h>
-    class PixelDevice : public PixelDeviceGenerator<Adafruit_NeoPixel>
+    class Device : public DeviceGenerator<Adafruit_NeoPixel>
     {
     public:
-        PixelDevice(Adafruit_NeoPixel &device)
-            : PixelDeviceGenerator<Adafruit_NeoPixel>(device) {}
+        Device(Adafruit_NeoPixel &device)
+            : DeviceGenerator<Adafruit_NeoPixel>(device) {}
     };
 #else
 #include "NativeDevice.h"
-    class PixelDevice : public PixelDeviceGenerator<NativeDevice>
+    class Device : public DeviceGenerator<NativeDevice>
     {
     public:
-        PixelDevice(NativeDevice &device)
-            : PixelDeviceGenerator<NativeDevice>(device) {}
+        Device(NativeDevice &device)
+            : DeviceGenerator<NativeDevice>(device) {}
     };
 #endif
 

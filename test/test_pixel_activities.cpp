@@ -6,12 +6,12 @@
 // #include "base.h"
 // #include "config.h"
 // #include "Activity.h"
-// #include "PixelController.h"
+// #include "Controller.h"
 // #include "PixelStrip.h"
 // #include "SolidActivity.h"
 // #include "TimeMonitor.h"
 
-// using namespace strip;
+// using namespace pixel;
 
 
 // PixelController pixelController(pixelWriters, pixelWritersCount);

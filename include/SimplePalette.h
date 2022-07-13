@@ -4,7 +4,7 @@
 
 #include "ColorPalette.h"
 
-namespace strip
+namespace pixel
 {
     class SimplePalette : public ColorPalette
     {
@@ -21,4 +21,4 @@ namespace strip
             return colors[index % length];
         }
     };
-} // namespace strip
+} // namespace pixel

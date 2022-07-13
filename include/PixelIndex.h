@@ -4,11 +4,11 @@
 
 #include "base.h"
 
-namespace strip
+namespace pixel
 {
     typedef struct
     {
         unsigned device : 4;  // 0 - 15
         unsigned offset : 12; // 0 - 1791
     } pixel_index;
-} // namespace strip
+} // namespace pixel

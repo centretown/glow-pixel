@@ -3,16 +3,16 @@
 #pragma once
 
 #include "base.h"
-#include "PixelController.h"
+#include "Controller.h"
 
-namespace strip
+namespace pixel
 {
     extern const uint8_t device_count;
     extern const uint16_t pixel_count;
     extern const pixel_index *pixelIndex;
 
-    extern PixelDevice *pixelDevices[];
-    extern PixelController &Pixels;
+    extern Device pixelDevices[];
+    extern Controller &Pixels;
 
     pixel_index *buildIndex(pixel_index *index,
                             const uint16_t pixelCount,

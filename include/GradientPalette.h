@@ -3,14 +3,14 @@
 #pragma once
 
 #include "ColorPalette.h"
-#include "PixelColorHSV.h"
+#include "ColorHSV.h"
 
-namespace strip
+namespace pixel
 {
     class GradientPalette : public ColorPalette
     {
     private:
-        PixelColorHSV hsv;
+        ColorHSV hsv;
         bool gamma = false;
 
     public:
@@ -21,12 +21,12 @@ namespace strip
             hsv.Pack(pack);
         }
 
-        GradientPalette(PixelColorHSV &colorHSV,
+        GradientPalette(ColorHSV &colorHSV,
                         bool gamma = false)
             : GradientPalette(colorHSV.Pack(), gamma) {}
 
         // accessors
-        inline PixelColorHSV &HSV() { return hsv; }
+        inline ColorHSV &HSV() { return hsv; }
         inline bool Gamma() { return gamma; }
 
         // updaters
@@ -35,5 +35,5 @@ namespace strip
         // virtual color_pack Get(uint16_t index) = 0;
     };
 
-} // namespace strip
+} // namespace pixel
 

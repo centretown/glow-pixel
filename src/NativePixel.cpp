@@ -4,7 +4,7 @@
 #ifndef ARDUINO
 #include "NativePixel.h"
 
-namespace strip
+namespace pixel
 {
     const uint8_t NativePixel::_NeoPixelSineTable[256] = {
         128, 131, 134, 137, 140, 143, 146, 149, 152, 155, 158, 162, 165, 167, 170,

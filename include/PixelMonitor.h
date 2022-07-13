@@ -5,7 +5,7 @@
 
 using glow::Monitor;
 
-namespace strip
+namespace pixel
 {
     class PixelMonitor : public Monitor
     {

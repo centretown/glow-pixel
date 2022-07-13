@@ -4,12 +4,12 @@
 
 #include "ColorFilter.h"
 
-namespace strip
+namespace pixel
 {
     class GammaFilter : public ColorFilter
     {
     private:
-        virtual void apply(PixelColor &source, PixelColor &color)
+        virtual void apply(Color &source, Color &color)
         {
             color.Gamma(source);
         }

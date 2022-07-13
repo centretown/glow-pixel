@@ -4,10 +4,10 @@
 #include <unity.h>
 #include "base.h"
 #include "BlinkActivity.h"
-#include "PixelController.h"
+#include "Controller.h"
 #include "config.h"
 
-using namespace strip;
+using namespace pixel;
 
 void testPixelDevices();
 void testPixelControllers();
@@ -20,6 +20,7 @@ void testColorPalettes();
 void testPixelColorHsv();
 void testGradientPalettes();
 void testPixelIndeces();
+void testPixelSpinner();
 
 // void testStripActivities();
 
@@ -37,10 +38,12 @@ void run()
     testPixelColor();
     testColorFilter();
     testPixelMapper();
+    testPixelSpinner();
     testPixelGrids();
     testColorPalettes();
     testPixelColorHsv();
     testGradientPalettes();
+    testPixelSpinner();
     UNITY_END();
 }
 

@@ -6,10 +6,10 @@
 
 #include "config.h"
 #include "Putter.h"
-#include "PixelColorHSV.h"
+#include "ColorHSV.h"
 #include "hsvTest.h"
 
-using namespace strip;
+using namespace pixel;
 
 void testHsvStepsOrg(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
 {
@@ -22,7 +22,7 @@ void testHsvStepsOrg(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
                   blue);
     uint32_t packed_org = apply_saturation_value(tSaturation, tValue,
                                                  red, green, blue);
-    PixelColor colorHsv;
+    Color colorHsv;
     colorHsv.Hue(tHue, tSaturation, tValue);
     TEST_ASSERT_EQUAL_HEX32(colorHsv.Pack(), packed_org);
 }
@@ -40,7 +40,7 @@ void testHsvStepsNew(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
     uint32_t packed_org = apply_saturation_value(tSaturation, tValue,
                                                  red, green, blue);
 
-    PixelColorHSV hsv(tHue, tSaturation, tValue);
+    ColorHSV hsv(tHue, tSaturation, tValue);
     TEST_ASSERT_EQUAL(tHue, hsv.Hue());
     TEST_ASSERT_EQUAL(tSaturation, hsv.Saturation());
     TEST_ASSERT_EQUAL(tValue, hsv.Value());
@@ -50,7 +50,7 @@ void testHsvStepsNew(uint16_t tHue, uint8_t tSaturation, uint8_t tValue)
     TEST_ASSERT_EQUAL_HEX16_MESSAGE(mapped_hue_org, mapped_hue_new, buffer);
 
     color_pack pack = hsv.mapHueToColor(mapped_hue_new);
-    PixelColor color(pack);
+    Color color(pack);
 
     TEST_ASSERT_EQUAL_HEX8(red, color.Red());
     TEST_ASSERT_EQUAL_HEX8(green, color.Green());

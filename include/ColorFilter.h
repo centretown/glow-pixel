@@ -2,16 +2,16 @@
 
 #pragma once
 
-#include "PixelColor.h"
+#include "Color.h"
 #include "Filter.h"
 
 using glow::Filter;
 
-namespace strip
+namespace pixel
 {
-    class ColorFilter : public Filter<PixelColor>
+    class ColorFilter : public Filter<Color>
     {
     private:
-        virtual void apply(PixelColor &source, PixelColor &color) = 0;
+        virtual void apply(Color &source, Color &color) = 0;
     };
 }

@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Dave Marsh. See LICENSE.
 
 #include "PixelMonitor.h"
-namespace strip
+namespace pixel
 {
     bool PixelMonitor::Ready()
     {
