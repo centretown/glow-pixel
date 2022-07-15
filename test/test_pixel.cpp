@@ -12,15 +12,15 @@ using namespace pixel;
 void testPixelDevices();
 void testPixelControllers();
 void testPixelColor();
-void testColorFilter();
-void testPixelMapper();
+void testMatrixMappers();
+
+// void testColorFilter();
 void testPixelStrip();
 void testPixelGrids();
 void testColorPalettes();
 void testPixelColorHsv();
 void testGradientPalettes();
 void testPixelIndeces();
-void testPixelSpinner();
 
 // void testStripActivities();
 
@@ -36,14 +36,12 @@ void run()
     testPixelIndeces();
     testPixelControllers();
     testPixelColor();
-    testColorFilter();
-    testPixelMapper();
-    testPixelSpinner();
-    testPixelGrids();
-    testColorPalettes();
-    testPixelColorHsv();
-    testGradientPalettes();
-    testPixelSpinner();
+    testMatrixMappers();
+    // testColorFilter();
+    // testPixelGrids();
+    // testColorPalettes();
+    // testPixelColorHsv();
+    // testGradientPalettes();
     UNITY_END();
 }
 

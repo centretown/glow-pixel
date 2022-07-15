@@ -7,7 +7,6 @@
 #include "HueGradient.h"
 #include "SaturationGradient.h"
 #include "ValueGradient.h"
-#include "Putter.h"
 
 using namespace pixel;
 

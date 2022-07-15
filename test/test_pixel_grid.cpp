@@ -7,62 +7,61 @@
 #include "config.h"
 #include "GridRows.h"
 #include "GridColumns.h"
-#include "Putter.h"
 
 using namespace pixel;
 
 void testIndicatorFrame()
 {
-    Color color;
-    Range rows(0, 1);
-    Range cols(0, 4);
-    Range range(Pixels.Scope());
-    range.Resize(range.End() - 4, range.End());
+    // Color color;
+    // Range rows(0, 1);
+    // Range cols(0, 4);
+    // Range range(Pixels.Scope());
+    // range.Resize(range.End() - 4, range.End());
 
-    auto end = range.End();
-    uint16_t rowLength = 4;
-    GridRows indicator(range.Pack(), rowLength, rows.Pack(), cols.Pack());
-    auto begin = indicator.Begin();
+    // auto end = range.End();
+    // uint16_t rowLength = 4;
+    // GridRows indicator(range.Pack(), rowLength, rows.Pack(), cols.Pack());
+    // auto begin = indicator.Begin();
 
-    TEST_ASSERT_EQUAL(end - rowLength, indicator.Begin());
-    TEST_ASSERT_EQUAL(end, indicator.End());
-    TEST_ASSERT_EQUAL(end - rowLength, indicator.Get(begin));
-    TEST_ASSERT_EQUAL(begin, indicator.Get(begin));
-    TEST_ASSERT_EQUAL(begin + 1, indicator.Get(begin + 1));
-    TEST_ASSERT_EQUAL(begin + 2, indicator.Get(begin + 2));
-    TEST_ASSERT_EQUAL(begin + 3, indicator.Get(begin + 3));
+    // TEST_ASSERT_EQUAL(end - rowLength, indicator.Begin());
+    // TEST_ASSERT_EQUAL(end, indicator.End());
+    // TEST_ASSERT_EQUAL(end - rowLength, indicator.Get(begin));
+    // TEST_ASSERT_EQUAL(begin, indicator.Get(begin));
+    // TEST_ASSERT_EQUAL(begin + 1, indicator.Get(begin + 1));
+    // TEST_ASSERT_EQUAL(begin + 2, indicator.Get(begin + 2));
+    // TEST_ASSERT_EQUAL(begin + 3, indicator.Get(begin + 3));
 
-    color.RGB(127, 127);
-    putMapper(&indicator, color);
+    // color.RGB(127, 127);
+    // putMapper(&indicator, color);
 
-    rowLength = 5;
-    cols.Resize(0, rowLength);
-    range.Resize(range.Begin() - 1, range.End());
-    indicator.Resize(range.Pack(), rowLength, rows.Pack(), cols.Pack());
-    begin = indicator.Begin();
-    TEST_ASSERT_EQUAL(5, indicator.Length());
-    TEST_ASSERT_EQUAL(end - rowLength, indicator.Get(begin));
-    TEST_ASSERT_EQUAL(begin, indicator.Get(begin));
-    TEST_ASSERT_EQUAL(begin + 1, indicator.Get(begin + 1));
-    TEST_ASSERT_EQUAL(begin + 2, indicator.Get(begin + 2));
-    TEST_ASSERT_EQUAL(begin + 3, indicator.Get(begin + 3));
-    color.GBR(127, 127);
-    putMapper(&indicator, color);
+    // rowLength = 5;
+    // cols.Resize(0, rowLength);
+    // range.Resize(range.Begin() - 1, range.End());
+    // indicator.Resize(range.Pack(), rowLength, rows.Pack(), cols.Pack());
+    // begin = indicator.Begin();
+    // TEST_ASSERT_EQUAL(5, indicator.Length());
+    // TEST_ASSERT_EQUAL(end - rowLength, indicator.Get(begin));
+    // TEST_ASSERT_EQUAL(begin, indicator.Get(begin));
+    // TEST_ASSERT_EQUAL(begin + 1, indicator.Get(begin + 1));
+    // TEST_ASSERT_EQUAL(begin + 2, indicator.Get(begin + 2));
+    // TEST_ASSERT_EQUAL(begin + 3, indicator.Get(begin + 3));
+    // color.GBR(127, 127);
+    // putMapper(&indicator, color);
 }
 
 void testGrids(range_pack pack, uint16_t rowLength, uint16_t colLength)
 {
-    // Range rows(0, colLength);
-    // Range cols(0, rowLength);
+    Range rows(0, colLength);
+    Range cols(0, rowLength);
 
     // range_pack rowsPack = rows.Pack();
     // range_pack colsPack = cols.Pack();
 
-    // PixelRows rowGrid(pack, rowLength, rows.Pack(), cols.Pack());
-    // PixelColumns colGrid;
-    // PixelColor color(63, 63, 0);
-    // PixelColor color1(0, 63, 63);
-    // PixelColor color2(63, 0, 63);
+    GridRows rowGrid(pack, rowLength, rows.Pack(), cols.Pack());
+    GridColumns colGrid;
+    Color color(63, 63, 0);
+    Color color1(0, 63, 63);
+    Color color2(63, 0, 63);
 
     // const uint32_t DELAY = 0;
     // auto put = [&]()
@@ -139,11 +138,11 @@ void testGrids(range_pack pack, uint16_t rowLength, uint16_t colLength)
 
 void testPixelGrid()
 {
-    uint16_t rowLength = 9;
-    uint16_t colLength = 4;
-    uint16_t length = rowLength * colLength;
-    Range range(0, length);
-    testGrids(range.Pack(), rowLength, colLength);
+    // uint16_t rowLength = 9;
+    // uint16_t colLength = 4;
+    // uint16_t length = rowLength * colLength;
+    // Range range(0, length);
+    // testGrids(range.Pack(), rowLength, colLength);
 }
 
 void testPixelGrids()

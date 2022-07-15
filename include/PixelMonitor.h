@@ -1,7 +1,6 @@
 // Copyright (c) 2022 Dave Marsh. See LICENSE.
 
 #include "Monitor.h"
-#include "PixelStrip.h"
 
 using glow::Monitor;
 
@@ -13,10 +12,8 @@ namespace pixel
         bool ready = true;
 
     protected:
-        PixelStrip *pixel;
-
     public:
-        PixelMonitor(PixelStrip *pixel) : pixel(pixel) {}
+        PixelMonitor() {}
         ~PixelMonitor() {}
 
         virtual void Reset() {}

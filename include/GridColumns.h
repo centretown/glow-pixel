@@ -10,11 +10,11 @@ namespace pixel
     {
     public:
         GridColumns(range_pack pack = 0, uint16_t rowLength = 1,
-                     range_pack rows = 0, range_pack cols = 0)
+                    range_pack rows = 0, range_pack cols = 0)
             : Grid(pack, rowLength, rows, cols) {}
 
         GridColumns(Range &range, uint16_t rowLength,
-                     range_pack rows, range_pack cols)
+                    range_pack rows, range_pack cols)
             : Grid(range, rowLength, rows, cols) {}
 
         GridColumns(Grid *grid)
@@ -22,7 +22,7 @@ namespace pixel
             Copy(grid);
         }
 
-        virtual uint16_t Get(uint16_t index)
+        uint16_t Map(uint16_t index)
         {
             index -= Begin();
             auto row = (index % rows.Length()) + rows.Begin();

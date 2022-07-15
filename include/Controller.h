@@ -2,31 +2,16 @@
 
 #pragma once
 
-#include "PixelDevice.h"
-#include "Sweeper.h"
+#include "Device.h"
 #include "PixelIndex.h"
 #include "Color.h"
-#include "PixelMapper.h"
 
 using glow::Range;
 using glow::range_pack;
-using glow::Sweeper;
 
 namespace pixel
 {
-    class ColorSweep
-    {
-    public:
-        PixelMapper *mapper;
-        color_pack color;
-
-    public:
-        ColorSweep(PixelMapper *mapper, color_pack color)
-            : mapper(mapper), color(color) {}
-    };
-
-    class Controller : public Sweeper<ColorSweep &>,
-                       public Range
+    class Controller : Range // private range
     {
     private:
         Device *devices;
@@ -47,8 +32,8 @@ namespace pixel
         }
         ~Controller() {}
 
-        inline uint16_t PixelCount() { return pixelCount; }
-        inline range_pack Scope() { return Pack(); }
+        inline uint16_t PixelCount() const { return pixelCount; }
+        inline range_pack Scope() const { return Pack(); }
 
         void Setup()
         {
@@ -60,13 +45,6 @@ namespace pixel
 
         Device &device(uint8_t i) { return devices[i]; }
         inline uint8_t device_count() { return deviceCount; }
-
-        inline void SweepColor(PixelMapper *mapper, color_pack color,
-                               bool reverse = false)
-        {
-            ColorSweep colorSweep(mapper, color);
-            Sweep(mapper->Pack(), colorSweep);
-        }
 
         inline void Put(uint16_t index, color_pack color)
         {
@@ -90,13 +68,8 @@ namespace pixel
             updateDone();
         }
 
-        void Act(uint16_t index, ColorSweep &cs)
-        {
-            Put(index, cs.color);
-        }
-
     private:
-        inline bool mustUpdate(size_t deviceIndex)
+        inline bool mustUpdate(size_t deviceIndex) const
         {
             return ((1 << deviceIndex) & selectedFlag);
         }

@@ -5,7 +5,6 @@
 #include <unity.h>
 
 #include "config.h"
-#include "Putter.h"
 #include "ColorHSV.h"
 #include "hsvTest.h"
 

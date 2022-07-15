@@ -4,7 +4,8 @@
 
 #include <unity.h>
 #include "PixelIndex.h"
-#include "Putter.h"
+#include "config.h"
+#include "wait.h"
 
 using namespace pixel;
 
@@ -25,7 +26,6 @@ void testPixelIndex()
         partitions[i + 1] = pixelCount;
     }
 
-    // //////////////////////////////////////
     pixel_index index[pixel_count];
 
     uint8_t deviceIndex = 0;
@@ -53,15 +53,14 @@ void testPixelIndex()
         TEST_ASSERT_EQUAL(index[i].offset, pixelIndex[i].offset);
     }
 
-    Color color(0, 0, 0x80);
+    Color color(0, 0x80, 0x80);
     for (size_t i = 0; i < pixelCount; i++)
     {
-        writeDevicePixel(&devices[index[i].device],
-                         index[i].offset, color.Pack(), 200);
+        Pixels.Put(i, color.Pack());
+        Pixels.Update();
+        wait(30);
     }
-
-    // //////////////////////////////////////
-    // free(index);
+    wait(1000);
 }
 
 void testPixelIndeces()

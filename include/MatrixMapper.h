@@ -2,22 +2,27 @@
 
 #pragma once
 
-#include "PixelMapper.h"
+#include "base.h"
 
 namespace pixel
 {
-    class MatrixMapper : public PixelMapper
+    class MatrixMapper
     {
     private:
         const uint16_t *matrix;
+        const uint16_t size;
 
     public:
-        MatrixMapper(const uint16_t *matrix, uint16_t pixelCount)
-            : PixelMapper(0, pixelCount), matrix(matrix) {}
+        MatrixMapper(const uint16_t *matrix, const uint16_t size)
+            : matrix(matrix), size(size) {}
 
-        virtual uint16_t Get(uint16_t index)
+        inline uint16_t Map(uint16_t index)
         {
-            return matrix[index];
+            if (index < size)
+            {
+                return matrix[index];
+            }
+            return index;
         };
     };
 }

@@ -2,12 +2,14 @@
 
 #pragma once
 
-#include "PixelMapper.h"
-#include "config.h"
+#include "Range.h"
+
+using glow::Range;
+using glow::range_pack;
 
 namespace pixel
 {
-    class Grid : public PixelMapper
+    class Grid : public Range
     {
     protected:
         uint16_t rowLength;
@@ -15,13 +17,13 @@ namespace pixel
 
     public:
         Grid(range_pack pack = 0, uint16_t rowLength = 1,
-                  range_pack rows = 0, range_pack cols = 0)
+             range_pack rows = 0, range_pack cols = 0)
         {
             Resize(pack, rowLength, rows, cols);
         }
 
         Grid(Range &range, uint16_t rowLength,
-                  range_pack rows, range_pack cols)
+             range_pack rows, range_pack cols)
         {
             Resize(range.Pack(), rowLength, rows, cols);
         }

@@ -6,11 +6,12 @@
 #include "Range.h"
 
 using glow::Range;
+using glow::range_pack;
 
 namespace pixel
 {
     template <typename DEVICE>
-    class DeviceGenerator : public Range
+    class DeviceGenerator : Range
     {
     private:
         DEVICE &device;
@@ -23,6 +24,7 @@ namespace pixel
               pixelCount(device.numPixels()) {}
 
         inline const uint16_t PixelCount() { return pixelCount; }
+        inline const range_pack Scope() { return Pack(); }
 
         inline void Setup()
         {
