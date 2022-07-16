@@ -3,6 +3,7 @@
 #define UNITY_INCLUDE_PRINT_FORMATTED
 
 #include <unity.h>
+#include "bench.h"
 
 #include "Color.h"
 #include "pixel_base.h"
@@ -358,7 +359,10 @@ void testColorElements()
 
 void testPixelColor()
 {
+    print_line("TESTING COLOR", true);
     RUN_TEST(testColor);
+    print_line("TESTING COLOR OPERATORS", true);
     RUN_TEST(testColorOperators);
+    print_line("TESTING COLOR ELEMENTS", true);
     RUN_TEST(testColorElements);
 }

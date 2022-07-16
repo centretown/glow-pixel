@@ -15,11 +15,13 @@ public:
 
     inline void begin() {}
     inline void clear() {}
-    inline void show() { printf("show\n"); }
+    inline void show()
+    { //  printf("show\n");
+    }
     inline void setPixelColor(uint16_t n, uint8_t r,
                               uint8_t g, uint8_t b)
     {
-        printf("Color:%u-%x:%x:%x\n", n, r, g, b);
+        // printf("Color:%u-%x:%x:%x\n", n, r, g, b);
     }
     uint16_t numPixels(void) const { return num_pixels; }
 };

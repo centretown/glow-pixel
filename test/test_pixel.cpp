@@ -7,7 +7,9 @@
 #include "Controller.h"
 #include "config.h"
 
-using namespace pixel;
+using pixel::Pixels;
+
+void testBench();
 
 void testPixelDevices();
 void testPixelControllers();
@@ -32,11 +34,13 @@ glow::BlinkActivity blinker(&monitor, &blink);
 void run()
 {
     UNITY_BEGIN();
+    testBench();
     testPixelDevices();
     testPixelIndeces();
     testPixelControllers();
     testPixelColor();
     testMatrixMappers();
+
     // testColorFilter();
     // testPixelGrids();
     // testColorPalettes();
@@ -49,6 +53,9 @@ void run()
 
 void setup()
 {
+#ifdef ARDUINO
+    Serial.begin(115200);
+#endif
     delay(2000);
     Pixels.Setup();
     run();
