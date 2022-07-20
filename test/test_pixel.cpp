@@ -15,18 +15,11 @@ void testMath();
 
 void testPixelDevices();
 void testPixelControllers();
-void testPixelColor();
 void testMatrixMappers();
 
 // void testColorFilter();
-void testPixelStrip();
 void testPixelGrids();
-void testColorPalettes();
-void testPixelColorHsv();
-void testGradientPalettes();
 void testPixelIndeces();
-
-// void testStripActivities();
 
 glow::PinDevice blinkPin;
 glow::BlinkSettings blink(&blinkPin);
@@ -39,16 +32,12 @@ void run()
     testBenchMark();
 
     testPixelDevices();
-    // testPixelIndeces();
+    testPixelIndeces();
     testPixelControllers();
-    // testPixelColor();
     // testMatrixMappers();
 
     // testColorFilter();
-    // testPixelGrids();
-    // testColorPalettes();
-    // testPixelColorHsv();
-    // testGradientPalettes();
+    testPixelGrids();
     UNITY_END();
 }
 

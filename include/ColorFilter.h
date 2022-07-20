@@ -7,6 +7,8 @@
 
 using glow::Filter;
 
+using color::Color;
+
 namespace pixel
 {
     class ColorFilter : public Filter<Color>

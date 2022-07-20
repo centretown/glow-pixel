@@ -8,8 +8,8 @@
 #include "MatrixMapper.h"
 #include "wait.h"
 
-using pixel::Color;
-using pixel::color_pack;
+using color::Color;
+using color::color_pack;
 using pixel::MatrixMapper;
 using pixel::Pixels;
 

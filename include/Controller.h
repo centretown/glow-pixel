@@ -2,12 +2,21 @@
 
 #pragma once
 
+#ifdef ARDUINO
+#include <Adafruit_NeoPixel.h>
+#else
+#include "NativeDevice.h"
+#endif
+
 #include "Device.h"
 #include "PixelIndex.h"
 #include "Color.h"
 
 using glow::Range;
 using glow::range_pack;
+
+using color::Color;
+using color::color_pack;
 
 namespace pixel
 {

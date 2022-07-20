@@ -48,7 +48,7 @@ namespace pixel
     const uint16_t device_02_size = 9;
     const uint16_t device_03_size = 9;
     const uint16_t device_04_size = 9;
-    const uint16_t device_05_size = 4;
+    const uint16_t device_05_size = 30;
 
     const uint16_t pixel_pin_01 = 13;
     const uint16_t pixel_pin_02 = 27;
@@ -86,7 +86,11 @@ namespace pixel
                   NEO_GRB + NEO_KHZ800); // CH4
     static Adafruit_NeoPixel
         device_05(device_05_size, pixel_pin_05,
-                  NEO_GRB + NEO_KHZ800); // CH9
+                  NEO_BRG + NEO_KHZ800); // CH9
+
+    // static Adafruit_NeoPixel
+    //     device_05(device_05_size, pixel_pin_05,
+    //               NEO_GRB + NEO_KHZ800); // CH9
 
     static Device pixel_device_01(device_01);
     static Device pixel_device_02(device_02);

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "ColorFilter.h"
+#include "PixelColor.h"
 
 namespace pixel
 {
@@ -11,7 +12,7 @@ namespace pixel
     private:
         virtual void apply(Color &source, Color &color)
         {
-            color.Sine(source);
+            Sine(source);
         }
     };
 }

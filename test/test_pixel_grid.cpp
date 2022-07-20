@@ -12,11 +12,12 @@
 #include "GridColumns.h"
 
 using glow::Benchmark;
-using pixel::Color;
-using pixel::color_pack;
 using pixel::GridColumns;
 using pixel::GridRows;
 using pixel::Pixels;
+
+using color::Color;
+using color::color_pack;
 
 template <typename GRID, uint32_t ms>
 class TestMapper

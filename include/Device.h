@@ -2,11 +2,14 @@
 
 #pragma once
 
-#include "Color.h"
 #include "Range.h"
+#include "Color.h"
 
 using glow::Range;
 using glow::range_pack;
+
+using color::Color;
+using color::color_pack;
 
 namespace pixel
 {
