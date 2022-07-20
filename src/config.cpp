@@ -210,6 +210,7 @@ namespace pixel
                             const uint16_t pixelCount,
                             const uint16_t *partitions)
     {
+        glow::Benchmark::Setup();
         for (uint16_t i = 0; i < pixelCount; i++)
         {
             uint8_t deviceIndex = 0;

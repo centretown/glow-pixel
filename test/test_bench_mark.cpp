@@ -4,25 +4,25 @@
 
 #include <unity.h>
 #include "base.h"
-#include "bench.h"
+#include "Benchmark.h"
 #include "wait.h"
 #include <ArduinoJson.h>
 
-void testBenchPrint()
+using glow::Benchmark;
+
+void testBenchMarkPrint()
 {
+    Benchmark benchmark;
     set_real_time(true);
 
-    Bench results("millis32 test");
-    results.begin = millis32();
+    benchmark.Begin("testBenchMarkPrint");
     wait(1000);
-    results.end = millis32();
-    results.Print();
+    benchmark.End();
 
     set_real_time(false);
 }
 
-void testBench()
+void testBenchMark()
 {
-    print_line("TESTING BENCH", true);
-    RUN_TEST(testBenchPrint);
+    RUN_TEST(testBenchMarkPrint);
 }

@@ -9,26 +9,20 @@ namespace pixel
     class GridColumns : public Grid
     {
     public:
-        GridColumns(range_pack pack = 0, uint16_t rowLength = 1,
+        GridColumns(range_pack range = 0, uint16_t columns = 1,
                     range_pack rows = 0, range_pack cols = 0)
-            : Grid(pack, rowLength, rows, cols) {}
-
-        GridColumns(Range &range, uint16_t rowLength,
-                    range_pack rows, range_pack cols)
-            : Grid(range, rowLength, rows, cols) {}
-
-        GridColumns(Grid *grid)
-        {
-            Copy(grid);
-        }
+            : Grid(range, columns, rows, cols) {}
 
         uint16_t Map(uint16_t index)
         {
             index -= Begin();
-            auto row = (index % rows.Length()) + rows.Begin();
-            auto col = (index / rows.Length()) + cols.Begin();
-            index = Begin() + (row * rowLength) + col;
-            return index;
+            Range r(rows);
+            Range c(cols);
+
+            auto row = (index % r.Length()) + r.Begin();
+            auto col = (index / r.Length()) + c.Begin();
+
+            return Begin() + (row * columns) + col;
         }
     };
 

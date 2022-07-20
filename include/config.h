@@ -4,6 +4,7 @@
 
 #include "base.h"
 #include "Controller.h"
+#include "Benchmark.h"
 
 namespace pixel
 {

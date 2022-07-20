@@ -6,10 +6,12 @@
 #include "BlinkActivity.h"
 #include "Controller.h"
 #include "config.h"
+#include "Benchmark.h"
 
 using pixel::Pixels;
 
-void testBench();
+void testBenchMark();
+void testMath();
 
 void testPixelDevices();
 void testPixelControllers();
@@ -34,12 +36,13 @@ glow::BlinkActivity blinker(&monitor, &blink);
 void run()
 {
     UNITY_BEGIN();
-    testBench();
+    testBenchMark();
+
     testPixelDevices();
-    testPixelIndeces();
+    // testPixelIndeces();
     testPixelControllers();
-    testPixelColor();
-    testMatrixMappers();
+    // testPixelColor();
+    // testMatrixMappers();
 
     // testColorFilter();
     // testPixelGrids();
@@ -58,6 +61,7 @@ void setup()
 #endif
     delay(2000);
     Pixels.Setup();
+    glow::Benchmark::Setup();
     run();
     blinkPin.Setup();
     blinker.Reset();

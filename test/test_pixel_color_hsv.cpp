@@ -6,7 +6,7 @@
 
 #include "config.h"
 #include "ColorHSV.h"
-#include "hsvTest.h"
+#include "hsv_test.h"
 
 using namespace pixel;
 

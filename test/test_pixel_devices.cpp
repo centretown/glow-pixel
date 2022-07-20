@@ -1,7 +1,7 @@
 #define UNITY_INCLUDE_PRINT_FORMATTED
 
 #include <unity.h>
-#include "bench.h"
+#include "Benchmark.h"
 
 #include "base.h"
 #include "config.h"
@@ -41,6 +41,5 @@ void testDevices()
 
 void testPixelDevices()
 {
-    print_line("TESTING DEVICES", true);
     RUN_TEST(testDevices);
 }
