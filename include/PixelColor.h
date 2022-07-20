@@ -10,26 +10,25 @@ using color::Color;
 
 namespace pixel
 {
-
     inline void Gamma(Color &color)
     {
-        color.Red(gamma8(color.Red()));
-        color.Green(gamma8(color.Green()));
-        color.Blue(gamma8(color.Blue()));
-        color.White(gamma8(color.White()));
+        color.RGBW(gamma8(color.Red()),
+                   gamma8(color.Green()),
+                   gamma8(color.Blue()),
+                   gamma8(color.White()));
     }
 
     inline void Sine(Color &color)
     {
-        color.Red(sine8(color.Red()));
-        color.Green(sine8(color.Green()));
-        color.Blue(sine8(color.Blue()));
-        color.White(sine8(color.White()));
+        color.RGBW(sine8(color.Red()),
+                   sine8(color.Green()),
+                   sine8(color.Blue()),
+                   sine8(color.White()));
     }
 
-    inline uint32_t base_pack(uint8_t r, uint8_t g, uint8_t b, uint8_t w)
+    inline uint32_t base_pack(uint8_t red, uint8_t green, uint8_t blue, uint8_t white=0)
     {
-        return _basePixel::Color(r, g, b, w);
+        return _basePixel::Color(red, green, blue, white);
     }
 
     inline uint32_t base_hsv(uint16_t hue, uint8_t saturation = 255, uint8_t value = 255)
