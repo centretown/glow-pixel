@@ -4,22 +4,22 @@
 #include <unity.h>
 #include "base.h"
 #include "BlinkActivity.h"
-#include "Controller.h"
-#include "config.h"
 #include "Benchmark.h"
+// #include "config.h"
 
-using pixel::Pixels;
+// pixel::Controller &Pixels = pixelController;
 
-void testBenchMark();
-void testMath();
-
-void testPixelDevices();
-void testPixelControllers();
-void testMatrixMappers();
+// void testBenchMark();
+// void testMath();
+// void testPixelDevices();
+// void testPixelControllers();
+// void testMatrixMappers();
 
 // void testColorFilter();
-void testPixelGrids();
-void testPixelIndeces();
+// void testPixelGrids();
+// void testPixelIndeces();
+
+void testBuildControllers();
 
 glow::PinDevice blinkPin;
 glow::BlinkSettings blink(&blinkPin);
@@ -29,15 +29,15 @@ glow::BlinkActivity blinker(&monitor, &blink);
 void run()
 {
     UNITY_BEGIN();
-    testBenchMark();
+    testBuildControllers();
 
-    testPixelDevices();
-    testPixelIndeces();
-    testPixelControllers();
+    // testPixelDevices();
+    // testPixelIndeces();
+    // testPixelControllers();
     // testMatrixMappers();
 
     // testColorFilter();
-    testPixelGrids();
+    // testPixelGrids();
     UNITY_END();
 }
 
@@ -49,7 +49,6 @@ void setup()
     Serial.begin(115200);
 #endif
     delay(2000);
-    Pixels.Setup();
     glow::Benchmark::Setup();
     run();
     blinkPin.Setup();
@@ -67,6 +66,7 @@ void loop()
 #else
 int main(int argc, char **argv)
 {
+    glow::Benchmark::Setup();
     run();
 }
 #endif // ARDUINO

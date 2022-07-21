@@ -4,10 +4,20 @@
 #include "Benchmark.h"
 
 #include "base.h"
-#include "config.h"
 #include "wait.h"
 
-using namespace pixel;
+#include "Color.h"
+#include "Controller.h"
+
+using color::Color;
+using color::color_pack;
+using pixel::Controller;
+
+extern pixel::Controller& Pixels;
+
+
+using pixel::Device;
+extern pixel::Controller& Pixels;
 
 void SpinDevice(uint16_t index, color_pack color)
 {

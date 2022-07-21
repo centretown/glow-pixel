@@ -3,7 +3,6 @@
 // #define UNITY_INCLUDE_PRINT_FORMATTED
 
 // #include <unity.h>
-// #include "config.h"
 // #include "CopyFilter.h"
 // #include "GammaFilter.h"
 // #include "SineFilter.h"

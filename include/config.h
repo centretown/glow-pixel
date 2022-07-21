@@ -2,20 +2,41 @@
 
 #pragma once
 
-#include "base.h"
+#include "Device.h"
 #include "Controller.h"
-#include "Benchmark.h"
 
-namespace pixel
+using pixel::Controller;
+using pixel::Device;
+using pixel::pixel_index;
+
+#include "device_config.h"
+// NOW DEFINED:
+// const uint8_t device_count;
+// uint16_t pixel_count;
+// Device pixelDevices[]
+// uint16_t pixel_partitions[device_count + 1]
+
+static Controller pixelController;
+
+pixel_index theIndex[pixel_count];
+
+void buildIndex()
 {
-    extern const uint8_t device_count;
-    extern const uint16_t pixel_count;
-    extern const pixel_index *pixelIndex;
+    for (uint16_t i = 0; i < pixel_count; i++)
+    {
+        uint8_t deviceIndex = 0;
+        for (; pixel_partitions[deviceIndex + 1] <= i;
+             deviceIndex++)
+            ;
+        theIndex[i].offset = i - pixel_partitions[deviceIndex];
+        theIndex[i].device = deviceIndex;
+    }
+}
 
-    extern Device pixelDevices[];
-    extern Controller &Pixels;
-
-    pixel_index *buildIndex(pixel_index *index,
-                            const uint16_t pixelCount,
-                            const uint16_t *partitions);
+Controller &BuildController()
+{
+    buildIndex();
+    pixelController.Setup(pixel_count, (pixel_index *)theIndex,
+                          (Device *)pixelDevices, device_count);
+    return pixelController;
 }

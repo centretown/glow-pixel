@@ -4,6 +4,7 @@
 
 #include "Range.h"
 #include "Color.h"
+#include "PixelIndex.h"
 
 using glow::Range;
 using glow::range_pack;
@@ -11,60 +12,52 @@ using glow::range_pack;
 using color::Color;
 using color::color_pack;
 
+#ifdef ARDUINO
+#include <Adafruit_NeoPixel.h>
+#else
+#include "NativeDevice.h"
+#endif
+
 namespace pixel
 {
-    template <typename DEVICE>
-    class DeviceGenerator : Range
+    template <typename DRIVER>
+    class PixelDevice : Range
     {
     private:
-        DEVICE &device;
+        DRIVER &driver;
         const uint16_t pixelCount;
         Color color;
 
     public:
-        DeviceGenerator(DEVICE &device)
-            : Range(0, device.numPixels()), device(device),
-              pixelCount(device.numPixels()) {}
+        PixelDevice(DRIVER &driver)
+            : Range(0, driver.numPixels()), driver(driver),
+              pixelCount(driver.numPixels()) {}
 
         inline const uint16_t PixelCount() { return pixelCount; }
         inline const range_pack Scope() { return Pack(); }
 
         inline void Setup()
         {
-            device.begin();
-            device.clear();
-            device.show();
+            driver.begin();
+            driver.clear();
+            driver.show();
         }
 
         inline void Put(uint16_t index, color_pack pack)
         {
             color.Pack(pack);
-            device.setPixelColor(index, color.Red(),
+            driver.setPixelColor(index, color.Red(),
                                  color.Green(), color.Blue());
         }
 
         inline void Update()
         {
-            device.show();
+            driver.show();
         }
     };
-
 #ifdef ARDUINO
-#include <Adafruit_NeoPixel.h>
-    class Device : public DeviceGenerator<Adafruit_NeoPixel>
-    {
-    public:
-        Device(Adafruit_NeoPixel &device)
-            : DeviceGenerator<Adafruit_NeoPixel>(device) {}
-    };
+    typedef PixelDevice<Adafruit_NeoPixel> Device;
 #else
-#include "NativeDevice.h"
-    class Device : public DeviceGenerator<NativeDevice>
-    {
-    public:
-        Device(NativeDevice &device)
-            : DeviceGenerator<NativeDevice>(device) {}
-    };
+    typedef PixelDevice<NativeDevice> Device;
 #endif
-
-}
+} // namespace pixel

@@ -4,14 +4,16 @@
 
 #include <unity.h>
 
-#include "config.h"
 #include "MatrixMapper.h"
+#include "Color.h"
+#include "Controller.h"
 #include "wait.h"
 
 using color::Color;
 using color::color_pack;
 using pixel::MatrixMapper;
-using pixel::Pixels;
+
+extern pixel::Controller &Pixels;
 
 void testMatrixMapper()
 {
