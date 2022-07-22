@@ -33,10 +33,9 @@ void buildIndex()
     }
 }
 
-Controller &BuildController()
+void BuildController()
 {
     buildIndex();
     pixelController.Setup(pixel_count, (pixel_index *)theIndex,
                           (Device *)pixelDevices, device_count);
-    return pixelController;
 }

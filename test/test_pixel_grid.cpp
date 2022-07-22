@@ -1,13 +1,13 @@
-// // Copyright (c) 2022 Dave Marsh. See LICENSE.
+// Copyright (c) 2022 Dave Marsh. See LICENSE.
 
-// #define UNITY_INCLUDE_PRINT_FORMATTED
+#define UNITY_INCLUDE_PRINT_FORMATTED
 
-// #include <unity.h>
-// #include "Benchmark.h"
-// #include "wait.h"
+#include <unity.h>
+#include "Benchmark.h"
+#include "wait.h"
 
-// #include "GridRows.h"
-// #include "GridColumns.h"
+#include "GridRows.h"
+#include "GridColumns.h"
 
 // using glow::Benchmark;
 // using pixel::Controller;

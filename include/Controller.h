@@ -4,12 +4,14 @@
 
 #include "Device.h"
 #include "Color.h"
+#include "ColorPalette.h"
 
 using glow::Range;
 using glow::range_pack;
 
 using color::Color;
 using color::color_pack;
+using color::ColorPalette;
 
 #ifdef ARDUINO
 #include <Adafruit_NeoPixel.h>

@@ -6,12 +6,12 @@
 
 #include "Color.h"
 #include "Controller.h"
+#include "wait.h"
 
 using color::Color;
 using pixel::Controller;
 
-extern pixel::Controller& Pixels;
-
+extern pixel::Controller &Pixels;
 
 void testPixelController()
 {
@@ -19,9 +19,13 @@ void testPixelController()
 
     Range range(Pixels.Scope());
 
-    Color color;
-    color.GBR(15);
+    Color color(15, 0, 15);
     range.Spin(Pixels, color.Pack());
+    wait(1000);
+
+    color.RGB(0, 15, 15);
+    range.Spin(Pixels, color.Pack());
+    wait(1000);
 }
 
 void testPixelControllers()

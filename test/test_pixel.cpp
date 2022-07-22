@@ -2,22 +2,24 @@
 
 #define UNITY_INCLUDE_PRINT_FORMATTED
 #include <unity.h>
-#include "base.h"
-#include "BlinkActivity.h"
 #include "Benchmark.h"
-// #include "config.h"
+
+#include "BlinkActivity.h"
+#include "Controller.h"
+
+extern pixel::Controller &Pixels;
 
 // pixel::Controller &Pixels = pixelController;
 
-// void testBenchMark();
-// void testMath();
-// void testPixelDevices();
-// void testPixelControllers();
-// void testMatrixMappers();
+void testBenchMark();
+void testPixelDevices();
+void testPixelControllers();
+void testMatrixMappers();
+void testPalettes();
+
 
 // void testColorFilter();
 // void testPixelGrids();
-// void testPixelIndeces();
 
 void testBuildControllers();
 
@@ -30,11 +32,11 @@ void run()
 {
     UNITY_BEGIN();
     testBuildControllers();
-
-    // testPixelDevices();
-    // testPixelIndeces();
-    // testPixelControllers();
-    // testMatrixMappers();
+    testBenchMark();
+    testPixelDevices();
+    testPixelControllers();
+    testMatrixMappers();
+    testPalettes();
 
     // testColorFilter();
     // testPixelGrids();
@@ -45,6 +47,7 @@ void run()
 
 void setup()
 {
+    // BuildController();
 #ifdef ARDUINO
     Serial.begin(115200);
 #endif

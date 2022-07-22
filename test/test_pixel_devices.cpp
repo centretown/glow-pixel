@@ -1,5 +1,6 @@
-#define UNITY_INCLUDE_PRINT_FORMATTED
+// Copyright (c) 2022 Dave Marsh. See LICENSE.
 
+#define UNITY_INCLUDE_PRINT_FORMATTED
 #include <unity.h>
 #include "Benchmark.h"
 
@@ -13,11 +14,10 @@ using color::Color;
 using color::color_pack;
 using pixel::Controller;
 
-extern pixel::Controller& Pixels;
-
+extern pixel::Controller &Pixels;
 
 using pixel::Device;
-extern pixel::Controller& Pixels;
+extern pixel::Controller &Pixels;
 
 void SpinDevice(uint16_t index, color_pack color)
 {
@@ -33,20 +33,15 @@ void SpinDevices(color_pack color)
     for (uint8_t i = 0; i < Pixels.device_count(); i++)
     {
         SpinDevice(i, color);
+        wait(500);
     }
 }
 
 void testDevices()
 {
-    Color color(15, 0, 15);
-    Color color1(0, 15, 15);
-    Color color2(15, 15, 0);
-    SpinDevices(color.Pack());
-    wait(1000);
-    SpinDevices(color1.Pack());
-    wait(1000);
-    SpinDevices(color2.Pack());
-    wait(1000);
+    SpinDevices(Color(15, 0, 15).Pack());
+    SpinDevices(Color(0, 15, 15).Pack());
+    SpinDevices(Color(15, 15, 0).Pack());
 }
 
 void testPixelDevices()
