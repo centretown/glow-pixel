@@ -139,10 +139,6 @@ static Adafruit_NeoPixel
     device_05(device_05_size, pixel_pin_05,
               NEO_BRG + NEO_KHZ800); // CH9
 
-// static Adafruit_NeoPixel
-//     device_05(device_05_size, pixel_pin_05,
-//               NEO_GRB + NEO_KHZ800); // CH9
-
 static Device pixel_device_01(device_01);
 static Device pixel_device_02(device_02);
 static Device pixel_device_03(device_03);

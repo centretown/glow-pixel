@@ -23,7 +23,7 @@ void testPixelController()
     range.Spin(Pixels, color.Pack());
     wait(1000);
 
-    color.RGB(0, 15, 15);
+    color(0, 15, 15);
     range.Spin(Pixels, color.Pack());
     wait(1000);
 }

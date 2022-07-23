@@ -35,7 +35,7 @@ void run()
     testBenchMark();
     testPixelDevices();
     testPixelControllers();
-    testMatrixMappers();
+    // testMatrixMappers();
     testPalettes();
 
     // testColorFilter();
