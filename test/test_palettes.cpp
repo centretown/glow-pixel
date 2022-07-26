@@ -5,13 +5,18 @@
 #include <unity.h>
 
 #include "Color.h"
+#include "ColorHSV.h"
 #include "Controller.h"
 #include "ColorPalette.h"
+#include "HueGradient.h"
 #include "wait.h"
 
 using color::Color;
 using color::color_pack;
+using color::ColorHSV;
 using color::ColorPalette;
+using color::hue_limit;
+using color::HueGradient;
 
 extern pixel::Controller &Pixels;
 
@@ -76,10 +81,84 @@ void testColorPalette()
         sizeof(palette_b) / sizeof(palette_b[0]));
     range.SpinValues(Pixels, colorPalette_b);
     wait(1000);
+}
 
+void testHueGradient()
+{
+    Range range(0, 36);
+    ColorHSV colorHSV(0, 196, 31);
+    HueGradient hueGradient(colorHSV.Pack());
+    hueGradient.Fit(range.Pack());
+    range.SpinValues(Pixels, hueGradient);
+    wait(2000);
+
+    hueGradient(0, 255);
+    hueGradient.Fit(range.Pack());
+    range.SpinValues(Pixels, hueGradient);
+    wait(2000);
+
+    hueGradient(0, 510);
+    hueGradient.Fit(range.Pack());
+    range.SpinValues(Pixels, hueGradient);
+    wait(2000);
+
+    hueGradient >>= 255;
+    TEST_ASSERT_EQUAL(510, hueGradient.Length());
+    hueGradient.Fit(range.Pack());
+    range.SpinValues(Pixels, hueGradient);
+    wait(2000);
+
+    hueGradient >>= 255;
+    hueGradient.Span();
+    TEST_ASSERT_EQUAL(510, hueGradient.Length());
+    TEST_ASSERT_LESS_OR_EQUAL(hue_limit, hueGradient.End());
+    hueGradient.Fit(range.Pack());
+    range.SpinValues(Pixels, hueGradient);
+    wait(2000);
+
+    hueGradient(765, hue_limit);
+    TEST_ASSERT_EQUAL(765, hueGradient.Length());
+    TEST_ASSERT_LESS_OR_EQUAL(hue_limit, hueGradient.End());
+    hueGradient.Fit(range.Pack());
+    range.SpinValues(Pixels, hueGradient);
+    wait(2000);
+
+    hueGradient(255, 255 + 765);
+    TEST_ASSERT_EQUAL(765, hueGradient.Length());
+    TEST_ASSERT_LESS_OR_EQUAL(hue_limit, hueGradient.End());
+    hueGradient.Fit(range.Pack());
+    range.SpinValues(Pixels, hueGradient);
+    wait(2000);
+}
+
+void testLoopHueGradient()
+{
+    Range range(0, 36);
+    ColorHSV colorHSV(0, 255, 15);
+    HueGradient hueGradient(colorHSV.Pack());
+    hueGradient(0, hue_limit / 2);
+    TEST_ASSERT_EQUAL(hue_limit / 2, hueGradient.Length());
+    for (uint16_t i = 0; i < hue_limit / 2; i++)
+    {
+        hueGradient >>= 1;
+        hueGradient.Fit(range.Pack());
+        range.SpinValues(Pixels, hueGradient);
+        wait(2);
+    }
+    wait(2000);
+    for (uint16_t i = 0; i < hue_limit / 2; i++)
+    {
+        hueGradient <<= 1;
+        hueGradient.Fit(range.Pack());
+        range.SpinValues(Pixels, hueGradient);
+        wait(2);
+    }
+    wait(2000);
 }
 
 void testPalettes()
 {
     RUN_TEST(testColorPalette);
+    RUN_TEST(testHueGradient);
+    RUN_TEST(testLoopHueGradient);
 }

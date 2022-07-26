@@ -32,9 +32,9 @@ void run()
 {
     UNITY_BEGIN();
     testBuildControllers();
-    testBenchMark();
-    testPixelDevices();
-    testPixelControllers();
+    // testBenchMark();
+    // testPixelDevices();
+    // testPixelControllers();
     // testMatrixMappers();
     testPalettes();
 
