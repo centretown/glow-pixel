@@ -6,148 +6,198 @@
 #include "Benchmark.h"
 #include "wait.h"
 
-#include "GridRows.h"
-#include "GridColumns.h"
+#include "Controller.h"
+#include "Grid.h"
+#include "Gradient.h"
+#include "GradientPalette.h"
 
-// using glow::Benchmark;
-// using pixel::Controller;
-// using pixel::GridColumns;
-// using pixel::GridRows;
+extern pixel::Controller &Pixels;
 
-// using color::Color;
-// using color::color_pack;
+const uint16_t WAIT_TIME = 1000;
 
-// template <typename GRID, uint32_t ms>
-// class TestMapper
-// {
-// public:
-//     uint16_t Map(uint16_t index)
-//     {
-//         wait(ms);
-//         return index;
-//         // return GRID.Map(index);
-//     }
-// };
+using glow::Benchmark;
+using pixel::Controller;
+using pixel::Grid;
+using pixel::GRID_COLUMNS;
+using pixel::GRID_ROWS;
+using pixel::GRID_ZIGZAG_COLUMNS;
+using pixel::GRID_ZIGZAG_ROWS;
 
-// void testGrids(range_pack pack, uint16_t columns, uint16_t colLength)
-// {
-//     GridColumns colGrid;
-//     Color color(63, 63, 0);
-//     Color color1(0, 63, 63);
-//     Color color2(63, 0, 63);
+using color::Gradient;
+using color::GradientPalette;
+using color::hue_size;
+using color::luminance_size;
+using color::saturation_size;
+using color::VARY_HUE;
+using color::VARY_HUE_SATURATION;
+using color::VARY_LUMINANCE;
+using color::VARY_SATURATION;
 
-//     // const uint32_t DELAY = 0;
-//     // auto put = [&]()
-//     // {
-//     //     putGrid(&rowGrid, color, color1, false, DELAY);
-//     //     putGrid(&rowGrid, color, color1, true, DELAY);
+using color::hue_blue;
+using color::hue_cyan;
+using color::hue_green;
+using color::hue_limit;
+using color::hue_magenta;
+using color::hue_red;
+using color::hue_yellow;
 
-//     //     colGrid.Copy(&rowGrid);
-//     //     putGrid(&colGrid, color1, color2, false, DELAY);
-//     //     putGrid(&colGrid, color1, color2, true, DELAY);
-//     // };
+using color::Color;
+using color::color_pack;
 
-//     // auto reset = [&]()
-//     // {
-//     //     rows.Pack(rowsPack);
-//     //     cols.Pack(colsPack);
-//     //     rowGrid.Resize(pack, columns, rows.Pack(), cols.Pack());
-//     // };
+class TestMapper
+{
+public:
+    Color color;
+    Grid &grid;
+    uint16_t ms = WAIT_TIME;
+    TestMapper(Grid &grid, uint16_t ms = WAIT_TIME)
+        : grid(grid), ms(ms) {}
 
-//     // auto compare = [&]()
-//     // {
-//     //     return (cols.Length() > 0 && rows.Length() > 0);
-//     // };
-//     // auto increment_row_begin = [&]()
-//     // {
-//     //     rows.Resize(rows.Begin() + 1, rows.End());
-//     //     rowGrid.Resize(pack, columns, rows.Pack(), cols.Pack());
-//     // };
-//     // auto decrement_row_end = [&]()
-//     // {
-//     //     rows.Resize(rows.Begin(), rows.End() - 1);
-//     //     rowGrid.Resize(pack, columns, rows.Pack(), cols.Pack());
-//     // };
-//     // Spin(compare, put, increment_row_begin, reset);
-//     // Spin(compare, put, decrement_row_end, reset);
+    uint16_t Map(uint16_t index)
+    {
+        Pixels.Put(grid.Map(index), color(0x00ff00ff));
+        wait(ms);
+        return grid.Map(index);
+    }
+};
 
-//     // auto increment_col_begin = [&]()
-//     // {
-//     //     cols.Resize(cols.Begin() + 1, cols.End());
-//     //     rowGrid.Resize(pack, columns, rows.Pack(), cols.Pack());
-//     // };
-//     // auto decrement_col_end = [&]()
-//     // {
-//     //     cols.Resize(cols.Begin(), cols.End() - 1);
-//     //     rowGrid.Resize(pack, columns, rows.Pack(), cols.Pack());
-//     // };
-//     // Spin(compare, put, increment_col_begin, reset);
-//     // Spin(compare, put, decrement_col_end, reset);
+void testGridGradientPalette()
+{
+    uint16_t tRows = 4;
+    uint16_t tColumns = 9;
+    Range range(0, tRows * tColumns);
 
-//     // auto increment_both_begin = [&]()
-//     // {
-//     //     rows.Resize(rows.Begin() + 1, rows.End());
-//     //     cols.Resize(cols.Begin() + 1, cols.End());
-//     //     rowGrid.Resize(pack, columns, rows.Pack(), cols.Pack());
-//     // };
-//     // auto decrement_both_end = [&]()
-//     // {
-//     //     rows.Resize(rows.Begin(), rows.End() - 1);
-//     //     cols.Resize(cols.Begin(), cols.End() - 1);
-//     //     rowGrid.Resize(pack, columns, rows.Pack(), cols.Pack());
-//     // };
+    GradientPalette palette(
+        VARY_HUE, hue_red, saturation_size, luminance_size / 8);
+    Gradient &hue = palette.Hue();
+    hue(hue_red, hue_blue);
+    Grid grid(range(), tColumns, GRID_ROWS);
+    palette.Fit(grid);
 
-//     // Spin(compare, put, increment_both_begin, reset);
-//     // Spin(compare, put, decrement_both_end, reset);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME * 2);
 
-//     // auto squeeze = [&]()
-//     // {
-//     //     rows.Resize(rows.Begin() + 1, rows.End() - 1);
-//     //     cols.Resize(cols.Begin() + 1, cols.End() - 1);
-//     //     rowGrid.Resize(pack, columns, rows.Pack(), cols.Pack());
-//     // };
-//     // Spin(compare, put, squeeze, reset);
-// }
+    grid.Rearrange(GRID_COLUMNS);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME * 2);
 
-// void testPixelGrid()
-// {
-//     // uint16_t columns = 9;
-//     // uint16_t colLength = 4;
-//     // uint16_t length = columns * colLength;
-//     // Range range(0, length);
-//     // testGrids(range.Pack(), columns, colLength);
-// }
-// void testGridColumns()
-// {
-// }
+    palette.Vary(VARY_SATURATION);
+    Gradient &saturation = palette.Saturation();
+    saturation(155, 255);
+    palette(hue_blue, 0, 15);
+    grid.Rearrange(GRID_ROWS);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME * 2);
 
-// void testGridRows()
-// {
-//     // set_real_time(true);
-//     // Benchmark mark;
-//     // mark.Begin("testGridRows");
+    grid.Rearrange(GRID_COLUMNS);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME * 2);
 
-//     // uint16_t tRows = 4;
-//     // uint16_t tColumns = 9;
-//     // Range range(Pixels.Scope());
-//     // range -= 4;
+    palette.Vary(VARY_LUMINANCE);
+    Gradient &luminance = palette.Luminance();
+    luminance(1, luminance_size / 8);
+    palette(hue_blue, saturation_size, 0);
 
-//     // Range rows(0, tRows);
-//     // Range cols(0, tColumns);
+    grid.Rearrange(GRID_ZIGZAG_ROWS);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME * 2);
 
-//     // Color color(0, 0, 200);
+    grid.Rearrange(GRID_ZIGZAG_COLUMNS);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME * 2);
 
-//     // GridRows rowGrid(range(), tColumns, rows(), cols());
+    grid.Rearrange(GRID_COLUMNS);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME * 2);
 
-//     // rowGrid.Spin(Pixels, color());
-//     // rowGrid.Spin(Pixels, color());
+    grid.Rearrange(GRID_ROWS);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME * 2);
+}
 
-//     // mark.End();
-//     // set_real_time(false);
-// }
+void testGrid()
+{
+    uint16_t tRows = 4;
+    uint16_t tColumns = 9;
+    Range range(0, tColumns * tRows);
 
-// void testPixelGrids()
-// {
-//     RUN_TEST(testGridRows);
-//     RUN_TEST(testGridColumns);
-// }
+    Grid grid(range(), tColumns, GRID_ROWS);
+    TEST_ASSERT_EQUAL(0, grid.Begin());
+    TEST_ASSERT_EQUAL(tRows * tColumns, grid.Length());
+    TEST_ASSERT_EQUAL(tRows, grid.Rows());
+    TEST_ASSERT_EQUAL(tColumns, grid.Columns());
+
+    uint16_t index = grid.Map(0);
+    TEST_ASSERT_EQUAL(grid.Begin(), index);
+    index = grid.Map(tColumns);
+    TEST_ASSERT_EQUAL(grid.Begin() + tColumns, index);
+
+    grid.Rearrange(GRID_COLUMNS);
+    index = grid.Map(0);
+    TEST_ASSERT_EQUAL(grid.Begin(), index);
+    index = grid.Map(1);
+    TEST_ASSERT_EQUAL(grid.Begin() + tColumns, index);
+    index = grid.Map(2);
+    TEST_ASSERT_EQUAL(grid.Begin() + 2 * tColumns, index);
+    index = grid.Map(tRows);
+    TEST_ASSERT_EQUAL(grid.Begin() + 1, index);
+    index = grid.Map(tRows * 2);
+    TEST_ASSERT_EQUAL(grid.Begin() + 2, index);
+    index = grid.Map(tRows * 3);
+    TEST_ASSERT_EQUAL(grid.Begin() + 3, index);
+
+    grid.Rearrange(GRID_ZIGZAG_COLUMNS);
+    index = grid.Map(0);
+    TEST_ASSERT_EQUAL(grid.Begin(), index);
+    index = grid.Map(1);
+    TEST_ASSERT_EQUAL(grid.Begin() + 17, index);
+    index = grid.Map(2);
+    TEST_ASSERT_EQUAL(grid.Begin() + 18, index);
+    index = grid.Map(3);
+    TEST_ASSERT_EQUAL(grid.Begin() + 35, index);
+    index = grid.Map(4);
+    TEST_ASSERT_EQUAL(grid.Begin() + 1, index);
+    index = grid.Map(5);
+    TEST_ASSERT_EQUAL(grid.Begin() + 16, index);
+    index = grid.Map(6);
+    TEST_ASSERT_EQUAL(grid.Begin() + 19, index);
+    index = grid.Map(7);
+    TEST_ASSERT_EQUAL(grid.Begin() + 34, index);
+    index = grid.Map(32);
+    TEST_ASSERT_EQUAL(grid.Begin() + 8, index);
+    index = grid.Map(33);
+    TEST_ASSERT_EQUAL(grid.Begin() + 9, index);
+    index = grid.Map(34);
+    TEST_ASSERT_EQUAL(grid.Begin() + 26, index);
+    index = grid.Map(35);
+    TEST_ASSERT_EQUAL(grid.Begin() + 27, index);
+    index = grid.Map(28);
+    TEST_ASSERT_EQUAL(grid.Begin() + 7, index);
+    index = grid.Map(31);
+    TEST_ASSERT_EQUAL(grid.Begin() + 28, index);
+
+    grid.Rearrange(GRID_ZIGZAG_ROWS);
+    index = grid.Map(0);
+    TEST_ASSERT_EQUAL(grid.Begin(), index);
+    index = grid.Map(1);
+    TEST_ASSERT_EQUAL(grid.Begin() + 1, index);
+    index = grid.Map(8);
+    TEST_ASSERT_EQUAL(grid.Begin() + 8, index);
+    index = grid.Map(9);
+    TEST_ASSERT_EQUAL(grid.Begin() + 17, index);
+    index = grid.Map(10);
+    TEST_ASSERT_EQUAL(grid.Begin() + 16, index);
+    index = grid.Map(27);
+    TEST_ASSERT_EQUAL(grid.Begin() + 35, index);
+    index = grid.Map(35);
+    TEST_ASSERT_EQUAL(grid.Begin() + 27, index);
+}
+
+void testPixelGrids()
+{
+    RUN_TEST(testGrid);
+    RUN_TEST(testGridGradientPalette);
+}

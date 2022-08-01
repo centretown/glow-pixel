@@ -1,11 +1,11 @@
 {
-    "name": "glow-strip",
-    "version": "0.5.3",
-    "description": "led strip libraries",
-    "keywords": "glow base",
+    "name": "glow-pixel",
+    "version": "0.5.4",
+    "description": "pixel libraries",
+    "keywords": "glow pixel NeoPixel",
     "repository": {
         "type": "git",
-        "url": "https://github.com/centretown/glow-strip.git"
+        "url": "https://github.com/centretown/glow-pixel.git"
     },
     "authors": [
         {

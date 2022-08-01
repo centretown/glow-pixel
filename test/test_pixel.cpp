@@ -17,9 +17,8 @@ void testPixelControllers();
 void testMatrixMappers();
 void testPalettes();
 
-
 // void testColorFilter();
-// void testPixelGrids();
+void testPixelGrids();
 
 void testBuildControllers();
 
@@ -32,14 +31,14 @@ void run()
 {
     UNITY_BEGIN();
     testBuildControllers();
-    // testBenchMark();
-    // testPixelDevices();
-    // testPixelControllers();
-    // testMatrixMappers();
+    testBenchMark();
+    testPixelDevices();
+    testPixelControllers();
+    testMatrixMappers();
     testPalettes();
 
     // testColorFilter();
-    // testPixelGrids();
+    testPixelGrids();
     UNITY_END();
 }
 

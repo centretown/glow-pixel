@@ -3,58 +3,89 @@
 #pragma once
 
 #include "Range.h"
-#include "Shape.h"
+#include "Math.h"
+#include "Point.h"
 
+using glow::DivMod;
+using glow::Point;
 using glow::Range;
 using glow::range_pack;
 
 namespace pixel
 {
+    enum : uint8_t
+    {
+        GRID_ZIGZAG = 1,
+        GRID_ROWS = 2,
+        GRID_COLUMNS = 4,
+        GRID_ZIGZAG_ROWS = GRID_ZIGZAG | GRID_ROWS,
+        GRID_ZIGZAG_COLUMNS = GRID_ZIGZAG | GRID_COLUMNS,
+    };
 
     class Grid : public Range
     {
     protected:
+        uint8_t arrangement;
         uint16_t columns;
-        range_pack rows, cols;
+        uint16_t rows;
 
     public:
         Grid(range_pack range, uint16_t columns,
-             range_pack rows, range_pack cols)
+             uint8_t arrangement = GRID_ROWS)
+            : arrangement(arrangement), columns(columns)
         {
-            Resize(range, columns, rows, cols);
+            Resize(range, columns);
         }
 
         // access
-        inline range_pack Rows() { return rows; }
-        inline range_pack Cols() { return cols; }
-
-        inline void Resize(range_pack r, range_pack c)
-        {
-            Resize(Pack(), columns, r, c);
-        }
+        uint8_t Arrangment() const { return arrangement; }
+        uint16_t Rows() const { return rows; }
+        uint16_t Columns() const { return columns; }
 
         // modify
-        inline range_pack Resize(range_pack range, uint16_t colCount,
-                                 range_pack rowsRange, range_pack colsRange)
+        uint8_t Rearrange(uint8_t v) { return arrangement = v; }
+
+        inline range_pack Resize(range_pack range, uint16_t colLength)
         {
-            columns = colCount;
-            rows = rowsRange;
-            cols = colsRange;
-            return Pack(range);
+            Pack(range);
+            columns = colLength;
+            rows = Length() / columns;
+            return Pack();
         }
 
         // implement
         inline uint16_t Map(uint16_t index)
         {
             index -= Begin();
-            Range r(rows);
-            Range c(cols);
+            Point point = (arrangement & GRID_COLUMNS)
+                              // x=col,y=row
+                              ? DivMod(index, rows)
+                              // x=row,y=col
+                              : DivMod(index, columns);
 
-            // uint16_t row = (index / c.Length()) + r.Begin();
-            // uint16_t col = (index % c.Length()) + c.Begin();
+            if (arrangement == GRID_ZIGZAG_COLUMNS &&
+                (point.y & 1)) // odd row
+            {
+                return Begin() +
+                       point.y * columns +
+                       columns - (point.x + 1);
+            }
 
-            // return Begin() + (row * columns) + col;
-            return index;
+            if (arrangement == GRID_ZIGZAG_ROWS &&
+                (point.x & 1)) // odd row
+            { 
+                return Begin() +
+                       point.x * columns +
+                       columns - (point.y + 1);
+            }
+
+            if (arrangement & GRID_ROWS)
+            {
+                return Begin() + index;
+            }
+
+            // (arrangement & GRID_COLUMNS)
+            return Begin() + point.y * columns + point.x;
         }
     };
 } // namespace pixel
