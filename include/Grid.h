@@ -38,12 +38,12 @@ namespace pixel
         }
 
         // access
-        uint8_t Arrangment() const { return arrangement; }
-        uint16_t Rows() const { return rows; }
-        uint16_t Columns() const { return columns; }
+        inline uint8_t Arrangment() const { return arrangement; }
+        inline uint16_t Rows() const { return rows; }
+        inline uint16_t Columns() const { return columns; }
 
         // modify
-        uint8_t Rearrange(uint8_t v) { return arrangement = v; }
+        inline uint8_t Rearrange(uint8_t v) { return arrangement = v; }
 
         inline range_pack Resize(range_pack range, uint16_t colLength)
         {
@@ -57,35 +57,34 @@ namespace pixel
         inline uint16_t Map(uint16_t index)
         {
             index -= Begin();
-            Point point = (arrangement & GRID_COLUMNS)
-                              // x=col,y=row
-                              ? DivMod(index, rows)
-                              // x=row,y=col
-                              : DivMod(index, columns);
-
-            if (arrangement == GRID_ZIGZAG_COLUMNS &&
-                (point.y & 1)) // odd row
-            {
-                return Begin() +
-                       point.y * columns +
-                       columns - (point.x + 1);
-            }
-
-            if (arrangement == GRID_ZIGZAG_ROWS &&
-                (point.x & 1)) // odd row
-            { 
-                return Begin() +
-                       point.x * columns +
-                       columns - (point.y + 1);
-            }
-
-            if (arrangement & GRID_ROWS)
+            if (arrangement == GRID_ROWS)
             {
                 return Begin() + index;
             }
 
-            // (arrangement & GRID_COLUMNS)
-            return Begin() + point.y * columns + point.x;
+            if (arrangement & GRID_COLUMNS)
+            {
+                Point point = DivMod(index, rows);
+
+                if (arrangement == GRID_ZIGZAG_COLUMNS &&
+                    (point.y & 1)) // odd row
+                {
+                    return Begin() +
+                           point.y * columns +
+                           columns - (point.x + 1);
+                }
+                return Begin() + point.y * columns + point.x;
+            }
+
+            // arrangement == GRID_ZIGZAG_COLUMNS
+            Point point = DivMod(index, columns);
+            if (point.x & 1) // odd row
+            {
+                return Begin() +
+                       point.x * columns +
+                       columns - (point.y + 1);
+            }
+            return Begin() + index;
         }
     };
 } // namespace pixel

@@ -29,22 +29,9 @@ namespace pixel
         pixel_index *pixelIndex = NULL;
         Device *devices = NULL;
         uint8_t deviceCount = 0;
-
-    private:
         uint16_t selectedFlag = 0;
 
     public:
-        PixelController() {}
-
-        // Controller(Device *devices, const uint8_t deviceCount,
-        //            pixel_index *pixelIndex, const uint16_t pixelCount)
-        //     : Range(0, pixelCount),
-        //       devices(devices), deviceCount(deviceCount),
-        //       pixelIndex(pixelIndex), pixelCount(pixelCount)
-        // {
-        // }
-        ~PixelController() {}
-
         inline uint16_t PixelCount() const { return pixelCount; }
         inline range_pack Scope() const { return Pack(); }
 
@@ -79,6 +66,16 @@ namespace pixel
                 devices[px.device].Put(px.offset, color);
                 selectedFlag |= 1 << px.device;
             }
+        }
+
+        inline color_pack Get(uint16_t index)
+        {
+            if (index < pixelCount)
+            {
+                pixel_index px = pixelIndex[index];
+                return devices[px.device].Get(px.offset);
+            }
+            return 0;
         }
 
         inline void Update()

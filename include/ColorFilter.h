@@ -14,6 +14,6 @@ namespace pixel
     class ColorFilter : public Filter<Color>
     {
     private:
-        virtual void apply(Color &source, Color &color) = 0;
+        virtual void apply(Color &source) = 0;
     };
 }

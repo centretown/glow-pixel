@@ -4,8 +4,10 @@
 #include <unity.h>
 #include "Benchmark.h"
 
-#include "BlinkActivity.h"
+#include "Monitor.h"
 #include "Controller.h"
+// #include "GradientActivity.h"
+// #include "Grid.h"
 
 extern pixel::Controller &Pixels;
 
@@ -19,50 +21,55 @@ void testPalettes();
 
 // void testColorFilter();
 void testPixelGrids();
-
 void testBuildControllers();
+void testPixelActivities();
 
-glow::PinDevice blinkPin;
-glow::BlinkSettings blink(&blinkPin);
-glow::BlinkMonitor monitor(&blink);
-glow::BlinkActivity blinker(&monitor, &blink);
+using glow::Monitor;
+using glow::print_line;
 
 void run()
 {
     UNITY_BEGIN();
     testBuildControllers();
-    testBenchMark();
-    testPixelDevices();
-    testPixelControllers();
-    testMatrixMappers();
-    testPalettes();
-
-    // testColorFilter();
-    testPixelGrids();
+    // testBenchMark();
+    // testPixelDevices();
+    // testPixelControllers();
+    // testMatrixMappers();
+    // testPalettes();
+    // testPixelGrids();
+    testPixelActivities();
     UNITY_END();
 }
+
+#include "Activities.h"
 
 #ifdef ARDUINO
 
 void setup()
 {
     // BuildController();
-#ifdef ARDUINO
     Serial.begin(115200);
-#endif
     delay(2000);
     glow::Benchmark::Setup();
+
     run();
-    blinkPin.Setup();
-    blinker.Reset();
-    blink.On(50);
-    blink.Off(400);
+
+    paletteA.Gamma(true);
+    activityA.State(2);
+    activityA.PulseWidth(100);
+    sliderA.PulseWidth(100);
+
+    paletteB.Gamma(true);
+    activityB.State(0);
+    activityB.PulseWidth(500);
 }
 
 void loop()
 {
-    glow::Monitor::Cycle();
-    blinker.Pulse();
+    Monitor::Cycle();
+    activityA.Pulse();
+    activityB.Pulse();
+    // sliderA.Pulse();
 }
 
 #else

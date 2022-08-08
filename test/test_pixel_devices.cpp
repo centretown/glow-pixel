@@ -44,7 +44,25 @@ void testDevices()
     SpinDevices(Color(15, 15, 0).Pack());
 }
 
+void testDevicesReadWrite()
+{
+    uint8_t tRed = 32, tGreen = 55, tBlue = 143;
+    Color color(tRed, tGreen, tBlue);
+    for (uint8_t i = 0; i < Pixels.device_count(); i++)
+    {
+        Device &device = Pixels.device(i);
+        Range range(device.Scope());
+        for (uint16_t j = 0; j < range.Length(); j++)
+        {
+            device.Put(j, color.Pack());
+            color_pack pack = device.Get(j);
+            TEST_ASSERT_EQUAL(color.Pack(), pack);
+        }
+    }
+}
+
 void testPixelDevices()
 {
     RUN_TEST(testDevices);
+    RUN_TEST(testDevicesReadWrite);
 }

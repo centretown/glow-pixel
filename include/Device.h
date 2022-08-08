@@ -50,6 +50,11 @@ namespace pixel
                                  color.Green(), color.Blue());
         }
 
+        inline color_pack Get(uint16_t index)
+        {
+            return (color_pack)driver.getPixelColor(index);
+        }
+
         inline void Update()
         {
             driver.show();

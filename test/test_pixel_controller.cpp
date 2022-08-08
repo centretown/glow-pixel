@@ -28,7 +28,22 @@ void testPixelController()
     wait(1000);
 }
 
+void testControllerReadWrite()
+{
+    uint8_t tRed = 32, tGreen = 55, tBlue = 143;
+    Color color(tRed, tGreen, tBlue);
+    Range range(Pixels.Scope());
+
+    for (uint16_t j = 0; j < range.Length(); j++)
+    {
+        Pixels.Put(j, color.Pack());
+        color_pack pack = Pixels.Get(j);
+        TEST_ASSERT_EQUAL(color.Pack(), pack);
+    }
+}
+
 void testPixelControllers()
 {
     RUN_TEST(testPixelController);
+    RUN_TEST(testControllerReadWrite);
 }

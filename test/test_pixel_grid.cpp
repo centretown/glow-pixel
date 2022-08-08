@@ -25,10 +25,12 @@ using pixel::GRID_ZIGZAG_ROWS;
 
 using color::Gradient;
 using color::GradientPalette;
+using color::hue_segment;
 using color::hue_size;
 using color::luminance_size;
 using color::saturation_size;
 using color::VARY_HUE;
+using color::VARY_HUE_LUMINANCE;
 using color::VARY_HUE_SATURATION;
 using color::VARY_LUMINANCE;
 using color::VARY_SATURATION;
@@ -61,6 +63,62 @@ public:
     }
 };
 
+void showPaletteHues(GradientPalette &palette, Grid &grid)
+{
+    Gradient &hue = palette.Hue();
+    hue(hue_red, hue_limit);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME);
+
+    hue(hue_red, hue_yellow);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME);
+
+    hue(hue_yellow, hue_green);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME);
+
+    hue(hue_green, hue_cyan);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME);
+
+    hue(hue_cyan, hue_blue);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME);
+
+    hue(hue_blue, hue_magenta);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME);
+
+    hue(hue_magenta, hue_limit);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME);
+
+    hue(hue_blue, hue_limit + hue_green);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME);
+
+    hue(hue_blue, hue_limit + hue_green);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette, true);
+    wait(WAIT_TIME);
+}
+
+void showPalette(GradientPalette &palette, Grid &grid)
+{
+    // palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette, true);
+    wait(WAIT_TIME);
+}
+
 void testGridGradientPalette()
 {
     uint16_t tRows = 4;
@@ -70,52 +128,76 @@ void testGridGradientPalette()
     GradientPalette palette(
         VARY_HUE, hue_red, saturation_size, luminance_size / 8);
     Gradient &hue = palette.Hue();
-    hue(hue_red, hue_blue);
     Grid grid(range(), tColumns, GRID_ROWS);
-    palette.Fit(grid);
+    palette.Gamma(true);
 
-    grid.SpinValues(Pixels, grid, palette);
-    wait(WAIT_TIME * 2);
-
+    showPaletteHues(palette, grid);
+    palette.Reverse(true);
     grid.Rearrange(GRID_COLUMNS);
-    palette.Fit(grid);
-    grid.SpinValues(Pixels, grid, palette);
-    wait(WAIT_TIME * 2);
+    showPaletteHues(palette, grid);
 
+    palette.Reverse(false);
     palette.Vary(VARY_SATURATION);
     Gradient &saturation = palette.Saturation();
     saturation(155, 255);
     palette(hue_blue, 0, 15);
+    palette.Fit(grid);
+    showPalette(palette, grid);
+
     grid.Rearrange(GRID_ROWS);
     palette.Fit(grid);
-    grid.SpinValues(Pixels, grid, palette);
-    wait(WAIT_TIME * 2);
-
-    grid.Rearrange(GRID_COLUMNS);
-    grid.SpinValues(Pixels, grid, palette);
-    wait(WAIT_TIME * 2);
+    showPalette(palette, grid);
 
     palette.Vary(VARY_LUMINANCE);
     Gradient &luminance = palette.Luminance();
     luminance(1, luminance_size / 8);
-    palette(hue_blue, saturation_size, 0);
+    palette(hue_green, saturation_size, 0);
+    palette.Fit(grid);
+    showPalette(palette, grid);
 
     grid.Rearrange(GRID_ZIGZAG_ROWS);
+    palette.Fit(grid);
     grid.SpinValues(Pixels, grid, palette);
-    wait(WAIT_TIME * 2);
+    wait(WAIT_TIME);
 
     grid.Rearrange(GRID_ZIGZAG_COLUMNS);
+    palette.Fit(grid);
     grid.SpinValues(Pixels, grid, palette);
-    wait(WAIT_TIME * 2);
+    wait(WAIT_TIME);
 
+    palette.Vary(VARY_SATURATION);
     grid.Rearrange(GRID_COLUMNS);
+    palette(hue_blue, saturation_size, 11);
+    saturation(155, 255);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME);
+
+    palette.Vary(VARY_LUMINANCE);
+    grid.Rearrange(GRID_COLUMNS);
+    palette(hue_blue, saturation_size, 0);
+    luminance(1, 31);
+    palette.Fit(grid);
+    grid.SpinValues(Pixels, grid, palette);
+    wait(WAIT_TIME);
+
+    Range end(Pixels.Scope());
+    end(36, end.End());
+    grid(end.Pack());
+    grid.Rearrange(GRID_ROWS);
+
+    hue(hue_blue, hue_yellow + hue_limit);
+    palette.Vary(VARY_HUE);
+    palette(0, saturation_size, 23);
     palette.Fit(grid);
     grid.SpinValues(Pixels, grid, palette);
     wait(WAIT_TIME * 2);
 
-    grid.Rearrange(GRID_ROWS);
+    palette.Vary(VARY_HUE);
+    palette(0, saturation_size, 23);
+    hue.Reverse(true);
     grid.SpinValues(Pixels, grid, palette);
-    wait(WAIT_TIME * 2);
+    wait(WAIT_TIME);
 }
 
 void testGrid()
