@@ -30,7 +30,8 @@ namespace pixel
         uint16_t rows;
 
     public:
-        Grid(range_pack range, uint16_t columns,
+        Grid(range_pack range,
+             uint16_t columns = 0,
              uint8_t arrangement = GRID_ROWS)
             : arrangement(arrangement), columns(columns)
         {
@@ -48,7 +49,7 @@ namespace pixel
         inline range_pack Resize(range_pack range, uint16_t colLength)
         {
             Pack(range);
-            columns = colLength;
+            columns = (colLength == 0) ? Length() : colLength;
             rows = Length() / columns;
             return Pack();
         }

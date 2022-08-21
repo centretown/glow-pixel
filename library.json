@@ -19,8 +19,9 @@
     "homepage": "https://github.com/centretown/glow-strip",
     "dependencies": {
         "adafruit/Adafruit NeoPixel": "adafruit/Adafruit NeoPixel@^1.10.3",
-        "centretown/glow-color": "https://github.com/centretown/glow-color.git@^0.5.3",
-        "centretown/glow-base": "https://github.com/centretown/glow-base.git@^0.5.17",
+        "centretown/glow-color": "https://github.com/centretown/glow-color.git@^0.6.15",
+        "centretown/glow-base": "https://github.com/centretown/glow-base.git@^0.6.0",
+        "centretown/glow-ui": "https://github.com/centretown/glow-ui.git@^0.1.0",
         "bblanchon/ArduinoJson": "bblanchon/ArduinoJson@^6.19.4"
     },
     "frameworks": [

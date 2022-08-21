@@ -2,15 +2,17 @@
 
 #pragma once
 
-#include "GradientActivity.h"
-#include "SlideActivity.h"
+#include "GradientPalette.h"
+#include "HueUpdater.h"
+#include "Activity.h"
 
+using color::VARY_HUE;
 using glow::Range;
-using pixel::GradientActivity;
+using glow::Activity;
 using pixel::Grid;
 using pixel::GRID_COLUMNS;
 using pixel::GRID_ROWS;
-using pixel::SlideActivity;
+using pixel::HueUpdater;
 
 #ifdef NATIVE
 Range rangeA(0, 36);
@@ -40,11 +42,11 @@ Range rangeB(4, 8);
 Grid gridB(rangeB.Pack(), rangeB.Length(), GRID_ROWS);
 #endif
 
-GradientPalette paletteA(
-    VARY_HUE, hue_red, saturation_size, 7);
-GradientPalette paletteB(
-    VARY_HUE, hue_red, saturation_size, 7);
+GradientPalette paletteA(VARY_HUE);
+GradientPalette paletteB(VARY_HUE);
 
-GradientActivity activityA(paletteA, gridA);
-GradientActivity activityB(paletteB, gridB);
-SlideActivity sliderA(gridA, paletteA, 500);
+HueUpdater updaterA(gridA, paletteA, 50);
+Activity activityA(&updaterA);
+
+HueUpdater updaterB(gridB, paletteB, 500);
+Activity activityB(&updaterB);
